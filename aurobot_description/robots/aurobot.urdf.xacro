@@ -34,15 +34,15 @@
   <xacro:profiles child="base_down_link"/>
   <xacro:base child="bearing_under_link"/>
   <xacro:bearing child="trunk_link"/>
-  <xacro:trunk child="r_shoulder_roll_link"/>
+  <xacro:trunk child="l_shoulder_roll_link"/>
 
-  <!-- Add the right PA10 -->
-  <xacro:pa10_shoulder side="r" child="r_elbow_flex_link"/>
-  <xacro:pa10_upper_arm side="r" child="r_wrist_flex_link"/>
-  <xacro:pa10_forearm side="r" child="r_jr3_link"/>
+  <!-- Add the left PA10 -->
+  <xacro:pa10_shoulder side="l" child="l_elbow_flex_link"/>
+  <xacro:pa10_upper_arm side="l" child="l_wrist_flex_link"/>
+  <xacro:pa10_forearm side="l" child="l_jr3_link"/>
   
   <!-- JR3 -->
-  <link name="r_jr3_link">
+  <link name="l_jr3_link">
   <inertial>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <mass value="0.40"/>
