@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="pa10_shoulder_gazebo" params="side">
+    <!-- S1: Shoulder roll -->
+    <gazebo reference="${side}_shoulder_roll_link">
+      <turnGravityOff>true</turnGravityOff>
+    </gazebo>
+    <gazebo reference="${side}_shoulder_roll_joint">
+      <stopKd value="1.0"/>
+      <stopKp value="1000000.0"/>
+    </gazebo>
+
+    <!-- S2: Shoulder lift -->
+    <gazebo reference="${side}_shoulder_lift_link">
+      <turnGravityOff>true</turnGravityOff>
+    </gazebo>
+    <gazebo reference="${side}_shoulder_lift_joint">
+      <stopKd value="1.0"/>
+      <stopKp value="1000000.0"/>
+    </gazebo>
+    
+    <!-- S3: Upperarm roll-->
+    <gazebo reference="${side}_upper_arm_roll_link">
+      <turnGravityOff>true</turnGravityOff>
+    </gazebo>
+    <gazebo reference="${side}_upper_arm_roll_joint">
+      <stopKd value="1.0"/>
+      <stopKp value="1000000.0"/>
+      <fudgeFactor value="0.5"/>
+    </gazebo>
+  </xacro:macro>
+</robot>

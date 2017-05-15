@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<package>
+  <name>aurobot_gazebo</name>
+  <version>0.0.1</version>
+  <description>
+   The aurobot gazebo package launchs scripts for simulating the robot in <a href="http://ros.org/wiki/gazebo">gazebo</a>.
+  </description>
+  <author email="brayan.impata@ua.es">Brayan S. Zapata Impata</author>
+  <maintainer email="brayan.impata@ua.es">Brayan S. Zapata Impata</maintainer>
+  <maintainer email="cm.mateo@ua.es">Carlos M. Mateo</maintainer>
+  <license>BSD</license>
+  <!--<url type="website">http://ros.org/wiki/twin_pa10</url>
+  <url type="repository">https://github.com/drmateo/twin_pa10</url>
+  <url type="bugtracker">https://github.com/drmateo/twin_pa10/issues</url>-->
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>gazebo_ros</build_depend>
+  <build_depend>gazebo_plugins</build_depend>
+  <run_depend>diagnostic_aggregator</run_depend>
+  <run_depend>gazebo_ros</run_depend>
+  <run_depend>gazebo_plugins</run_depend>
+  <run_depend>image_proc</run_depend>
+  <run_depend>joint_trajectory_action</run_depend>
+  <run_depend>robot_pose_ekf</run_depend>
+  <run_depend>single_joint_position_action</run_depend>
+  <run_depend>stereo_image_proc</run_depend>
+  <run_depend>tf2_ros</run_depend>
+  <run_depend>topic_tools</run_depend>
+  <run_depend>xacro</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <!--<run_depend>fingertip_pressure</run_depend>-->
+  <export>
+    <gazebo_ros gazebo_media_path="/usr/share/gazebo-2.2/media"/>
+  </export>
+</package>

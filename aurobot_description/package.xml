@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<package>
+  <name>aurobot_description</name>
+  <version>0.0.1</version>
+  <description>
+    This package contains the description (mechanical, kinematic, visual,
+    etc.) of the aurobot robot.
+  </description>
+  <author email="brayan.impata@ua.es">Brayan S. Zapata Impata</author>
+  <maintainer email="brayan.impata@ua.es">Brayan S. Zapata Impata</maintainer>
+  <maintainer email="cm.mateo@ua.es">Carlos M. Mateo</maintainer>
+  <license>BSD</license>
+  <!--<url type="website">http://ros.org/wiki/twin_aurobot</url>
+  <url type="repository">https://github.com/drmateo/twin_aurobot</url>
+  <url type="bugtracker">https://github.com/drmateo/twin_aurobot/issues</url>-->
+  <buildtool_depend>catkin</buildtool_depend>
+  <run_depend>xacro</run_depend>
+  <test_depend>gtest</test_depend>
+  <test_depend>liburdfdom-dev</test_depend>
+</package>

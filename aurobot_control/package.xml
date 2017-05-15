@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<package>
+  <name>aurobot_control</name>
+  <version>0.0.1</version>
+  <description>
+   Aurobot simulator controller.
+  </description>
+  <author email="brayan.impata@ua.es">Brayan S. Zapata Impata</author>
+  <maintainer email="brayan.impata@ua.es">Brayan S. Zapata Impata</maintainer>
+  <maintainer email="cm.mateo@ua.es">Carlos M. Mateo</maintainer>
+  <license>BSD</license>
+  <!--<url type="website">http://ros.org/wiki/twin_pa10</url>
+  <url type="repository">https://github.com/drmateo/twin_pa10</url>
+  <url type="bugtracker">https://github.com/drmateo/twin_pa10/issues</url>-->
+  <buildtool_depend>catkin</buildtool_depend>
+  <run_depend>pr2_controller_manager</run_depend>
+  <run_depend>single_joint_position_action</run_depend>
+  <run_depend>pr2_mechanism_controllers</run_depend>
+  <run_depend>pr2_gripper_action</run_depend>
+</package>

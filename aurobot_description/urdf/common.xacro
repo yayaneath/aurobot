@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<robot>
+  <property name="M_PI" value="3.1415926535897931"/>
+  <property name="VELOCITY_LIMIT_SCALE" value="0.6"/>
+
+  <!-- ********** Right Arm ********** -->
+  <!-- Gear Ratio Corrections: Divide transmission reductions by these factors (Nominally 1)-->
+  <property name="cal_r_shoulder_roll_gearing"   value="1.0"/>
+  <property name="cal_r_shoulder_lift_gearing"  value="1.0"/>
+  <property name="cal_r_upper_arm_roll_gearing" value="1.0"/>
+
+  <!-- Flag offsets: Add to the optical flag locations (Nominally 0) -->
+  <property name="cal_r_shoulder_roll_flag"   value="0.0"/>
+  <property name="cal_r_shoulder_lift_flag"  value="0.0"/>
+  <property name="cal_r_upper_arm_roll_flag" value="0.0"/>
+  <property name="cal_r_elbow_flex_flag"     value="0.0"/>
+  <property name="cal_r_forearm_roll_flag"   value="0.0"/>
+  <property name="cal_r_wrist_flex_flag"     value="0.0"/>
+  <property name="cal_r_wrist_roll_flag"     value="0.0"/>
+
+  <!-- ********** Left Arm ********** -->
+  <!-- Throwing in left arm constants to appease the xacro parser -->
+  <property name="cal_l_shoulder_roll_flag" value="0.000000"/>
+  <property name="cal_l_wrist_roll_flag" value="0.0"/>
+
+  <!-- ********** Sensors ********** -->
+  <!-- Kinect Camera Location (Nominally 0) -->
+  <property name="cal_kinect_x" value="0.0"/>
+  <property name="cal_kinect_y" value="0.0"/>
+  <property name="cal_kinect_z" value="0.0"/>
+  <property name="cal_kinect_roll" value="0.0"/>
+  <property name="cal_kinect_pitch" value="0.0"/>
+  <property name="cal_kinect_yaw" value="0.0"/>
+</robot>
