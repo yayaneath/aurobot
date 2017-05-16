@@ -34,7 +34,32 @@
   <xacro:profiles child="base_down_link"/>
   <xacro:base child="bearing_under_link"/>
   <xacro:bearing child="trunk_link"/>
-  <xacro:trunk child="l_shoulder_roll_link"/>
+  <xacro:trunk left_child="l_shoulder_roll_link" head_child="head_link"/>
+
+  <!-- Head -->
+  <link name="head_link">
+    <inertial>
+      <origin xyz="0 0 1" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia
+        ixx="1.0" ixy="0.0" ixz="0.0"
+        iyy="1.0" iyz="0.0"
+        izz="1.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="-0.15 0 0.16" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.3 0.3 0.3"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin xyz="-0.15 0 0.16" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.3 0.3 0.3"/>
+      </geometry>
+    </collision>
+  </link>
 
   <!-- Add the left PA10 -->
   <xacro:pa10_shoulder side="l" child="l_elbow_flex_link"/>
