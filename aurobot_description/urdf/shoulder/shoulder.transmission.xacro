@@ -14,7 +14,7 @@
       </joint>
       <actuator name="${side}_shoulder_roll_motor">
         <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_r_shoulder_roll_gearing}</mechanicalReduction>
+        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_l_shoulder_roll_gearing}</mechanicalReduction>
         <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="15.0" lambda_motor="40.0" lambda_joint="40.0" 
           lambda_combined="0.0"/>
       </actuator>
@@ -28,7 +28,7 @@
       </joint>
       <actuator name="${side}_shoulder_lift_motor">
         <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-        <mechanicalReduction>${13/3 * 245.532/17.19 / cal_r_shoulder_lift_gearing}</mechanicalReduction>
+        <mechanicalReduction>${13/3 * 245.532/17.19 / cal_l_shoulder_lift_gearing}</mechanicalReduction>
         <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="10.0" lambda_motor="60.0" lambda_joint="60.0" 
           lambda_combined="0.0"/>
       </actuator>
@@ -42,7 +42,7 @@
       </joint>
       <actuator name="${side}_upper_arm_roll_motor">
         <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-        <mechanicalReduction>${13/3 * 129.53/17.19 / cal_r_upper_arm_roll_gearing}</mechanicalReduction>
+        <mechanicalReduction>${13/3 * 129.53/17.19 / cal_l_upper_arm_roll_gearing}</mechanicalReduction>
       </actuator>
     </transmission>
   </xacro:macro>

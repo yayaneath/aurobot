@@ -10,7 +10,11 @@
     <gazebo reference="trunk_link">
       <turnGravityOff>true</turnGravityOff>
     </gazebo>
-    <gazebo reference="trunk_joint">
+    <gazebo reference="trunk_left_joint">
+      <stopKd value="1.0"/>
+      <stopKp value="1000000.0"/>
+    </gazebo>
+    <gazebo reference="trunk_head_joint">
       <stopKd value="1.0"/>
       <stopKp value="1000000.0"/>
     </gazebo>
