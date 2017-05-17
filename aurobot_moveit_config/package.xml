@@ -5,8 +5,8 @@
   <description>
      An automatically generated package with all the configuration and launch files for using the aurobot with the MoveIt! Motion Planning Framework
   </description>
-  <author email="brayan.impata@ua.es">Brayan S. Zapata Impatá</author>
-  <maintainer email="brayan.impata@ua.es">Brayan S. Zapata Impatá</maintainer>
+  <author email="brayan.impata@ua.es">Brayan S. Zapata Impata</author>
+  <maintainer email="brayan.impata@ua.es">Brayan S. Zapata Impata</maintainer>
 
   <license>BSD</license>
 

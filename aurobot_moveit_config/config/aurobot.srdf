@@ -17,6 +17,7 @@
         <joint name="bearing_under_joint" />
         <joint name="bearing_joint" />
         <joint name="bearing_above_joint" />
+        <joint name="trunk_head_joint" />
     </group>
     <group name="left_pa10">
         <joint name="trunk_left_joint" />
@@ -38,11 +39,14 @@
         <joint name="l_wrist_flex_joint" value="0" />
         <joint name="l_wrist_roll_joint" value="0" />
     </group_state>
+    <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
+    <end_effector name="gripper" parent_link="l_jr3_link" group="left_pa10" />
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="base_down_link" link2="base_up_link" reason="Adjacent" />
     <disable_collisions link1="base_down_link" link2="bearing_above_link" reason="Never" />
     <disable_collisions link1="base_down_link" link2="bearing_link" reason="Never" />
     <disable_collisions link1="base_down_link" link2="bearing_under_link" reason="Never" />
+    <disable_collisions link1="base_down_link" link2="head_link" reason="Never" />
     <disable_collisions link1="base_down_link" link2="l_elbow_flex_link" reason="Never" />
     <disable_collisions link1="base_down_link" link2="l_forearm_roll_link" reason="Never" />
     <disable_collisions link1="base_down_link" link2="l_jr3_link" reason="Never" />
@@ -56,8 +60,10 @@
     <disable_collisions link1="base_up_link" link2="bearing_above_link" reason="Never" />
     <disable_collisions link1="base_up_link" link2="bearing_link" reason="Never" />
     <disable_collisions link1="base_up_link" link2="bearing_under_link" reason="Adjacent" />
+    <disable_collisions link1="base_up_link" link2="head_link" reason="Never" />
     <disable_collisions link1="base_up_link" link2="l_elbow_flex_link" reason="Never" />
     <disable_collisions link1="base_up_link" link2="l_forearm_roll_link" reason="Never" />
+    <disable_collisions link1="base_up_link" link2="l_jr3_link" reason="Never" />
     <disable_collisions link1="base_up_link" link2="l_shoulder_lift_link" reason="Never" />
     <disable_collisions link1="base_up_link" link2="l_shoulder_roll_link" reason="Never" />
     <disable_collisions link1="base_up_link" link2="l_upper_arm_roll_link" reason="Never" />
@@ -66,15 +72,16 @@
     <disable_collisions link1="base_up_link" link2="trunk_link" reason="Never" />
     <disable_collisions link1="bearing_above_link" link2="bearing_link" reason="Adjacent" />
     <disable_collisions link1="bearing_above_link" link2="bearing_under_link" reason="Never" />
+    <disable_collisions link1="bearing_above_link" link2="head_link" reason="Never" />
     <disable_collisions link1="bearing_above_link" link2="l_elbow_flex_link" reason="Never" />
     <disable_collisions link1="bearing_above_link" link2="l_forearm_roll_link" reason="Never" />
-    <disable_collisions link1="bearing_above_link" link2="l_jr3_link" reason="Never" />
     <disable_collisions link1="bearing_above_link" link2="l_shoulder_lift_link" reason="Never" />
     <disable_collisions link1="bearing_above_link" link2="l_shoulder_roll_link" reason="Never" />
     <disable_collisions link1="bearing_above_link" link2="l_upper_arm_roll_link" reason="Never" />
     <disable_collisions link1="bearing_above_link" link2="profiles_link" reason="Never" />
     <disable_collisions link1="bearing_above_link" link2="trunk_link" reason="Adjacent" />
     <disable_collisions link1="bearing_link" link2="bearing_under_link" reason="Adjacent" />
+    <disable_collisions link1="bearing_link" link2="head_link" reason="Never" />
     <disable_collisions link1="bearing_link" link2="l_elbow_flex_link" reason="Never" />
     <disable_collisions link1="bearing_link" link2="l_forearm_roll_link" reason="Never" />
     <disable_collisions link1="bearing_link" link2="l_shoulder_lift_link" reason="Never" />
@@ -82,6 +89,7 @@
     <disable_collisions link1="bearing_link" link2="l_upper_arm_roll_link" reason="Never" />
     <disable_collisions link1="bearing_link" link2="profiles_link" reason="Never" />
     <disable_collisions link1="bearing_link" link2="trunk_link" reason="Never" />
+    <disable_collisions link1="bearing_under_link" link2="head_link" reason="Never" />
     <disable_collisions link1="bearing_under_link" link2="l_elbow_flex_link" reason="Never" />
     <disable_collisions link1="bearing_under_link" link2="l_forearm_roll_link" reason="Never" />
     <disable_collisions link1="bearing_under_link" link2="l_shoulder_lift_link" reason="Never" />
@@ -90,6 +98,11 @@
     <disable_collisions link1="bearing_under_link" link2="l_wrist_flex_link" reason="Never" />
     <disable_collisions link1="bearing_under_link" link2="profiles_link" reason="Never" />
     <disable_collisions link1="bearing_under_link" link2="trunk_link" reason="Never" />
+    <disable_collisions link1="head_link" link2="l_shoulder_lift_link" reason="Never" />
+    <disable_collisions link1="head_link" link2="l_shoulder_roll_link" reason="Never" />
+    <disable_collisions link1="head_link" link2="l_upper_arm_roll_link" reason="Never" />
+    <disable_collisions link1="head_link" link2="profiles_link" reason="Never" />
+    <disable_collisions link1="head_link" link2="trunk_link" reason="Adjacent" />
     <disable_collisions link1="l_elbow_flex_link" link2="l_forearm_roll_link" reason="Adjacent" />
     <disable_collisions link1="l_elbow_flex_link" link2="l_jr3_link" reason="Never" />
     <disable_collisions link1="l_elbow_flex_link" link2="l_shoulder_lift_link" reason="Never" />
@@ -108,6 +121,7 @@
     <disable_collisions link1="l_forearm_roll_link" link2="profiles_link" reason="Never" />
     <disable_collisions link1="l_forearm_roll_link" link2="trunk_link" reason="Never" />
     <disable_collisions link1="l_jr3_link" link2="l_shoulder_lift_link" reason="Never" />
+    <disable_collisions link1="l_jr3_link" link2="l_shoulder_roll_link" reason="Never" />
     <disable_collisions link1="l_jr3_link" link2="l_upper_arm_roll_link" reason="Never" />
     <disable_collisions link1="l_jr3_link" link2="l_wrist_flex_link" reason="Never" />
     <disable_collisions link1="l_jr3_link" link2="l_wrist_roll_link" reason="Adjacent" />
