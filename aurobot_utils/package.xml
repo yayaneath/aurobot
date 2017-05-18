@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<package>
+  <name>aurobot_utils</name>
+  <version>0.0.1</version>
+  <description>
+    This package contains scripts useful for working with the aurobot. This includes
+    scripts for transforming the camera cloud to the robot frame, among others.
+  </description>
+  <author email="brayan.impata@ua.es">Brayan S. Zapata Impata</author>
+  <maintainer email="brayan.impata@ua.es">Brayan S. Zapata Impata</maintainer>
+  <maintainer email="cm.mateo@ua.es">Carlos M. Mateo</maintainer>
+  <license>BSD</license>
+  <!--<url type="website">http://ros.org/wiki/twin_aurobot</url>
+  <url type="repository">https://github.com/drmateo/twin_aurobot</url>
+  <url type="bugtracker">https://github.com/drmateo/twin_aurobot/issues</url>-->
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>cmake_modules</build_depend>
+  <build_depend>pcl_ros</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>tf</build_depend>
+
+  <run_depend>cmake_modules</run_depend> 
+  <run_depend>pcl_ros</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>tf</run_depend>
+</package>

@@ -41,8 +41,9 @@
     <joint name="trunk_head_joint" type="fixed">
       <parent link="trunk_link"/>
       <child link="${head_child}"/>
-      <!-- BRAYAN (16-05-2017): Temporalmente puesto como una cabeza adelantada. -->
-      <origin xyz="0.150 0 1.47" rpy="0 0 0"/>
+      <!-- BRAYAN (16-05-2017): Temporalmente puesto como una cabeza adelantada orientada hacia adelante. 
+      -1.570796327 0 -1.570796327-->
+      <origin xyz="0.150 0 1.47" rpy="-2.042035225 0 -1.570796327"/>
     </joint>
 
     <!-- extensions   -->
