@@ -9,7 +9,7 @@
     <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
     <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
     <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
-    <group name="robot_Base">
+    <group name="robot_base">
         <joint name="world_joint" />
         <joint name="profiles_joint" />
         <joint name="base_down_joint" />
@@ -75,6 +75,107 @@
         <joint name="l_allegro_joint_11_tip" />
         <joint name="l_jr3_joint" />
     </group>
+    <group name="left_pa10_allegro_palm">
+        <link name="l_shoulder_roll_link" />
+        <link name="l_shoulder_lift_link" />
+        <link name="l_upper_arm_roll_link" />
+        <link name="l_elbow_flex_link" />
+        <link name="l_forearm_roll_link" />
+        <link name="l_wrist_flex_link" />
+        <link name="l_wrist_roll_link" />
+        <link name="l_jr3_link" />
+        <link name="l_allegro_base_link" />
+        <joint name="l_shoulder_roll_joint" />
+        <joint name="l_shoulder_lift_joint" />
+        <joint name="l_upper_arm_roll_joint" />
+        <joint name="l_elbow_flex_joint" />
+        <joint name="l_forearm_roll_joint" />
+        <joint name="l_wrist_flex_joint" />
+        <joint name="l_wrist_roll_joint" />
+        <joint name="l_jr3_joint" />
+    </group>
+    <group name="left_allegro_thumb">
+        <link name="l_allegro_link_12" />
+        <link name="l_allegro_link_13" />
+        <link name="l_allegro_link_14" />
+        <link name="l_allegro_link_15" />
+        <link name="l_allegro_link_15_tip" />
+        <joint name="l_allegro_joint_12" />
+        <joint name="l_allegro_joint_13" />
+        <joint name="l_allegro_joint_14" />
+        <joint name="l_allegro_joint_15" />
+        <joint name="l_allegro_joint_15_tip" />
+    </group>
+    <group name="left_allegro_f0">
+        <link name="l_allegro_link_0" />
+        <link name="l_allegro_link_1" />
+        <link name="l_allegro_link_2" />
+        <link name="l_allegro_link_3" />
+        <link name="l_allegro_link_3_tip" />
+        <joint name="l_allegro_joint_0" />
+        <joint name="l_allegro_joint_1" />
+        <joint name="l_allegro_joint_2" />
+        <joint name="l_allegro_joint_3" />
+        <joint name="l_allegro_joint_3_tip" />
+    </group>
+    <group name="left_pa10_allegro_thumb">
+        <link name="l_shoulder_roll_link" />
+        <link name="l_shoulder_lift_link" />
+        <link name="l_upper_arm_roll_link" />
+        <link name="l_elbow_flex_link" />
+        <link name="l_forearm_roll_link" />
+        <link name="l_wrist_flex_link" />
+        <link name="l_wrist_roll_link" />
+        <link name="l_jr3_link" />
+        <link name="l_allegro_base_link" />
+        <link name="l_allegro_link_12" />
+        <link name="l_allegro_link_13" />
+        <link name="l_allegro_link_14" />
+        <link name="l_allegro_link_15" />
+        <link name="l_allegro_link_15_tip" />
+        <joint name="l_shoulder_roll_joint" />
+        <joint name="l_shoulder_lift_joint" />
+        <joint name="l_upper_arm_roll_joint" />
+        <joint name="l_elbow_flex_joint" />
+        <joint name="l_forearm_roll_joint" />
+        <joint name="l_wrist_flex_joint" />
+        <joint name="l_wrist_roll_joint" />
+        <joint name="l_jr3_joint" />
+        <joint name="l_allegro_joint_12" />
+        <joint name="l_allegro_joint_13" />
+        <joint name="l_allegro_joint_14" />
+        <joint name="l_allegro_joint_15" />
+        <joint name="l_allegro_joint_15_tip" />
+    </group>
+    <group name="left_pa10_allegro_f0">
+        <link name="l_shoulder_roll_link" />
+        <link name="l_shoulder_lift_link" />
+        <link name="l_upper_arm_roll_link" />
+        <link name="l_elbow_flex_link" />
+        <link name="l_forearm_roll_link" />
+        <link name="l_wrist_flex_link" />
+        <link name="l_wrist_roll_link" />
+        <link name="l_jr3_link" />
+        <link name="l_allegro_base_link" />
+        <link name="l_allegro_link_0" />
+        <link name="l_allegro_link_1" />
+        <link name="l_allegro_link_2" />
+        <link name="l_allegro_link_3" />
+        <link name="l_allegro_link_3_tip" />
+        <joint name="l_shoulder_roll_joint" />
+        <joint name="l_shoulder_lift_joint" />
+        <joint name="l_upper_arm_roll_joint" />
+        <joint name="l_elbow_flex_joint" />
+        <joint name="l_forearm_roll_joint" />
+        <joint name="l_wrist_flex_joint" />
+        <joint name="l_wrist_roll_joint" />
+        <joint name="l_jr3_joint" />
+        <joint name="l_allegro_joint_0" />
+        <joint name="l_allegro_joint_1" />
+        <joint name="l_allegro_joint_2" />
+        <joint name="l_allegro_joint_3" />
+        <joint name="l_allegro_joint_3_tip" />
+    </group>
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
     <group_state name="home" group="left_pa10">
         <joint name="l_elbow_flex_joint" value="-2.39" />
@@ -87,6 +188,8 @@
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="allegro_hand" parent_link="l_jr3_link" group="left_allegro" parent_group="left_pa10" />
+    <end_effector name="left_allegro_thumb" parent_link="l_allegro_base_link" group="left_allegro_thumb" parent_group="left_pa10_allegro_thumb" />
+    <end_effector name="left_allegro_f0" parent_link="l_allegro_base_link" group="left_allegro_f0" parent_group="left_pa10_allegro_f0" />
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="base_down_link" link2="base_up_link" reason="Adjacent" />
     <disable_collisions link1="base_down_link" link2="bearing_above_link" reason="Never" />

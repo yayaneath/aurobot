@@ -1,5 +1,5 @@
 controller_list:
-  - name: fake_robot_Base_controller
+  - name: fake_robot_base_controller
     joints:
       []
   - name: fake_left_pa10_controller
@@ -29,3 +29,50 @@ controller_list:
       - l_allegro_joint_9
       - l_allegro_joint_10
       - l_allegro_joint_11
+  - name: fake_left_pa10_allegro_palm_controller
+    joints:
+      - l_shoulder_roll_joint
+      - l_shoulder_lift_joint
+      - l_upper_arm_roll_joint
+      - l_elbow_flex_joint
+      - l_forearm_roll_joint
+      - l_wrist_flex_joint
+      - l_wrist_roll_joint
+  - name: fake_left_allegro_thumb_controller
+    joints:
+      - l_allegro_joint_12
+      - l_allegro_joint_13
+      - l_allegro_joint_14
+      - l_allegro_joint_15
+  - name: fake_left_allegro_f0_controller
+    joints:
+      - l_allegro_joint_0
+      - l_allegro_joint_1
+      - l_allegro_joint_2
+      - l_allegro_joint_3
+  - name: fake_left_pa10_allegro_thumb_controller
+    joints:
+      - l_shoulder_roll_joint
+      - l_shoulder_lift_joint
+      - l_upper_arm_roll_joint
+      - l_elbow_flex_joint
+      - l_forearm_roll_joint
+      - l_wrist_flex_joint
+      - l_wrist_roll_joint
+      - l_allegro_joint_12
+      - l_allegro_joint_13
+      - l_allegro_joint_14
+      - l_allegro_joint_15
+  - name: fake_left_pa10_allegro_f0_controller
+    joints:
+      - l_shoulder_roll_joint
+      - l_shoulder_lift_joint
+      - l_upper_arm_roll_joint
+      - l_elbow_flex_joint
+      - l_forearm_roll_joint
+      - l_wrist_flex_joint
+      - l_wrist_roll_joint
+      - l_allegro_joint_0
+      - l_allegro_joint_1
+      - l_allegro_joint_2
+      - l_allegro_joint_3

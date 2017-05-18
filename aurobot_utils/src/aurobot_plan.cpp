@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
   // MoveIt! operates on sets of joints called "planning groups" and stores them in an object called
   // the `JointModelGroup`. Throughout MoveIt! the terms "planning group" and "joint model group"
   // are used interchangably.
-  static const std::string PLANNING_GROUP = "left_allegro"; // "left_allegro" "left_pa10"
+  static const std::string PLANNING_GROUP = "left_pa10_allegro_thumb"; // "left_allegro" "left_pa10"
 
   // The :move_group_interface:`MoveGroup` class can be easily
   // setup using just the name of the planning group you would like to control and plan for.
