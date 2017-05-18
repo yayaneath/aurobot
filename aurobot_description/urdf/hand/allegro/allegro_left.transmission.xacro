@@ -1,0 +1,218 @@
+<?xml version="1.0"?>
+
+<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="left_hand_transmission">
+    <transmission name="l_allegro_joint_0_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="l_allegro_joint_0">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="l_allegro_joint_0_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_l_shoulder_roll_gearing}</mechanicalReduction>
+        <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="15.0" lambda_motor="40.0" lambda_joint="40.0" 
+          lambda_combined="0.0"/>
+      </actuator>
+    </transmission>
+
+    <transmission name="l_allegro_joint_1_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="l_allegro_joint_1">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="l_allegro_joint_1_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_l_shoulder_roll_gearing}</mechanicalReduction>
+        <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="15.0" lambda_motor="40.0" lambda_joint="40.0" 
+          lambda_combined="0.0"/>
+      </actuator>
+    </transmission>
+
+    <transmission name="l_allegro_joint_2_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="l_allegro_joint_2">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="l_allegro_joint_2_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_l_shoulder_roll_gearing}</mechanicalReduction>
+        <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="15.0" lambda_motor="40.0" lambda_joint="40.0" 
+          lambda_combined="0.0"/>
+      </actuator>
+    </transmission>
+
+    <transmission name="l_allegro_joint_3_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="l_allegro_joint_3">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="l_allegro_joint_3_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_l_shoulder_roll_gearing}</mechanicalReduction>
+        <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="15.0" lambda_motor="40.0" lambda_joint="40.0" 
+          lambda_combined="0.0"/>
+      </actuator>
+    </transmission>
+
+    <transmission name="l_allegro_joint_4_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="l_allegro_joint_4">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="l_allegro_joint_4_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_l_shoulder_roll_gearing}</mechanicalReduction>
+        <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="15.0" lambda_motor="40.0" lambda_joint="40.0" 
+          lambda_combined="0.0"/>
+      </actuator>
+    </transmission>
+
+    <transmission name="l_allegro_joint_5_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="l_allegro_joint_5">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="l_allegro_joint_5_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_l_shoulder_roll_gearing}</mechanicalReduction>
+        <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="15.0" lambda_motor="40.0" lambda_joint="40.0" 
+          lambda_combined="0.0"/>
+      </actuator>
+    </transmission>
+
+    <transmission name="l_allegro_joint_6_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="l_allegro_joint_6">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="l_allegro_joint_6_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_l_shoulder_roll_gearing}</mechanicalReduction>
+        <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="15.0" lambda_motor="40.0" lambda_joint="40.0" 
+          lambda_combined="0.0"/>
+      </actuator>
+    </transmission>
+
+    <transmission name="l_allegro_joint_7_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="l_allegro_joint_7">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="l_allegro_joint_7_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_l_shoulder_roll_gearing}</mechanicalReduction>
+        <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="15.0" lambda_motor="40.0" lambda_joint="40.0" 
+          lambda_combined="0.0"/>
+      </actuator>
+    </transmission>
+
+    <transmission name="l_allegro_joint_8_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="l_allegro_joint_8">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="l_allegro_joint_8_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_l_shoulder_roll_gearing}</mechanicalReduction>
+        <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="15.0" lambda_motor="40.0" lambda_joint="40.0" 
+          lambda_combined="0.0"/>
+      </actuator>
+    </transmission>
+
+    <transmission name="l_allegro_joint_9_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="l_allegro_joint_9">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="l_allegro_joint_9_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_l_shoulder_roll_gearing}</mechanicalReduction>
+        <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="15.0" lambda_motor="40.0" lambda_joint="40.0" 
+          lambda_combined="0.0"/>
+      </actuator>
+    </transmission>
+
+    <transmission name="l_allegro_joint_10_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="l_allegro_joint_10">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="l_allegro_joint_10_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_l_shoulder_roll_gearing}</mechanicalReduction>
+        <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="15.0" lambda_motor="40.0" lambda_joint="40.0" 
+          lambda_combined="0.0"/>
+      </actuator>
+    </transmission>
+
+    <transmission name="l_allegro_joint_11_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="l_allegro_joint_11">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="l_allegro_joint_11_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_l_shoulder_roll_gearing}</mechanicalReduction>
+        <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="15.0" lambda_motor="40.0" lambda_joint="40.0" 
+          lambda_combined="0.0"/>
+      </actuator>
+    </transmission>
+
+    <transmission name="l_allegro_joint_12_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="l_allegro_joint_12">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="l_allegro_joint_12_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_l_shoulder_roll_gearing}</mechanicalReduction>
+        <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="15.0" lambda_motor="40.0" lambda_joint="40.0" 
+          lambda_combined="0.0"/>
+      </actuator>
+    </transmission>
+
+    <transmission name="l_allegro_joint_13_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="l_allegro_joint_13">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="l_allegro_joint_13_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_l_shoulder_roll_gearing}</mechanicalReduction>
+        <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="15.0" lambda_motor="40.0" lambda_joint="40.0" 
+          lambda_combined="0.0"/>
+      </actuator>
+    </transmission>
+
+    <transmission name="l_allegro_joint_14_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="l_allegro_joint_14">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="l_allegro_joint_14_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_l_shoulder_roll_gearing}</mechanicalReduction>
+        <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="15.0" lambda_motor="40.0" lambda_joint="40.0" 
+          lambda_combined="0.0"/>
+      </actuator>
+    </transmission>
+
+    <transmission name="l_allegro_joint_15_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="l_allegro_joint_15">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="l_allegro_joint_15_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${13/3 * 250.532/17.19 / cal_l_shoulder_roll_gearing}</mechanicalReduction>
+        <compensator k_belt="4000.0" mass_motor="0.05" kd_motor="15.0" lambda_motor="40.0" lambda_joint="40.0" 
+          lambda_combined="0.0"/>
+      </actuator>
+    </transmission>
+
+  </xacro:macro>
+</robot>

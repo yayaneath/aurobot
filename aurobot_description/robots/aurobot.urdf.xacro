@@ -22,6 +22,8 @@
   <xacro:include filename="$(find aurobot_description)/urdf/upper_arm/upper_arm.urdf.xacro"/>
   <xacro:include filename="$(find aurobot_description)/urdf/forearm/forearm.urdf.xacro"/>
   <xacro:include filename="$(find aurobot_description)/urdf/profiles/profiles.urdf.xacro"/>
+  <!-- Allegro left hand -->
+  <xacro:include filename="$(find aurobot_description)/urdf/hand/allegro/allegro_left.urdf.xacro"/>
   
   <!-- Joint the robot to the world -->
   <link name="world"/>
@@ -85,5 +87,14 @@
       </geometry>
     </collision>
   </link>
+
+  <joint name="l_jr3_joint" type="fixed">
+    <parent link="l_jr3_link"/>
+    <child link="l_allegro_base_link"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Allegro left hand -->
+  <xacro:allegro_left_hand/>
 
 </robot>

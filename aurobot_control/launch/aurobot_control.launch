@@ -4,7 +4,7 @@
 
   <!-- load the controllers -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-        output="screen" ns="aurobot" args="l_arm_controller joint_state_controller"/>
+        output="screen" ns="aurobot" args="l_arm_controller l_allegro_controller joint_state_controller"/>
 
   <!-- convert joint states to TF transforms for rviz, etc -->
   <node name="sim_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
