@@ -1,0 +1,6 @@
+float32 first_point_x
+float32 first_point_y
+float32 first_point_z
+float32 second_point_x
+float32 second_point_y
+float32 second_point_z

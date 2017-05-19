@@ -4,6 +4,8 @@ project(aurobot_utils)
 add_compile_options(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
+  std_msgs
+  message_generation
   grasping_clouds
   cmake_modules
   pcl_conversions
@@ -28,16 +30,28 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+add_message_files (DIRECTORY msg
+  FILES
+  GraspConfiguration.msg
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
+
 catkin_package(
-  CATKIN_DEPENDS grasping_clouds cmake_modules pcl_conversions pcl_ros roscpp tf sensor_msgs
+  CATKIN_DEPENDS message_runtime grasping_clouds cmake_modules pcl_conversions pcl_ros roscpp tf sensor_msgs
   moveit_core moveit_ros_planning_interface moveit_msgs
   DEPENDS boost eigen
 )
 
 add_executable(realsense_to_world src/realsense_to_world.cpp)
-add_executable(grasp_objects src/grasp_objects.cpp)
+add_executable(pointcloud_listener src/pointcloud_listener.cpp)
 add_executable(aurobot_plan src/aurobot_plan.cpp)
+add_executable(aurobot_plan_grasp src/aurobot_plan_grasp.cpp)
 
 target_link_libraries(realsense_to_world ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
-target_link_libraries(grasp_objects ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(pointcloud_listener ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(aurobot_plan ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(aurobot_plan_grasp ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})

@@ -1,8 +1,11 @@
 #include <iostream>
 
+// Ros
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <tf/transform_listener.h>
 
+// PCL
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
 #include <pcl_conversions/pcl_conversions.h>
@@ -19,11 +22,15 @@
 
 #include <pcl/filters/passthrough.h>
 
-#include <boost/chrono/thread_clock.hpp>
+// Our libraries
+#include <grasping_clouds/GraspPoints.h> // Grasping points calculator
+#include <aurobot_utils/GraspConfiguration.h> // Custom message for publishing grasps
 
-#include <grasping_clouds/GraspPoints.h>
 
+// Global variables needed for the callback function
 pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer("Cloud viewer"));
+ros::Publisher pub;
+
 
 // callback signature
 void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
@@ -113,7 +120,7 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       graspPoints.setObjectCloud(objectCloud);
       graspPoints.compute();
 
-      GraspConfiguration bestGrasp = graspPoints.getBestGrasp(0);
+      GraspConfiguration bestGrasp = graspPoints.getBestGrasp();
 
       // Visualize the result
       pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGB> rgb(objectCloud);
@@ -136,6 +143,19 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       viewer->addLine(bestGrasp.firstPoint, bestGrasp.secondPoint, 0, 255, 0, 
         objectLabel + "Grasping line");
 
+      // The greatest object usually has the best ranked grasp, so publish that one:
+      if (it == clusterIndices.begin()){
+        aurobot_utils::GraspConfiguration msg;
+        msg.first_point_x = bestGrasp.firstPoint.x;
+        msg.first_point_y = bestGrasp.firstPoint.y;
+        msg.first_point_z = bestGrasp.firstPoint.z;
+        msg.second_point_x = bestGrasp.secondPoint.x;
+        msg.second_point_y = bestGrasp.secondPoint.y;
+        msg.second_point_z = bestGrasp.secondPoint.z;
+
+        pub.publish(msg);
+      }
+
       objectNumber++;
     }
 
@@ -143,15 +163,17 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
   }
 }
 
+
 int main(int argc, char **argv) {
   ros::init(argc, argv, "aurobot_camera_listener");
 
   viewer->initCameraParameters();
   viewer->addCoordinateSystem(0.1);
 
-  ros::NodeHandle n;
-  ros::Subscriber sub = n.subscribe<sensor_msgs::PointCloud2>("/camera/depth_registered/points",
+  ros::NodeHandle nh;
+  ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2>("/camera/depth_registered/points",
     1, cloudCallback);
+  pub = nh.advertise<aurobot_utils::GraspConfiguration>("/aurobot_utils/grasp_configuration", 1);
 
   ros::spin();
 

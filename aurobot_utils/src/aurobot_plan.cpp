@@ -14,6 +14,32 @@
 
 #include <tf/transform_listener.h>
 
+// Grasp planner
+/*void planGrasp(GraspConfiguration grasp) {
+  tf::TransformListener transformer;
+  tf::Stamped<tf::Point> firstPointIn, firstPointOut;;
+  firstPointIn.setX(grasp.firstPoint.x);
+  firstPointIn.setY(grasp.firstPoint.y);
+  firstPointIn.setZ(grasp.firstPoint.z);
+  firstPointIn.frame_id_ = "/head_link";
+
+  transformer.waitForTransform("/world", "/head_link", ros::Time(0), ros::Duration(3.0));
+  transformer.transformPoint("/world", firstPointIn, firstPointOut);
+
+  std::cout << "First point in:\n" << "> x = " << firstPointIn.x() << "\n"
+    << "> y = " << firstPointIn.y() << "\n"
+    << "> z = " << firstPointIn.z() << "\n";
+
+  std::cout << "First point out:\n" << "> x = " << firstPointOut.x() << "\n"
+    << "> y = " << firstPointOut.y() << "\n"
+    << "> z = " << firstPointOut.z() << "\n";
+
+
+  //tf::StampedTransform transform;
+
+  //tfListener.waitForTransform("/world", "/head_link", ros::Time(0), ros::Duration(3.0));
+  //tfListener.lookupTransform("/world", "/head_link", ros::Time(0), transform);
+}*/
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "aurobot_planner");
@@ -29,7 +55,7 @@ int main(int argc, char **argv) {
   // MoveIt! operates on sets of joints called "planning groups" and stores them in an object called
   // the `JointModelGroup`. Throughout MoveIt! the terms "planning group" and "joint model group"
   // are used interchangably.
-  static const std::string PLANNING_GROUP = "left_pa10_allegro_thumb"; // "left_allegro" "left_pa10"
+  static const std::string PLANNING_GROUP = "left_pa10_gripper"; // "left_allegro" "left_pa10"
 
   // The :move_group_interface:`MoveGroup` class can be easily
   // setup using just the name of the planning group you would like to control and plan for.
@@ -77,27 +103,34 @@ int main(int argc, char **argv) {
   // ^^^^^^^^^^^^^^^^^^^^^^^
   // We can plan a motion for this group to a desired pose for the
   // end-effector.
-  /*geometry_msgs::Pose target_pose1;
-  target_pose1.position.x = -0.0496334;
-  target_pose1.position.y = 1.27184;
-  target_pose1.position.z = 1.80791;
-  target_pose1.orientation.x = -0.049922;
-  target_pose1.orientation.y = 0.236057;
-  target_pose1.orientation.z = 0.869959;
-  target_pose1.orientation.w = 0.430064;*/
 
-  geometry_msgs::PoseStamped target_pose1 = move_group.getRandomPose();
+  //geometry_msgs::PoseStamped target_pose1 = move_group.getRandomPose("l_allegro_link_15_tip");
+  geometry_msgs::Pose target_pose1;
+  target_pose1.position.x = 0.742287;
+  target_pose1.position.y = 0.0860084;
+  target_pose1.position.z = 1.07552;
 
-  move_group.setPoseTarget(target_pose1);
+  move_group.setPoseTarget(target_pose1, "l_allegro_link_15_tip");
 
-  std::cout << "=== Pose ===\n" << target_pose1 << "\n";
+  std::cout << "=== Pose l_allegro_link_15_tip ===\n" << target_pose1 << "\n";
+
+  geometry_msgs::PoseStamped target_pose2 = move_group.getRandomPose("l_allegro_link_3_tip");
+  /*geometry_msgs::Pose target_pose2;
+  target_pose2.position.x = 0.750025;
+  target_pose2.position.y = 0.0279898;
+  target_pose2.position.z = 1.07255;*/
+
+  //move_group.setPoseTarget(target_pose1, "l_allegro_link_3_tip");
+
+  std::cout << "=== Pose l_allegro_link_3_tip ===\n" << target_pose2 << "\n";
 
   // Now, we call the planner to compute the plan and visualize it.
   // Note that we are just planning, not asking move_group
   // to actually move the robot.
   moveit::planning_interface::MoveGroupInterface::Plan my_plan;
 
-  move_group.setPlannerId("BFMTkConfigDefault"); //"TRRTkConfigDefault"
+  move_group.setPlannerId("TRRTkConfigDefault"); //"TRRTkConfigDefault"
+  move_group.setPlanningTime(10.0);
   bool success = move_group.plan(my_plan);
 
   ROS_INFO_NAMED("tutorial", "Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
