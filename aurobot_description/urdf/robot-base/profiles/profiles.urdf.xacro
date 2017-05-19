@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<!-- XML namespaces -->
+<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Things that are needed only for Gazebo (not the physical robot).  These include
+       sensor and controller plugin specifications -->
+  <xacro:include filename="$(find aurobot_description)/urdf/robot-base/profiles/profiles.gazebo.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/common.xacro"/>
+
+ <!-- ============================   Profiles   ============================ -->
+
+  <xacro:macro name="profiles" params="child">
+    <!-- Profiles link -->
+    <link name="profiles_link">
+      <inertial>
+        <mass value="12.43"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="0.00"  ixy="0.00"  ixz="0.00" iyy="0.00" iyz="0.00" izz="0.00"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://aurobot_description/meshes/robot-base/profiles/profiles.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="blue"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://aurobot_description/meshes/robot-base/profiles/profiles.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="profiles_joint" type="fixed">
+      <parent link="profiles_link"/>
+      <child link="${child}"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- extensions -->
+    <xacro:profiles_gazebo/>
+  </xacro:macro>
+</robot>

@@ -13,15 +13,14 @@
   <!-- The following included files set up definitions of parts of the robot body misc common stuff -->
   <xacro:include filename="$(find aurobot_description)/urdf/common.xacro"/>
   <!-- Robot base -->
-  <xacro:include filename="$(find aurobot_description)/urdf/profiles/profiles.urdf.xacro"/>
-  <xacro:include filename="$(find aurobot_description)/urdf/base/base.urdf.xacro"/>
-  <xacro:include filename="$(find aurobot_description)/urdf/bearing/bearing.urdf.xacro"/>
-  <xacro:include filename="$(find aurobot_description)/urdf/trunk/trunk.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/robot-base/profiles/profiles.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/robot-base/base/base.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/robot-base/bearing/bearing.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/robot-base/trunk/trunk.urdf.xacro"/>
   <!-- PA10 Arm -->
-  <xacro:include filename="$(find aurobot_description)/urdf/shoulder/shoulder.urdf.xacro"/>
-  <xacro:include filename="$(find aurobot_description)/urdf/upper_arm/upper_arm.urdf.xacro"/>
-  <xacro:include filename="$(find aurobot_description)/urdf/forearm/forearm.urdf.xacro"/>
-  <xacro:include filename="$(find aurobot_description)/urdf/profiles/profiles.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/pa10-green/shoulder/shoulder.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/pa10-green/upper_arm/upper_arm.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/pa10-green/forearm/forearm.urdf.xacro"/>
   <!-- Allegro left hand -->
   <xacro:include filename="$(find aurobot_description)/urdf/hand/allegro/allegro_left.urdf.xacro"/>
   
@@ -36,7 +35,7 @@
   <xacro:profiles child="base_down_link"/>
   <xacro:base child="bearing_under_link"/>
   <xacro:bearing child="trunk_link"/>
-  <xacro:trunk left_child="l_shoulder_roll_link" head_child="head_link"/>
+  <xacro:trunk left_child="pa10_green_shoulder_roll_link" head_child="head_link"/>
 
   <!-- Head -->
   <link name="head_link">
@@ -64,9 +63,9 @@
   </link>
 
   <!-- Add the left PA10 -->
-  <xacro:pa10_shoulder side="l" child="l_elbow_flex_link"/>
-  <xacro:pa10_upper_arm side="l" child="l_wrist_flex_link"/>
-  <xacro:pa10_forearm side="l" child="l_jr3_link"/>
+  <xacro:pa10_green_shoulder child="pa10_green_elbow_flex_link"/>
+  <xacro:pa10_green_upper_arm child="pa10_green_wrist_flex_link"/>
+  <xacro:pa10_green_forearm child="l_jr3_link"/>
   
   <!-- JR3 -->
   <link name="l_jr3_link">

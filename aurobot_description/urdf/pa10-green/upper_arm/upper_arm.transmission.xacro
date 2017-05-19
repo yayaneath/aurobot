@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- ============================   Upper Arm   ============================ -->
+  <xacro:macro name="pa10_green_upper_arm_transmission">
+    <!-- E1: Elbow flex -->
+    <transmission name="pa10_green_elbow_flex_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="pa10_green_elbow_flex_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="pa10_green_elbow_flex_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${-13/3 * 127.532/15.28}</mechanicalReduction>
+      </actuator>
+    </transmission>
+    
+    <!-- E2: Forearm roll -->
+    <transmission name="pa10_green_forearm_roll_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="pa10_green_forearm_roll_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="pa10_green_forearm_roll_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>${-576/25 * 55/14}</mechanicalReduction>
+      </actuator>
+    </transmission>
+  </xacro:macro>
+</robot>

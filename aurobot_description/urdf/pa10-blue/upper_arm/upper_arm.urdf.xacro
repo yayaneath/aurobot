@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+
+<!-- XML namespaces -->
+<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Things that are needed only for Gazebo (not the physical robot). These include
+       sensor and controller plugin specifications -->
+  <xacro:include filename="$(find aurobot_description)/urdf/pa10-blue/upper_arm/upper_arm.gazebo.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/pa10-blue/upper_arm/upper_arm.transmission.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/common.xacro"/>
+
+  <!-- ============================   Upper Arm   ============================ -->
+
+  <xacro:macro name="pa10_blue_upper_arm" params="child">
+    <!-- E1: Elbow flex -->
+    <link name="pa10_blue_elbow_flex_link">
+      <inertial>
+        <origin xyz="0 0 1" rpy="0 0 0"/>
+        <mass value="1"/>
+        <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0.133" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://aurobot_description/meshes/pa10-blue/upper_arm/E1.stl"/>
+        </geometry>
+        <material name="">
+          <color rgba="0.33 0.96 0.53 1.5"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0.133" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://aurobot_description/meshes/pa10-blue/upper_arm/E1_collision.stl"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="pa10_blue_elbow_flex_joint" type="revolute">
+      <parent link="pa10_blue_elbow_flex_link"/>
+      <child link="pa10_blue_forearm_roll_link"/>
+      <origin xyz="0 0 0.133" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="0" lower="-2.39" upper="2.39" velocity="1.0"/>
+    </joint>
+    
+    <!-- E2: Forearm_roll -->
+    <link name="pa10_blue_forearm_roll_link">
+      <inertial>
+        <origin xyz="0 0 1" rpy="0 0 0"/>
+        <mass value="1"/>
+        <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+      </inertial>
+      <visual>
+        <origin xyz="0 0.003 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://aurobot_description/meshes/pa10-blue/upper_arm/E2.stl"/>
+        </geometry>
+        <material name="">
+          <color rgba="0.34 0.35 0.36 1.0"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0.003 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://aurobot_description/meshes/pa10-blue/upper_arm/E2_collision.stl"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="pa10_blue_forearm_roll_joint" type="revolute">
+      <parent link="pa10_blue_forearm_roll_link"/>
+      <child link="${child}"/>
+      <origin xyz="0 0 0.285" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="0" lower="-4.45" upper="4.45" velocity="1.0"/>
+    </joint>
+    
+    <!-- extensions-->
+    <xacro:pa10_blue_upper_arm_gazebo/>
+    <xacro:pa10_blue_upper_arm_transmission/>
+  </xacro:macro>
+</robot>

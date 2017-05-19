@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+
+<!-- XML namespaces -->
+<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Things that are needed only for Gazebo (not the physical robot).  These include
+       sensor and controller plugin specifications -->
+  <xacro:include filename="$(find aurobot_description)/urdf/robot-base/base/base.gazebo.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/common.xacro"/>
+
+ <!-- ============================   Profiles   ============================ -->
+
+  <xacro:macro name="base" params="child">
+    <!-- Base down link -->
+    <link name="base_down_link">
+      <inertial>
+        <mass value="100"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="0.00"  ixy="0.00"  ixz="0.00" iyy="0.00" iyz="0.00" izz="0.00"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://aurobot_description/meshes/robot-base/base/base_down.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="blue"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://aurobot_description/meshes/robot-base/base/base_down.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="base_down_joint" type="fixed">
+      <parent link="base_down_link"/>
+      <child link="base_up_link"/>
+    </joint>
+
+    <!-- Base up link -->
+    <link name="base_up_link">
+      <inertial>
+        <mass value="112.5"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="0.00"  ixy="0.00"  ixz="0.00" iyy="0.00" iyz="0.00" izz="0.00"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://aurobot_description/meshes/robot-base/base/base_up.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="blue"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://aurobot_description/meshes/robot-base/base/base_up.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="base_up_joint" type="fixed">
+      <parent link="base_up_link"/>
+      <child link="${child}"/>
+    </joint>
+
+    <!-- extensions -->
+    <xacro:base_gazebo/>
+  </xacro:macro>
+</robot>
