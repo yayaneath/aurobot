@@ -1,10 +1,11 @@
 <launch>
   <!-- Load joint controller configurations from YAML file to parameter server -->
-  <rosparam file="$(find aurobot_control)/config/aurobot_left_controllers.yaml" command="load" ns="aurobot"/>
+  <rosparam file="$(find aurobot_control)/config/aurobot_controllers.yaml" command="load" ns="aurobot"/>
 
   <!-- load the controllers -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-        output="screen" ns="aurobot" args="l_arm_controller l_allegro_controller joint_state_controller"/>
+        output="screen" ns="aurobot" args="r_arm_controller l_arm_controller 
+        l_allegro_controller joint_state_controller"/>
 
   <!-- convert joint states to TF transforms for rviz, etc -->
   <node name="sim_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"

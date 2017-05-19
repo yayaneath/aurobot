@@ -27,9 +27,7 @@
         <geometry>
           <mesh filename="package://aurobot_description/meshes/pa10-blue/upper_arm/E1.stl"/>
         </geometry>
-        <material name="">
-          <color rgba="0.33 0.96 0.53 1.5"/>
-        </material>
+        <material name="white"/>
       </visual>
       <collision>
         <origin xyz="0 0 0.133" rpy="0 0 0"/>
@@ -43,7 +41,9 @@
       <child link="pa10_blue_forearm_roll_link"/>
       <origin xyz="0 0 0.133" rpy="0 0 0"/>
       <axis xyz="0 1 0"/>
-      <limit effort="0" lower="-2.39" upper="2.39" velocity="1.0"/>
+      <limit effort="1000.0" lower="-2.39" upper="2.39" velocity="0.2"/>
+      <cfm>0.7</cfm>
+      <damping>10.0</damping>
     </joint>
     
     <!-- E2: Forearm_roll -->
@@ -58,9 +58,7 @@
         <geometry>
           <mesh filename="package://aurobot_description/meshes/pa10-blue/upper_arm/E2.stl"/>
         </geometry>
-        <material name="">
-          <color rgba="0.34 0.35 0.36 1.0"/>
-        </material>
+        <material name="blue"/>
       </visual>
       <collision>
         <origin xyz="0 0.003 0" rpy="0 0 0"/>
@@ -74,7 +72,9 @@
       <child link="${child}"/>
       <origin xyz="0 0 0.285" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
-      <limit effort="0" lower="-4.45" upper="4.45" velocity="1.0"/>
+      <limit effort="1000.0" lower="-4.45" upper="4.45" velocity="0.2"/>
+      <cfm>0.7</cfm>
+      <damping>10.0</damping>
     </joint>
     
     <!-- extensions-->

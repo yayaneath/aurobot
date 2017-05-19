@@ -11,7 +11,6 @@
       <turnGravityOff>true</turnGravityOff>
       <mu1>0.2</mu1>
       <mu2>0.2</mu2>
-      <material>Gazebo/Green</material>
     </gazebo>
     <gazebo reference="pa10_blue_elbow_flex_joint">
       <stopKd value="1.0" />
@@ -23,7 +22,6 @@
       <turnGravityOff>true</turnGravityOff>
       <mu1>0.2</mu1>
       <mu2>0.2</mu2>
-      <material>Gazebo/Grey</material>
     </gazebo>
     <gazebo reference="pa10_blue_forearm_roll_joint">
       <fudgeFactor value="0.5" />

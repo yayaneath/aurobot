@@ -5,13 +5,12 @@
        xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
        xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:macro name="pa10_forearm_gazebo">
+  <xacro:macro name="pa10_blue_forearm_gazebo">
     <!-- Wrist flex -->
     <gazebo reference="pa10_blue_wrist_flex_link">
       <turnGravityOff>true</turnGravityOff>
       <mu1>0.2</mu1>
       <mu2>0.2</mu2>
-      <material>Gazebo/Green</material>
     </gazebo>
     <gazebo reference="pa10_blue_wrist_flex_joint">
       <stopKd value="1.0" />
@@ -23,7 +22,6 @@
       <turnGravityOff>true</turnGravityOff>      
       <mu1>0.2</mu1>
       <mu2>0.2</mu2>
-      <material>Gazebo/Grey</material>
     </gazebo>
     <gazebo reference="pa10_blue_wrist_roll_joint">
       <fudgeFactor value="0.5" />

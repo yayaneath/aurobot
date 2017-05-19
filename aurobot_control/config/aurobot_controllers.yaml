@@ -6,6 +6,36 @@ joint_names: [pa10_green_shoulder_roll_joint,pa10_green_shoulder_lift_joint,
   l_allegro_joint_8,l_allegro_joint_9,l_allegro_joint_10,l_allegro_joint_11,
   l_allegro_joint_12,l_allegro_joint_13,l_allegro_joint_14,l_allegro_joint_15]
 
+r_arm_controller:
+  type: "effort_controllers/JointTrajectoryController"
+  joints: [pa10_blue_shoulder_roll_joint,pa10_blue_shoulder_lift_joint,
+    pa10_blue_upper_arm_roll_joint,pa10_blue_elbow_flex_joint,pa10_blue_forearm_roll_joint,
+    pa10_blue_wrist_flex_joint,pa10_blue_wrist_roll_joint]
+  gains:
+    pa10_blue_shoulder_roll_joint: {p: 2400.0, d: 18.0, i: 800.0, i_clamp: 4.0}
+    pa10_blue_shoulder_lift_joint: {p: 1200.0, d: 10.0, i: 700.0, i_clamp: 4.0}
+    pa10_blue_upper_arm_roll_joint: {p: 1000.0, d: 6.0, i: 600.0, i_clamp: 4.0}
+    pa10_blue_elbow_flex_joint: {p: 700.0, d: 4.0, i: 450, i_clamp: 4.0}
+    pa10_blue_forearm_roll_joint: {p: 300.0, d: 6.0, i: 300, i_clamp: 2.0}
+    pa10_blue_wrist_flex_joint: {p: 300.0, d: 4.0, i: 300, i_clamp: 2.0}
+    pa10_blue_wrist_roll_joint: {p: 300.0, d: 4.0, i: 300, i_clamp: 2.0}
+  constraints:
+    goal_time: 0.6
+    pa10_blue_shoulder_roll_joint:
+      goal: 0.02
+    pa10_blue_shoulder_lift_joint:
+      goal: 0.02
+    pa10_blue_upper_arm_roll_joint:
+      goal: 0.02
+    pa10_blue_elbow_flex_joint:
+      goal: 0.02
+    pa10_blue_forearm_roll_joint:
+      goal: 0.02
+    pa10_blue_wrist_flex_joint:
+      goal: 0.02
+    pa10_blue_wrist_roll_joint:
+      goal: 0.02
+
 l_arm_controller:
   type: "effort_controllers/JointTrajectoryController"
   joints: [pa10_green_shoulder_roll_joint,pa10_green_shoulder_lift_joint,

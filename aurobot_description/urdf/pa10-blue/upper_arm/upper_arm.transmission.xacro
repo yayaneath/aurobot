@@ -6,7 +6,7 @@
        xmlns:xacro="http://ros.org/wiki/xacro">
 
   <!-- ============================   Upper Arm   ============================ -->
-  <xacro:macro name="pa10_upper_arm_transmission">
+  <xacro:macro name="pa10_blue_upper_arm_transmission">
     <!-- E1: Elbow flex -->
     <transmission name="pa10_blue_elbow_flex_trans">
       <type>transmission_interface/SimpleTransmission</type>

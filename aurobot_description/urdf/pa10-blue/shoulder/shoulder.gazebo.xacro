@@ -11,7 +11,6 @@
       <turnGravityOff>true</turnGravityOff>
       <mu1>0.2</mu1>
       <mu2>0.2</mu2>
-      <material>Gazebo/Grey</material>
     </gazebo>
     <gazebo reference="pa10_blue_shoulder_roll_joint">
       <stopKd value="1.0"/>
@@ -21,7 +20,6 @@
     <!-- S2: Shoulder lift -->
     <gazebo reference="pa10_blue_shoulder_lift_link">
       <turnGravityOff>true</turnGravityOff>
-      <material>Gazebo/Green</material>
     </gazebo>
     <gazebo reference="pa10_blue_shoulder_lift_joint">
       <stopKd value="1.0"/>
@@ -33,7 +31,6 @@
       <turnGravityOff>true</turnGravityOff>
       <mu1>0.2</mu1>
       <mu2>0.2</mu2>
-      <material>Gazebo/Grey</material>
     </gazebo>
     <gazebo reference="pa10_blue_upper_arm_roll_joint">
       <stopKd value="1.0"/>

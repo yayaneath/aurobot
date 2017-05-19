@@ -13,7 +13,7 @@
 
  <!-- ============================   Profiles   ============================ -->
 
-  <xacro:macro name="trunk" params="left_child head_child">
+  <xacro:macro name="trunk" params="left_child head_child right_child">
     <!-- Trunk link -->
     <link name="trunk_link">
       <inertial>
@@ -25,7 +25,7 @@
         <geometry>
           <mesh filename="package://aurobot_description/meshes/robot-base/trunk/trunk.stl" scale="0.001 0.001 0.001"/>
         </geometry>
-        <material name="blue"/>
+        <material name="grey"/>
       </visual>
       <collision>
         <geometry>
@@ -44,6 +44,11 @@
       <!-- BRAYAN (16-05-2017): Temporalmente puesto como una cabeza adelantada orientada hacia adelante. 
       -1.570796327 0 -1.570796327-->
       <origin xyz="0.150 0 1.47" rpy="-2.042035225 0 -1.570796327"/>
+    </joint>
+    <joint name="trunk_right_joint" type="fixed">
+      <parent link="trunk_link"/>
+      <child link="${right_child}"/>
+      <origin xyz="0 -0.13790 1.22809" rpy="0 -1.0471975512 1.5707963268"/>
     </joint>
 
     <!-- extensions   -->

@@ -26,10 +26,8 @@
         <origin xyz="0 0 0" rpy="0 0 3.14"/>
         <geometry>
             <mesh filename="package://aurobot_description/meshes/pa10-blue/shoulder/S1.stl"/>
-        </geometry>
-        <material name="">
-          <color rgba="0.34 0.35 0.36 1.0"/>
-        </material>
+        </geometry>  
+        <material name="blue"/>     
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="0 0 3.14"/>
@@ -43,7 +41,9 @@
       <child link="pa10_blue_shoulder_lift_link"/>
       <origin xyz="0 0 0.2" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
-      <limit effort="0" lower="-3.089" upper="3.089" velocity="1.0"/>
+      <limit effort="1000.0" lower="-3.089" upper="3.089" velocity="0.1"/>
+      <cfm>0.7</cfm>
+      <damping>10.0</damping>
     </joint>
     
     <!-- S2: Shoulder lift -->
@@ -58,9 +58,7 @@
         <geometry>
           <mesh filename="package://aurobot_description/meshes/pa10-blue/shoulder/S2.stl"/>
         </geometry>
-        <material name="">
-          <color rgba="0.33 0.96 0.53 1.5"/>
-        </material>
+        <material name="white"/>
       </visual>
       <collision>
         <origin xyz="0 0 0.117" rpy="0 0 0"/>
@@ -74,7 +72,9 @@
       <child link="pa10_blue_upper_arm_roll_link"/>
       <origin xyz="0 0 0.117" rpy="0 0 0"/>
       <axis xyz="0 1 0"/>
-      <limit effort="0" lower="-1.64" upper="1.64" velocity="1.0"/>
+      <limit effort="1000.0" lower="-1.64" upper="1.64" velocity="0.1"/>
+      <cfm>0.7</cfm>
+      <damping>10.0</damping>
     </joint>
     
     <!-- S3: Upperarm roll -->
@@ -89,9 +89,7 @@
         <geometry>
           <mesh filename="package://aurobot_description/meshes/pa10-blue/shoulder/S3.stl"/>
         </geometry>
-        <material name="">
-          <color rgba="0.34 0.35 0.36 1.0"/>
-        </material>
+        <material name="blue"/>
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -105,7 +103,9 @@
       <child link="${child}"/>
       <origin xyz="0 0 0.317" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
-      <limit effort="0" lower="-3.036" upper="3.036" velocity="1.0"/>
+      <limit effort="1000.0" lower="-3.036" upper="3.036" velocity="0.1"/>
+      <cfm>0.7</cfm>
+      <damping>10.0</damping>
     </joint>
 
     <!-- extensions -->

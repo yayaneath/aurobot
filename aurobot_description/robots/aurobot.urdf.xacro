@@ -17,7 +17,11 @@
   <xacro:include filename="$(find aurobot_description)/urdf/robot-base/base/base.urdf.xacro"/>
   <xacro:include filename="$(find aurobot_description)/urdf/robot-base/bearing/bearing.urdf.xacro"/>
   <xacro:include filename="$(find aurobot_description)/urdf/robot-base/trunk/trunk.urdf.xacro"/>
-  <!-- PA10 Arm -->
+  <!-- PA10 blue right arm -->
+  <xacro:include filename="$(find aurobot_description)/urdf/pa10-blue/shoulder/shoulder.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/pa10-blue/upper_arm/upper_arm.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/pa10-blue/forearm/forearm.urdf.xacro"/>
+  <!-- PA10 green left arm -->
   <xacro:include filename="$(find aurobot_description)/urdf/pa10-green/shoulder/shoulder.urdf.xacro"/>
   <xacro:include filename="$(find aurobot_description)/urdf/pa10-green/upper_arm/upper_arm.urdf.xacro"/>
   <xacro:include filename="$(find aurobot_description)/urdf/pa10-green/forearm/forearm.urdf.xacro"/>
@@ -35,7 +39,8 @@
   <xacro:profiles child="base_down_link"/>
   <xacro:base child="bearing_under_link"/>
   <xacro:bearing child="trunk_link"/>
-  <xacro:trunk left_child="pa10_green_shoulder_roll_link" head_child="head_link"/>
+  <xacro:trunk left_child="pa10_green_shoulder_roll_link" 
+    head_child="head_link" right_child="pa10_blue_shoulder_roll_link"/>
 
   <!-- Head -->
   <link name="head_link">
@@ -62,12 +67,37 @@
     </collision>
   </link>
 
+  <!-- Add the right PA10 -->
+  <xacro:pa10_blue_shoulder child="pa10_blue_elbow_flex_link"/>
+  <xacro:pa10_blue_upper_arm child="pa10_blue_wrist_flex_link"/>
+  <xacro:pa10_blue_forearm child="r_jr3_link"/>
+
+  <!-- JR3 right -->
+  <link name="r_jr3_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0.40"/>
+    <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500"/>
+  </inertial>
+  <visual>
+    <geometry>
+    <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
+    </geometry>
+    <material name="black"/>
+  </visual>
+  <collision>
+      <geometry>
+        <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
   <!-- Add the left PA10 -->
   <xacro:pa10_green_shoulder child="pa10_green_elbow_flex_link"/>
   <xacro:pa10_green_upper_arm child="pa10_green_wrist_flex_link"/>
   <xacro:pa10_green_forearm child="l_jr3_link"/>
   
-  <!-- JR3 -->
+  <!-- JR3 left -->
   <link name="l_jr3_link">
   <inertial>
     <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -82,7 +112,7 @@
   </visual>
   <collision>
       <geometry>
-    <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
+        <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
       </geometry>
     </collision>
   </link>
@@ -90,7 +120,7 @@
   <joint name="l_jr3_joint" type="fixed">
     <parent link="l_jr3_link"/>
     <child link="l_allegro_base_link"/>
-    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <origin xyz="0 0 0.1" rpy="0 0 3.1415926536"/>
   </joint>
 
   <!-- Allegro left hand -->
