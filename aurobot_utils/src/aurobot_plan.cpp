@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <map>
 
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
@@ -55,7 +56,8 @@ int main(int argc, char **argv) {
   // MoveIt! operates on sets of joints called "planning groups" and stores them in an object called
   // the `JointModelGroup`. Throughout MoveIt! the terms "planning group" and "joint model group"
   // are used interchangably.
-  static const std::string PLANNING_GROUP = "left_pa10_gripper"; // "left_allegro" "left_pa10"
+  static const std::string PLANNING_GROUP = argv[1]; // "left_allegro" "left_pa10"
+  std::cout << "= = = = = Planing for group " << PLANNING_GROUP << " = = = = =\n";
 
   // The :move_group_interface:`MoveGroup` class can be easily
   // setup using just the name of the planning group you would like to control and plan for.
@@ -75,7 +77,7 @@ int main(int argc, char **argv) {
   //
   // The package MoveItVisualTools provides many capabilties for visualizing objects, robots,
   // and trajectories in Rviz as well as debugging tools such as step-by-step introspection of a script
-  moveit_visual_tools::MoveItVisualTools visual_tools("odom_combined");
+  /*moveit_visual_tools::MoveItVisualTools visual_tools("odom_combined");
   visual_tools.deleteAllMarkers();
 
   // Remote control is an introspection tool that allows users to step through a high level script
@@ -83,7 +85,7 @@ int main(int argc, char **argv) {
   visual_tools.loadRemoteControl();
 
   // Rviz provides many types of markers, in this demo we will use text, cylinders, and spheres
-  /*Eigen::Affine3d text_pose = Eigen::Affine3d::Identity();
+  Eigen::Affine3d text_pose = Eigen::Affine3d::Identity();
   text_pose.translation().z() = 1.75; // above head of PR2
   visual_tools.publishText(text_pose, "MoveGroupInterface Demo", rviz_visual_tools::WHITE, rviz_visual_tools::XLARGE);
 
@@ -104,25 +106,33 @@ int main(int argc, char **argv) {
   // We can plan a motion for this group to a desired pose for the
   // end-effector.
 
-  //geometry_msgs::PoseStamped target_pose1 = move_group.getRandomPose("l_allegro_link_15_tip");
-  geometry_msgs::Pose target_pose1;
-  target_pose1.position.x = 0.742287;
-  target_pose1.position.y = 0.0860084;
-  target_pose1.position.z = 1.07552;
+  //geometry_msgs::PoseStamped target_pose1 = move_group.getRandomPose();//"l_allegro_link_3_tip");
+  geometry_msgs::PoseStamped target_pose1;
+  target_pose1.header.stamp = ros::Time::now();
+  target_pose1.header.frame_id = "/world";
+  target_pose1.pose.position.x = 0.0656247;
+  target_pose1.pose.position.y = 0.636605;
+  target_pose1.pose.position.z = 2.10012;
+  target_pose1.pose.orientation.x = 0.627422;
+  target_pose1.pose.orientation.y = 0.470274;
+  target_pose1.pose.orientation.z = -0.60507;
+  target_pose1.pose.orientation.w = 0.138107;
+  /*geometry_msgs::PoseStamped target_pose1 = move_group.getCurrentPose(move_group.getEndEffectorLink());
+  target_pose1.pose.position.z = target_pose1.pose.position.z + 0.05;*/
 
-  move_group.setPoseTarget(target_pose1, "l_allegro_link_15_tip");
+  std::cout << "=== Pose ===\n" << target_pose1 << "\n";
 
-  std::cout << "=== Pose l_allegro_link_15_tip ===\n" << target_pose1 << "\n";
+  move_group.setPoseTarget(target_pose1, "l_allegro_link_3_tip");
+  //move_group.setRandomTarget();
 
-  geometry_msgs::PoseStamped target_pose2 = move_group.getRandomPose("l_allegro_link_3_tip");
   /*geometry_msgs::Pose target_pose2;
   target_pose2.position.x = 0.750025;
   target_pose2.position.y = 0.0279898;
   target_pose2.position.z = 1.07255;*/
 
-  //move_group.setPoseTarget(target_pose1, "l_allegro_link_3_tip");
+  //std::cout << "=== Pose l_allegro_link_3_tip ===\n" << target_pose1 << "\n";
 
-  std::cout << "=== Pose l_allegro_link_3_tip ===\n" << target_pose2 << "\n";
+  //move_group.setPoseTarget(target_pose1, "l_allegro_link_3_tip");
 
   // Now, we call the planner to compute the plan and visualize it.
   // Note that we are just planning, not asking move_group
@@ -130,10 +140,13 @@ int main(int argc, char **argv) {
   moveit::planning_interface::MoveGroupInterface::Plan my_plan;
 
   move_group.setPlannerId("TRRTkConfigDefault"); //"TRRTkConfigDefault"
-  move_group.setPlanningTime(10.0);
+  move_group.setPlanningTime(5.0);
+  move_group.setNumPlanningAttempts(10);
+  move_group.setMaxVelocityScalingFactor(1.0);
+  move_group.setMaxAccelerationScalingFactor(1.0);
   bool success = move_group.plan(my_plan);
 
-  ROS_INFO_NAMED("tutorial", "Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
+  ROS_INFO_NAMED("tutorial", "Plan 1 (pose goal) %s", success ? "" : "FAILED");
 
   // Visualizing plans
   // ^^^^^^^^^^^^^^^^^
@@ -175,6 +188,27 @@ int main(int argc, char **argv) {
 
   for (unsigned int i = 0; i < joint_group_positions.size(); ++i)
     std::cout << "Joint " << i << ": " << joint_group_positions[i] << "\n";
+
+  std::map<std::string, std::string> params = move_group.getPlannerParams("TRRTkConfigDefault", PLANNING_GROUP);
+
+  std::cout << "** Current Pose **\n" << move_group.getCurrentPose();
+  std::cout << "** Planner params **\n";
+
+  for (std::map<std::string, std::string>::const_iterator it = params.begin();
+    it != params.end(); ++it)
+    std::cout << it->first << ":" << it->second << "\n";
+
+  /*std::cout << "* *\n";
+
+  current_state->printStatePositions();
+
+  std::cout << "* *\n";
+
+  current_state->printStateInfo();
+
+  std::cout << "* *\n";
+
+  current_state->printDirtyInfo();*&
 
   // Home
   /*joint_group_positions[1] = 1.349;
