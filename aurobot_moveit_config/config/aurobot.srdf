@@ -78,6 +78,22 @@
         <joint name="l_allegro_joint_3" />
         <joint name="l_allegro_joint_3_tip" />
     </group>
+    <group name="left_pa10_palm">
+        <joint name="trunk_left_joint" />
+        <joint name="pa10_green_shoulder_roll_joint" />
+        <joint name="pa10_green_shoulder_lift_joint" />
+        <joint name="pa10_green_upper_arm_roll_joint" />
+        <joint name="pa10_green_elbow_flex_joint" />
+        <joint name="pa10_green_forearm_roll_joint" />
+        <joint name="pa10_green_wrist_flex_joint" />
+        <joint name="pa10_green_wrist_roll_joint" />
+        <joint name="l_jr3_joint" />
+    </group>
+    <group name="left_gripper">
+        <group name="left_pa10_palm" />
+        <group name="left_allegro_thumb" />
+        <group name="left_allegro_f0" />
+    </group>
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
     <group_state name="home__left_pa10" group="left_pa10">
         <joint name="pa10_green_elbow_flex_joint" value="-2.39" />
@@ -115,6 +131,9 @@
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="left_gripper_f0" parent_link="l_allegro_link_3_tip" group="left_allegro_f0" parent_group="left_arm" />
+    <end_effector name="left_thumb" parent_link="l_allegro_link_15_tip" group="left_allegro_thumb" />
+    <end_effector name="left_gripper_f0_eef" parent_link="l_allegro_link_3_tip" group="left_allegro_f0" parent_group="left_gripper" />
+    <end_effector name="left_gripper_thumb_eef" parent_link="l_allegro_link_15_tip" group="left_allegro_thumb" parent_group="left_gripper" />
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="base_down_link" link2="base_up_link" reason="Adjacent" />
     <disable_collisions link1="base_down_link" link2="bearing_above_link" reason="Never" />

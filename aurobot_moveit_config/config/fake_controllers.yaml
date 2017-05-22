@@ -58,3 +58,29 @@ controller_list:
       - l_allegro_joint_1
       - l_allegro_joint_2
       - l_allegro_joint_3
+  - name: fake_left_pa10_palm_controller
+    joints:
+      - pa10_green_shoulder_roll_joint
+      - pa10_green_shoulder_lift_joint
+      - pa10_green_upper_arm_roll_joint
+      - pa10_green_elbow_flex_joint
+      - pa10_green_forearm_roll_joint
+      - pa10_green_wrist_flex_joint
+      - pa10_green_wrist_roll_joint
+  - name: fake_left_gripper_controller
+    joints:
+      - pa10_green_shoulder_roll_joint
+      - pa10_green_shoulder_lift_joint
+      - pa10_green_upper_arm_roll_joint
+      - pa10_green_elbow_flex_joint
+      - pa10_green_forearm_roll_joint
+      - pa10_green_wrist_flex_joint
+      - pa10_green_wrist_roll_joint
+      - l_allegro_joint_0
+      - l_allegro_joint_1
+      - l_allegro_joint_2
+      - l_allegro_joint_3
+      - l_allegro_joint_12
+      - l_allegro_joint_13
+      - l_allegro_joint_14
+      - l_allegro_joint_15

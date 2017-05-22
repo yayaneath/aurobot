@@ -101,13 +101,15 @@ int main(int argc, char **argv) {
   // We can also print the name of the end-effector link for this group.
   ROS_INFO_NAMED("tutorial", "End effector link: %s", move_group.getEndEffectorLink().c_str());
 
+  std::cout << "** Current Pose **\n" << move_group.getCurrentPose();
+
   // Planning to a Pose goal
   // ^^^^^^^^^^^^^^^^^^^^^^^
   // We can plan a motion for this group to a desired pose for the
   // end-effector.
 
   //geometry_msgs::PoseStamped target_pose1 = move_group.getRandomPose();//"l_allegro_link_3_tip");
-  geometry_msgs::PoseStamped target_pose1;
+  /*geometry_msgs::PoseStamped target_pose1;
   target_pose1.header.stamp = ros::Time::now();
   target_pose1.header.frame_id = "/world";
   target_pose1.pose.position.x = 0.0656247;
@@ -116,30 +118,54 @@ int main(int argc, char **argv) {
   target_pose1.pose.orientation.x = 0.627422;
   target_pose1.pose.orientation.y = 0.470274;
   target_pose1.pose.orientation.z = -0.60507;
-  target_pose1.pose.orientation.w = 0.138107;
-  /*geometry_msgs::PoseStamped target_pose1 = move_group.getCurrentPose(move_group.getEndEffectorLink());
-  target_pose1.pose.position.z = target_pose1.pose.position.z + 0.05;*/
+  target_pose1.pose.orientation.w = 0.138107;*/
+  geometry_msgs::PoseStamped target_pose1;
+  target_pose1.header.stamp = ros::Time::now();
+  target_pose1.header.frame_id = "/world";
+  target_pose1.pose.position.x = -0.0553096;
+  target_pose1.pose.position.y = 1.47976;
+  target_pose1.pose.position.z = 2.00281;
+  target_pose1.pose.orientation.x = -0.326506;
+  target_pose1.pose.orientation.y = -0.379928;
+  target_pose1.pose.orientation.z = -0.596368;
+  target_pose1.pose.orientation.w = 0.627211;
 
-  std::cout << "=== Pose ===\n" << target_pose1 << "\n";
+  std::cout << "=== Pose l_allegro_link_3_tip ===\n" << target_pose1 << "\n";
 
-  move_group.setPoseTarget(target_pose1, "l_allegro_link_3_tip");
+  move_group.setPoseTarget(target_pose1);
   //move_group.setRandomTarget();
 
-  /*geometry_msgs::Pose target_pose2;
-  target_pose2.position.x = 0.750025;
-  target_pose2.position.y = 0.0279898;
-  target_pose2.position.z = 1.07255;*/
+  /*geometry_msgs::PoseStamped target_pose2;
+  target_pose2.header.stamp = ros::Time::now();
+  target_pose2.header.frame_id = "/world";
+  target_pose2.pose.position.x = 0.26469;
+  target_pose2.pose.position.y = 0.681387;
+  target_pose2.pose.position.z = 1.39567;
+  target_pose2.pose.orientation.x = 0.843809;
+  target_pose2.pose.orientation.y = 0.387723;
+  target_pose2.pose.orientation.z = 0.191163;
+  target_pose2.pose.orientation.w = 0.317983;*/
+  geometry_msgs::PoseStamped target_pose2;
+  target_pose2.header.stamp = ros::Time::now();
+  target_pose2.header.frame_id = "/world";
+  target_pose2.pose.position.x = -0.115082;
+  target_pose2.pose.position.y = 1.24525;
+  target_pose2.pose.position.z = 1.97917;
+  target_pose2.pose.orientation.x = -0.073392;
+  target_pose2.pose.orientation.y = -0.43582;
+  target_pose2.pose.orientation.z = 0.594675;
+  target_pose2.pose.orientation.w = 0.671592;
 
-  //std::cout << "=== Pose l_allegro_link_3_tip ===\n" << target_pose1 << "\n";
+  std::cout << "=== Pose l_allegro_link_15_tip ===\n" << target_pose2 << "\n";
 
-  //move_group.setPoseTarget(target_pose1, "l_allegro_link_3_tip");
+  //move_group.setPoseTarget(target_pose2, "l_allegro_link_15_tip");
 
   // Now, we call the planner to compute the plan and visualize it.
   // Note that we are just planning, not asking move_group
   // to actually move the robot.
   moveit::planning_interface::MoveGroupInterface::Plan my_plan;
 
-  move_group.setPlannerId("TRRTkConfigDefault"); //"TRRTkConfigDefault"
+  move_group.setPlannerId("TRRTkConfigDefault");
   move_group.setPlanningTime(5.0);
   move_group.setNumPlanningAttempts(10);
   move_group.setMaxVelocityScalingFactor(1.0);
@@ -170,7 +196,7 @@ int main(int argc, char **argv) {
   // and report success on execution of a trajectory.
 
   /* Uncomment below line when working with a real robot */
-  //move_group.move();
+  move_group.move();
 
   // Planning to a joint-space goal
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -180,7 +206,7 @@ int main(int argc, char **argv) {
   //
   // To start, we'll create an pointer that references the current robot's state.
   // RobotState is the object that contains all the current position/velocity/acceleration data.
-  moveit::core::RobotStatePtr current_state = move_group.getCurrentState();
+  /*moveit::core::RobotStatePtr current_state = move_group.getCurrentState();
 
   // Next get the current set of joint values for the group.
   std::vector<double> joint_group_positions;
@@ -191,14 +217,13 @@ int main(int argc, char **argv) {
 
   std::map<std::string, std::string> params = move_group.getPlannerParams("TRRTkConfigDefault", PLANNING_GROUP);
 
-  std::cout << "** Current Pose **\n" << move_group.getCurrentPose();
   std::cout << "** Planner params **\n";
 
   for (std::map<std::string, std::string>::const_iterator it = params.begin();
     it != params.end(); ++it)
     std::cout << it->first << ":" << it->second << "\n";
 
-  /*std::cout << "* *\n";
+  std::cout << "* *\n";
 
   current_state->printStatePositions();
 
