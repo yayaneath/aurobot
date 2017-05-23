@@ -18,6 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_ros_planning
   moveit_ros_planning_interface
   moveit_visual_tools
+  eigen_stl_containers
 )
 
 find_package(Boost REQUIRED COMPONENTS system thread filesystem)#chrono)
@@ -42,7 +43,7 @@ generate_messages(
 
 catkin_package(
   CATKIN_DEPENDS message_runtime grasping_clouds cmake_modules pcl_conversions pcl_ros roscpp tf sensor_msgs
-  moveit_core moveit_ros_planning_interface moveit_msgs
+  moveit_core moveit_ros_planning_interface moveit_msgs eigen_stl_containers
   DEPENDS boost eigen
 )
 

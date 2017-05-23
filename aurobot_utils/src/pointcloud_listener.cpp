@@ -171,7 +171,7 @@ int main(int argc, char **argv) {
   viewer->addCoordinateSystem(0.1);
 
   ros::NodeHandle nh;
-  ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2>("/camera/depth_registered/points",
+  ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2>("/cloud_pcd",//"/camera/depth_registered/points",
     1, cloudCallback);
   pub = nh.advertise<aurobot_utils::GraspConfiguration>("/aurobot_utils/grasp_configuration", 1);
 

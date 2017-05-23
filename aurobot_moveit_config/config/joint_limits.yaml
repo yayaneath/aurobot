@@ -42,41 +42,6 @@ joint_limits:
     max_velocity: 0
     has_acceleration_limits: false
     max_acceleration: 0
-  pa10_blue_elbow_flex_joint:
-    has_velocity_limits: true
-    max_velocity: 0.2
-    has_acceleration_limits: false
-    max_acceleration: 0
-  pa10_blue_forearm_roll_joint:
-    has_velocity_limits: true
-    max_velocity: 0.2
-    has_acceleration_limits: false
-    max_acceleration: 0
-  pa10_blue_shoulder_lift_joint:
-    has_velocity_limits: true
-    max_velocity: 0.1
-    has_acceleration_limits: false
-    max_acceleration: 0
-  pa10_blue_shoulder_roll_joint:
-    has_velocity_limits: true
-    max_velocity: 0.1
-    has_acceleration_limits: false
-    max_acceleration: 0
-  pa10_blue_upper_arm_roll_joint:
-    has_velocity_limits: true
-    max_velocity: 0.1
-    has_acceleration_limits: false
-    max_acceleration: 0
-  pa10_blue_wrist_flex_joint:
-    has_velocity_limits: true
-    max_velocity: 0.628
-    has_acceleration_limits: false
-    max_acceleration: 0
-  pa10_blue_wrist_roll_joint:
-    has_velocity_limits: true
-    max_velocity: 0.628
-    has_acceleration_limits: false
-    max_acceleration: 0
   pa10_green_elbow_flex_joint:
     has_velocity_limits: true
     max_velocity: 0.2
