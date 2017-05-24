@@ -1,0 +1,274 @@
+# joint_limits.yaml allows the dynamics properties specified in the URDF to be overwritten or augmented as needed
+# Specific joint properties can be changed with the keys [max_position, min_position, max_velocity, max_acceleration]
+# Joint limits can be turned off with [has_velocity_limits, has_acceleration_limits]
+joint_limits:
+  FFJ1:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  FFJ2:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  FFJ3:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  FFJ4:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  LFJ1:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  LFJ2:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  LFJ3:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  LFJ4:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  LFJ5:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  MFJ1:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  MFJ2:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  MFJ3:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  MFJ4:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  RFJ1:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  RFJ2:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  RFJ3:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  RFJ4:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  THJ1:
+    has_velocity_limits: true
+    max_velocity: 4
+    has_acceleration_limits: false
+    max_acceleration: 0
+  THJ2:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  THJ3:
+    has_velocity_limits: true
+    max_velocity: 4
+    has_acceleration_limits: false
+    max_acceleration: 0
+  THJ4:
+    has_velocity_limits: true
+    max_velocity: 4
+    has_acceleration_limits: false
+    max_acceleration: 0
+  THJ5:
+    has_velocity_limits: true
+    max_velocity: 4
+    has_acceleration_limits: false
+    max_acceleration: 0
+  WRJ1:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  WRJ2:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_allegro_joint_0.0:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_allegro_joint_1.0:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_allegro_joint_10.0:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_allegro_joint_11.0:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_allegro_joint_12.0:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_allegro_joint_13.0:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_allegro_joint_14.0:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_allegro_joint_15.0:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_allegro_joint_2.0:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_allegro_joint_3.0:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_allegro_joint_4.0:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_allegro_joint_5.0:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_allegro_joint_6.0:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_allegro_joint_7.0:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_allegro_joint_8.0:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_allegro_joint_9.0:
+    has_velocity_limits: false
+    max_velocity: 0
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_blue_elbow_flex_joint:
+    has_velocity_limits: true
+    max_velocity: 0.2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_blue_forearm_roll_joint:
+    has_velocity_limits: true
+    max_velocity: 0.2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_blue_shoulder_lift_joint:
+    has_velocity_limits: true
+    max_velocity: 0.1
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_blue_shoulder_roll_joint:
+    has_velocity_limits: true
+    max_velocity: 0.1
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_blue_upper_arm_roll_joint:
+    has_velocity_limits: true
+    max_velocity: 0.1
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_blue_wrist_flex_joint:
+    has_velocity_limits: true
+    max_velocity: 0.628
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_blue_wrist_roll_joint:
+    has_velocity_limits: true
+    max_velocity: 0.628
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_green_elbow_flex_joint:
+    has_velocity_limits: true
+    max_velocity: 0.2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_green_forearm_roll_joint:
+    has_velocity_limits: true
+    max_velocity: 0.628
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_green_shoulder_lift_joint:
+    has_velocity_limits: true
+    max_velocity: 0.1
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_green_shoulder_roll_joint:
+    has_velocity_limits: true
+    max_velocity: 0.1
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_green_upper_arm_roll_joint:
+    has_velocity_limits: true
+    max_velocity: 0.2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_green_wrist_flex_joint:
+    has_velocity_limits: true
+    max_velocity: 0.628
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_green_wrist_roll_joint:
+    has_velocity_limits: true
+    max_velocity: 0.628
+    has_acceleration_limits: false
+    max_acceleration: 0
