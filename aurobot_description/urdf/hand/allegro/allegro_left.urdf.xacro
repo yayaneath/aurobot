@@ -233,7 +233,7 @@
   <!-- THREE FINGER MACRO -->
   <!-- ============================================================================= -->
 
-  <xacro:macro name="finger" params="finger_num offset_origin_x offset_origin_y offset_origin_z finger_angle_r">
+  <xacro:macro name="allegro_finger" params="finger_num offset_origin_x offset_origin_y offset_origin_z finger_angle_r">
 
     <!-- [LINK 0, 4, 8] -->
     <link name="l_allegro_link_${finger_num*4+0}">
@@ -423,7 +423,7 @@
     />
       
     <!-- FINGERS -->
-    <xacro:finger 
+    <xacro:allegro_finger 
       finger_num=     "2"
       offset_origin_x=  "${offset_origin_x_const}"  
       offset_origin_y=  "${offset_origin_y_const}"
@@ -431,7 +431,7 @@
       finger_angle_r=   "-${5.0*DEG2RAD}"
     />
 
-    <xacro:finger
+    <xacro:allegro_finger 
       finger_num=     "1" 
       offset_origin_x=  "${offset_origin_x_const}"  
       offset_origin_y=  "0" 
@@ -439,7 +439,7 @@
       finger_angle_r=   "0.0"
     />
 
-    <xacro:finger 
+    <xacro:allegro_finger 
       finger_num=     "0" 
       offset_origin_x=  "${offset_origin_x_const}"  
       offset_origin_y=  "-${offset_origin_y_const}" 

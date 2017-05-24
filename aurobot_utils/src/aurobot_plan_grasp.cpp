@@ -46,7 +46,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
     << "> z = " << secondPointOut.z() << "\n";
 
   // Plan the first point for the pa10_thumb move group
-  moveit::planning_interface::MoveGroupInterface moveGroupFirstContact("left_pa10_gripper");
+  /*moveit::planning_interface::MoveGroupInterface moveGroupFirstContact("left_pa10_gripper");
 
   ROS_INFO_NAMED("aurobot_plan_grasp", "Reference frame: %s", moveGroupFirstContact.getPlanningFrame().c_str());
   ROS_INFO_NAMED("aurobot_plan_grasp", "End effector link: %s", moveGroupFirstContact.getEndEffectorLink().c_str());
@@ -65,7 +65,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   ROS_INFO_NAMED("aurobot_plan_grasp", "PA10 Thumb plan %s", success ? "SUCCEED" : "FAILED");
 
-  //moveGroupFirstContact.move();
+  //moveGroupFirstContact.move();*/
 
   sub.shutdown(); // Unsubscribe so we do no longer receive messages
 }

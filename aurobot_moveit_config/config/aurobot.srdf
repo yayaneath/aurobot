@@ -9,15 +9,7 @@
     <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
     <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
     <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
-    <group name="left_pa10">
-        <link name="pa10_green_shoulder_roll_link" />
-        <link name="pa10_green_shoulder_lift_link" />
-        <link name="pa10_green_upper_arm_roll_link" />
-        <link name="pa10_green_elbow_flex_link" />
-        <link name="pa10_green_forearm_roll_link" />
-        <link name="pa10_green_wrist_flex_link" />
-        <link name="pa10_green_wrist_roll_link" />
-        <link name="l_jr3_link" />
+    <group name="left_pa10_f1">
         <joint name="trunk_left_joint" />
         <joint name="pa10_green_shoulder_roll_joint" />
         <joint name="pa10_green_shoulder_lift_joint" />
@@ -27,6 +19,24 @@
         <joint name="pa10_green_wrist_flex_joint" />
         <joint name="pa10_green_wrist_roll_joint" />
         <joint name="l_jr3_joint" />
+        <joint name="l_allegro_joint_4" />
+        <joint name="l_allegro_joint_5" />
+        <joint name="l_allegro_joint_6" />
+        <joint name="l_allegro_joint_7" />
+        <joint name="l_allegro_joint_7_tip" />
+    </group>
+    <group name="left_thumb_f1">
+        <joint name="l_jr3_joint" />
+        <joint name="l_allegro_joint_12" />
+        <joint name="l_allegro_joint_13" />
+        <joint name="l_allegro_joint_14" />
+        <joint name="l_allegro_joint_15" />
+        <joint name="l_allegro_joint_15_tip" />
+        <joint name="l_allegro_joint_4" />
+        <joint name="l_allegro_joint_5" />
+        <joint name="l_allegro_joint_6" />
+        <joint name="l_allegro_joint_7" />
+        <joint name="l_allegro_joint_7_tip" />
     </group>
     <group name="left_thumb">
         <joint name="l_allegro_joint_12" />
@@ -35,21 +45,78 @@
         <joint name="l_allegro_joint_15" />
         <joint name="l_allegro_joint_15_tip" />
     </group>
-    <group name="left_f0">
+    <group name="left_f1">
+        <joint name="l_allegro_joint_4" />
+        <joint name="l_allegro_joint_5" />
+        <joint name="l_allegro_joint_6" />
+        <joint name="l_allegro_joint_7" />
+        <joint name="l_allegro_joint_7_tip" />
+    </group>
+    <group name="left_hand">
+        <joint name="l_jr3_joint" />
         <joint name="l_allegro_joint_0" />
         <joint name="l_allegro_joint_1" />
         <joint name="l_allegro_joint_2" />
         <joint name="l_allegro_joint_3" />
         <joint name="l_allegro_joint_3_tip" />
+        <joint name="l_allegro_joint_12" />
+        <joint name="l_allegro_joint_13" />
+        <joint name="l_allegro_joint_14" />
+        <joint name="l_allegro_joint_15" />
+        <joint name="l_allegro_joint_15_tip" />
+        <joint name="l_allegro_joint_4" />
+        <joint name="l_allegro_joint_5" />
+        <joint name="l_allegro_joint_6" />
+        <joint name="l_allegro_joint_7" />
+        <joint name="l_allegro_joint_7_tip" />
+        <joint name="l_allegro_joint_8" />
+        <joint name="l_allegro_joint_9" />
+        <joint name="l_allegro_joint_10" />
+        <joint name="l_allegro_joint_11" />
+        <joint name="l_allegro_joint_11_tip" />
     </group>
-    <group name="left_hand_f0_thumb">
-        <group name="left_pa10" />
-        <group name="left_thumb" />
-        <group name="left_f0" />
+    <group name="left_arm">
+        <joint name="trunk_left_joint" />
+        <joint name="pa10_green_shoulder_roll_joint" />
+        <joint name="pa10_green_shoulder_lift_joint" />
+        <joint name="pa10_green_upper_arm_roll_joint" />
+        <joint name="pa10_green_elbow_flex_joint" />
+        <joint name="pa10_green_forearm_roll_joint" />
+        <joint name="pa10_green_wrist_flex_joint" />
+        <joint name="pa10_green_wrist_roll_joint" />
     </group>
+    <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
+    <group_state name="pregrasp" group="left_arm">
+        <joint name="pa10_green_elbow_flex_joint" value="-2.39" />
+        <joint name="pa10_green_forearm_roll_joint" value="0" />
+        <joint name="pa10_green_shoulder_lift_joint" value="1.59" />
+        <joint name="pa10_green_shoulder_roll_joint" value="0" />
+        <joint name="pa10_green_upper_arm_roll_joint" value="0" />
+        <joint name="pa10_green_wrist_flex_joint" value="0" />
+        <joint name="pa10_green_wrist_roll_joint" value="0.1164" />
+    </group_state>
+    <group_state name="closed" group="left_hand">
+        <joint name="l_allegro_joint_0" value="0" />
+        <joint name="l_allegro_joint_1" value="0.9749" />
+        <joint name="l_allegro_joint_10" value="1.2331" />
+        <joint name="l_allegro_joint_11" value="1.1922" />
+        <joint name="l_allegro_joint_12" value="0.6863" />
+        <joint name="l_allegro_joint_13" value="1.1073" />
+        <joint name="l_allegro_joint_14" value="1.1706" />
+        <joint name="l_allegro_joint_15" value="0.9542" />
+        <joint name="l_allegro_joint_2" value="1.2331" />
+        <joint name="l_allegro_joint_3" value="1.1922" />
+        <joint name="l_allegro_joint_4" value="0" />
+        <joint name="l_allegro_joint_5" value="0.9749" />
+        <joint name="l_allegro_joint_6" value="1.2331" />
+        <joint name="l_allegro_joint_7" value="1.1922" />
+        <joint name="l_allegro_joint_8" value="0" />
+        <joint name="l_allegro_joint_9" value="0.9749" />
+    </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="left_thumb_eef" parent_link="l_allegro_link_15_tip" group="left_thumb" />
-    <end_effector name="left_f0_eef" parent_link="l_allegro_link_3_tip" group="left_f0" />
+    <end_effector name="left_f1_eef" parent_link="l_allegro_link_7_tip" group="left_f1" />
+    <end_effector name="left_hand_eef" parent_link="l_jr3_link" group="left_hand" />
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="base_down_link" link2="base_up_link" reason="Adjacent" />
     <disable_collisions link1="base_down_link" link2="bearing_above_link" reason="Never" />
