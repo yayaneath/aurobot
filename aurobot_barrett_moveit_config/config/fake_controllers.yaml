@@ -1,0 +1,26 @@
+controller_list:
+  - name: fake_barrett_f1_controller
+    joints:
+      - l_barrett_j11_joint
+      - l_barrett_j12_joint
+  - name: fake_barrett_f2_controller
+    joints:
+      - l_barrett_j22_joint
+  - name: fake_barrett_f3_controller
+    joints:
+      - l_barrett_j32_joint
+  - name: fake_barrett_controller
+    joints:
+      - l_barrett_j11_joint
+      - l_barrett_j12_joint
+      - l_barrett_j22_joint
+      - l_barrett_j32_joint
+  - name: fake_left_pa10_controller
+    joints:
+      - pa10_green_shoulder_roll_joint
+      - pa10_green_shoulder_lift_joint
+      - pa10_green_upper_arm_roll_joint
+      - pa10_green_elbow_flex_joint
+      - pa10_green_forearm_roll_joint
+      - pa10_green_wrist_flex_joint
+      - pa10_green_wrist_roll_joint

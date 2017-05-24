@@ -1,0 +1,79 @@
+# joint_limits.yaml allows the dynamics properties specified in the URDF to be overwritten or augmented as needed
+# Specific joint properties can be changed with the keys [max_position, min_position, max_velocity, max_acceleration]
+# Joint limits can be turned off with [has_velocity_limits, has_acceleration_limits]
+joint_limits:
+  l_barrett_j11_joint:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_barrett_j12_joint:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_barrett_j13_joint:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_barrett_j21_joint:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_barrett_j22_joint:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_barrett_j23_joint:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_barrett_j32_joint:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  l_barrett_j33_joint:
+    has_velocity_limits: true
+    max_velocity: 2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_green_elbow_flex_joint:
+    has_velocity_limits: true
+    max_velocity: 0.2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_green_forearm_roll_joint:
+    has_velocity_limits: true
+    max_velocity: 0.628
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_green_shoulder_lift_joint:
+    has_velocity_limits: true
+    max_velocity: 0.1
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_green_shoulder_roll_joint:
+    has_velocity_limits: true
+    max_velocity: 0.1
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_green_upper_arm_roll_joint:
+    has_velocity_limits: true
+    max_velocity: 0.2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_green_wrist_flex_joint:
+    has_velocity_limits: true
+    max_velocity: 0.628
+    has_acceleration_limits: false
+    max_acceleration: 0
+  pa10_green_wrist_roll_joint:
+    has_velocity_limits: true
+    max_velocity: 0.628
+    has_acceleration_limits: false
+    max_acceleration: 0
