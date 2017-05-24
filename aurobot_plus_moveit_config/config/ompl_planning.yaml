@@ -52,6 +52,74 @@ planner_configs:
     max_nearest_neighbors: 10  # use k nearest neighbors. default: 10
   PRMstarkConfigDefault:
     type: geometric::PRMstar
+  FMTkConfigDefault:
+    type: geometric::FMT
+    num_samples: 1000  # number of states that the planner should sample. default: 1000
+    radius_multiplier: 1.1  # multiplier used for the nearest neighbors search radius. default: 1.1
+    nearest_k: 1  # use Knearest strategy. default: 1
+    cache_cc: 1  # use collision checking cache. default: 1
+    heuristics: 0  # activate cost to go heuristics. default: 0
+    extended_fmt: 1  # activate the extended FMT*: adding new samples if planner does not finish successfully. default: 1
+  BFMTkConfigDefault:
+    type: geometric::BFMT
+    num_samples: 1000  # number of states that the planner should sample. default: 1000
+    radius_multiplier: 1.0  # multiplier used for the nearest neighbors search radius. default: 1.0
+    nearest_k: 1  # use the Knearest strategy. default: 1
+    balanced: 0  # exploration strategy: balanced true expands one tree every iteration. False will select the tree with lowest maximum cost to go. default: 1
+    optimality: 1  # termination strategy: optimality true finishes when the best possible path is found. Otherwise, the algorithm will finish when the first feasible path is found. default: 1
+    heuristics: 1  # activates cost to go heuristics. default: 1
+    cache_cc: 1  # use the collision checking cache. default: 1
+    extended_fmt: 1  # Activates the extended FMT*: adding new samples if planner does not finish successfully. default: 1
+  PDSTkConfigDefault:
+    type: geometric::PDST
+  STRIDEkConfigDefault:
+    type: geometric::STRIDE
+    range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
+    goal_bias: 0.05  # When close to goal select goal, with this probability. default: 0.05 
+    use_projected_distance: 0  # whether nearest neighbors are computed based on distances in a projection of the state rather distances in the state space itself. default: 0
+    degree: 16  # desired degree of a node in the Geometric Near-neightbor Access Tree (GNAT). default: 16 
+    max_degree: 18  # max degree of a node in the GNAT. default: 12
+    min_degree: 12  # min degree of a node in the GNAT. default: 12
+    max_pts_per_leaf: 6  # max points per leaf in the GNAT. default: 6
+    estimated_dimension: 0.0  # estimated dimension of the free space. default: 0.0
+    min_valid_path_fraction: 0.2  # Accept partially valid moves above fraction. default: 0.2
+  BiTRRTkConfigDefault:
+    type: geometric::BiTRRT
+    range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
+    temp_change_factor: 0.1  # how much to increase or decrease temp. default: 0.1
+    init_temperature: 100  # initial temperature. default: 100
+    frountier_threshold: 0.0  # dist new state to nearest neighbor to disqualify as frontier. default: 0.0 set in setup() 
+    frountier_node_ratio: 0.1  # 1/10, or 1 nonfrontier for every 10 frontier. default: 0.1
+    cost_threshold: 1e300  # the cost threshold. Any motion cost that is not better will not be expanded. default: inf
+  LBTRRTkConfigDefault:
+    type: geometric::LBTRRT
+    range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
+    goal_bias: 0.05  # When close to goal select goal, with this probability. default: 0.05 
+    epsilon: 0.4  # optimality approximation factor. default: 0.4
+  BiESTkConfigDefault:
+    type: geometric::BiEST
+    range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
+  ProjESTkConfigDefault:
+    type: geometric::ProjEST
+    range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
+    goal_bias: 0.05  # When close to goal select goal, with this probability. default: 0.05 
+  LazyPRMkConfigDefault:
+    type: geometric::LazyPRM
+    range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
+  LazyPRMstarkConfigDefault:
+    type: geometric::LazyPRMstar
+  SPARSkConfigDefault:
+    type: geometric::SPARS
+    stretch_factor: 3.0  # roadmap spanner stretch factor. multiplicative upper bound on path quality. It does not make sense to make this parameter more than 3. default: 3.0
+    sparse_delta_fraction: 0.25  # delta fraction for connection distance. This value represents the visibility range of sparse samples. default: 0.25
+    dense_delta_fraction: 0.001  # delta fraction for interface detection. default: 0.001
+    max_failures: 1000  # maximum consecutive failure limit. default: 1000
+  SPARStwokConfigDefault:
+    type: geometric::SPARStwo
+    stretch_factor: 3.0  # roadmap spanner stretch factor. multiplicative upper bound on path quality. It does not make sense to make this parameter more than 3. default: 3.0
+    sparse_delta_fraction: 0.25  # delta fraction for connection distance. This value represents the visibility range of sparse samples. default: 0.25
+    dense_delta_fraction: 0.001  # delta fraction for interface detection. default: 0.001
+    max_failures: 5000  # maximum consecutive failure limit. default: 5000
 l_arm:
   planner_configs:
     - SBLkConfigDefault
@@ -65,6 +133,18 @@ l_arm:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
 r_arm:
   planner_configs:
     - SBLkConfigDefault
@@ -78,6 +158,18 @@ r_arm:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
 whole:
   planner_configs:
     - SBLkConfigDefault
@@ -91,6 +183,18 @@ whole:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
 l_hand:
   planner_configs:
     - SBLkConfigDefault
@@ -104,6 +208,18 @@ l_hand:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
 r_hand:
   planner_configs:
     - SBLkConfigDefault
@@ -117,8 +233,20 @@ r_hand:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
   projection_evaluator: joints(WRJ2,WRJ1)
-  longest_valid_segment_fraction: 0.05
+  longest_valid_segment_fraction: 0.005
 l_armpalm:
   planner_configs:
     - SBLkConfigDefault
@@ -132,6 +260,18 @@ l_armpalm:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
 r_armpalm:
   planner_configs:
     - SBLkConfigDefault
@@ -145,6 +285,18 @@ r_armpalm:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
 r_first_finger:
   planner_configs:
     - SBLkConfigDefault
@@ -158,8 +310,20 @@ r_first_finger:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
   projection_evaluator: joints(FFJ4,FFJ3)
-  longest_valid_segment_fraction: 0.05
+  longest_valid_segment_fraction: 0.005
 r_middle_finger:
   planner_configs:
     - SBLkConfigDefault
@@ -173,8 +337,20 @@ r_middle_finger:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
   projection_evaluator: joints(MFJ4,MFJ3)
-  longest_valid_segment_fraction: 0.05
+  longest_valid_segment_fraction: 0.005
 r_ring_finger:
   planner_configs:
     - SBLkConfigDefault
@@ -188,8 +364,20 @@ r_ring_finger:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
   projection_evaluator: joints(RFJ4,RFJ3)
-  longest_valid_segment_fraction: 0.05
+  longest_valid_segment_fraction: 0.005
 r_little_finger:
   planner_configs:
     - SBLkConfigDefault
@@ -203,8 +391,20 @@ r_little_finger:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
   projection_evaluator: joints(LFJ5,LFJ4)
-  longest_valid_segment_fraction: 0.05
+  longest_valid_segment_fraction: 0.005
 r_thumb:
   planner_configs:
     - SBLkConfigDefault
@@ -218,8 +418,20 @@ r_thumb:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
   projection_evaluator: joints(THJ5,THJ4)
-  longest_valid_segment_fraction: 0.05
+  longest_valid_segment_fraction: 0.005
 r_fingers:
   planner_configs:
     - SBLkConfigDefault
@@ -233,8 +445,20 @@ r_fingers:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
   projection_evaluator: joints(FFJ4,FFJ3)
-  longest_valid_segment_fraction: 0.05
+  longest_valid_segment_fraction: 0.005
 l_first_finger:
   planner_configs:
     - SBLkConfigDefault
@@ -248,8 +472,20 @@ l_first_finger:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
-  projection_evaluator: joints(l_allegro_joint_0.0,l_allegro_joint_1.0)
-  longest_valid_segment_fraction: 0.05
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
+  projection_evaluator: joints(l_allegro_joint_0,l_allegro_joint_1)
+  longest_valid_segment_fraction: 0.005
 l_middle_finger:
   planner_configs:
     - SBLkConfigDefault
@@ -263,8 +499,20 @@ l_middle_finger:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
-  projection_evaluator: joints(l_allegro_joint_4.0,l_allegro_joint_5.0)
-  longest_valid_segment_fraction: 0.05
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
+  projection_evaluator: joints(l_allegro_joint_4,l_allegro_joint_5)
+  longest_valid_segment_fraction: 0.005
 l_ring_finger:
   planner_configs:
     - SBLkConfigDefault
@@ -278,8 +526,20 @@ l_ring_finger:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
-  projection_evaluator: joints(l_allegro_joint_8.0,l_allegro_joint_9.0)
-  longest_valid_segment_fraction: 0.05
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
+  projection_evaluator: joints(l_allegro_joint_8,l_allegro_joint_9)
+  longest_valid_segment_fraction: 0.005
 l_thumb:
   planner_configs:
     - SBLkConfigDefault
@@ -293,8 +553,20 @@ l_thumb:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
-  projection_evaluator: joints(l_allegro_joint_12.0,l_allegro_joint_13.0)
-  longest_valid_segment_fraction: 0.05
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
+  projection_evaluator: joints(l_allegro_joint_12,l_allegro_joint_13)
+  longest_valid_segment_fraction: 0.005
 l_fingers:
   planner_configs:
     - SBLkConfigDefault
@@ -308,5 +580,17 @@ l_fingers:
     - TRRTkConfigDefault
     - PRMkConfigDefault
     - PRMstarkConfigDefault
-  projection_evaluator: joints(l_allegro_joint_0.0,l_allegro_joint_1.0)
-  longest_valid_segment_fraction: 0.05
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
+  projection_evaluator: joints(l_allegro_joint_0,l_allegro_joint_1)
+  longest_valid_segment_fraction: 0.005

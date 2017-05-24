@@ -35,22 +35,22 @@ controller_list:
       - pa10_blue_wrist_roll_joint
   - name: fake_l_hand_controller
     joints:
-      - l_allegro_joint_0.0
-      - l_allegro_joint_1.0
-      - l_allegro_joint_2.0
-      - l_allegro_joint_3.0
-      - l_allegro_joint_12.0
-      - l_allegro_joint_13.0
-      - l_allegro_joint_14.0
-      - l_allegro_joint_15.0
-      - l_allegro_joint_4.0
-      - l_allegro_joint_5.0
-      - l_allegro_joint_6.0
-      - l_allegro_joint_7.0
-      - l_allegro_joint_8.0
-      - l_allegro_joint_9.0
-      - l_allegro_joint_10.0
-      - l_allegro_joint_11.0
+      - l_allegro_joint_0
+      - l_allegro_joint_1
+      - l_allegro_joint_2
+      - l_allegro_joint_3
+      - l_allegro_joint_12
+      - l_allegro_joint_13
+      - l_allegro_joint_14
+      - l_allegro_joint_15
+      - l_allegro_joint_4
+      - l_allegro_joint_5
+      - l_allegro_joint_6
+      - l_allegro_joint_7
+      - l_allegro_joint_8
+      - l_allegro_joint_9
+      - l_allegro_joint_10
+      - l_allegro_joint_11
   - name: fake_r_hand_controller
     joints:
       - WRJ2
@@ -155,43 +155,43 @@ controller_list:
       - THJ1
   - name: fake_l_first_finger_controller
     joints:
-      - l_allegro_joint_0.0
-      - l_allegro_joint_1.0
-      - l_allegro_joint_2.0
-      - l_allegro_joint_3.0
+      - l_allegro_joint_0
+      - l_allegro_joint_1
+      - l_allegro_joint_2
+      - l_allegro_joint_3
   - name: fake_l_middle_finger_controller
     joints:
-      - l_allegro_joint_4.0
-      - l_allegro_joint_5.0
-      - l_allegro_joint_6.0
-      - l_allegro_joint_7.0
+      - l_allegro_joint_4
+      - l_allegro_joint_5
+      - l_allegro_joint_6
+      - l_allegro_joint_7
   - name: fake_l_ring_finger_controller
     joints:
-      - l_allegro_joint_8.0
-      - l_allegro_joint_9.0
-      - l_allegro_joint_10.0
-      - l_allegro_joint_11.0
+      - l_allegro_joint_8
+      - l_allegro_joint_9
+      - l_allegro_joint_10
+      - l_allegro_joint_11
   - name: fake_l_thumb_controller
     joints:
-      - l_allegro_joint_12.0
-      - l_allegro_joint_13.0
-      - l_allegro_joint_14.0
-      - l_allegro_joint_15.0
+      - l_allegro_joint_12
+      - l_allegro_joint_13
+      - l_allegro_joint_14
+      - l_allegro_joint_15
   - name: fake_l_fingers_controller
     joints:
-      - l_allegro_joint_0.0
-      - l_allegro_joint_1.0
-      - l_allegro_joint_2.0
-      - l_allegro_joint_3.0
-      - l_allegro_joint_12.0
-      - l_allegro_joint_13.0
-      - l_allegro_joint_14.0
-      - l_allegro_joint_15.0
-      - l_allegro_joint_4.0
-      - l_allegro_joint_5.0
-      - l_allegro_joint_6.0
-      - l_allegro_joint_7.0
-      - l_allegro_joint_8.0
-      - l_allegro_joint_9.0
-      - l_allegro_joint_10.0
-      - l_allegro_joint_11.0
+      - l_allegro_joint_0
+      - l_allegro_joint_1
+      - l_allegro_joint_2
+      - l_allegro_joint_3
+      - l_allegro_joint_12
+      - l_allegro_joint_13
+      - l_allegro_joint_14
+      - l_allegro_joint_15
+      - l_allegro_joint_4
+      - l_allegro_joint_5
+      - l_allegro_joint_6
+      - l_allegro_joint_7
+      - l_allegro_joint_8
+      - l_allegro_joint_9
+      - l_allegro_joint_10
+      - l_allegro_joint_11
