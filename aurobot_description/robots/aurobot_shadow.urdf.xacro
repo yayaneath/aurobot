@@ -28,7 +28,7 @@
   <!-- Allegro left hand -->
   <xacro:include filename="$(find aurobot_description)/urdf/hand/allegro/allegro_left.urdf.xacro"/>
   <!-- Shadow right hand arm -->
-  <!-- sr_destriptor repository is in https://github.com/shadow-robot/sr-ros-interface.git -->
+  <!-- sr_description is in https://github.com/shadow-robot/sr_common/tree/kinetic-devel -->
   <xacro:include filename="$(find sr_description)/materials.urdf.xacro" />
   <xacro:include filename="$(find sr_description)/hand/xacro/full_hand.urdf.xacro" />
   
