@@ -1,21 +1,5 @@
 controller_list:
-  - name: fake_barrett_f1_controller
-    joints:
-      - l_barrett_j11_joint
-      - l_barrett_j12_joint
-  - name: fake_barrett_f2_controller
-    joints:
-      - l_barrett_j22_joint
-  - name: fake_barrett_f3_controller
-    joints:
-      - l_barrett_j32_joint
-  - name: fake_barrett_controller
-    joints:
-      - l_barrett_j11_joint
-      - l_barrett_j12_joint
-      - l_barrett_j22_joint
-      - l_barrett_j32_joint
-  - name: fake_left_pa10_controller
+  - name: fake_l_arm_controller
     joints:
       - pa10_green_shoulder_roll_joint
       - pa10_green_shoulder_lift_joint
@@ -24,3 +8,46 @@ controller_list:
       - pa10_green_forearm_roll_joint
       - pa10_green_wrist_flex_joint
       - pa10_green_wrist_roll_joint
+  - name: fake_l_hand_controller
+    joints:
+      - l_barrett_j11_joint
+      - l_barrett_j12_joint
+      - l_barrett_j13_joint
+      - l_barrett_j21_joint
+      - l_barrett_j22_joint
+      - l_barrett_j23_joint
+      - l_barrett_j32_joint
+      - l_barrett_j33_joint
+  - name: fake_l_arm_palm_controller
+    joints:
+      - pa10_green_shoulder_roll_joint
+      - pa10_green_shoulder_lift_joint
+      - pa10_green_upper_arm_roll_joint
+      - pa10_green_elbow_flex_joint
+      - pa10_green_forearm_roll_joint
+      - pa10_green_wrist_flex_joint
+      - pa10_green_wrist_roll_joint
+  - name: fake_l_first_finger_controller
+    joints:
+      - l_barrett_j11_joint
+      - l_barrett_j12_joint
+      - l_barrett_j13_joint
+  - name: fake_l_second_finger_controller
+    joints:
+      - l_barrett_j21_joint
+      - l_barrett_j22_joint
+      - l_barrett_j23_joint
+  - name: fake_l_third_finger_controller
+    joints:
+      - l_barrett_j32_joint
+      - l_barrett_j33_joint
+  - name: fake_l_fingers_controller
+    joints:
+      - l_barrett_j11_joint
+      - l_barrett_j12_joint
+      - l_barrett_j13_joint
+      - l_barrett_j21_joint
+      - l_barrett_j22_joint
+      - l_barrett_j23_joint
+      - l_barrett_j32_joint
+      - l_barrett_j33_joint

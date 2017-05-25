@@ -236,30 +236,41 @@ int main(int argc, char **argv) {
   for (std::size_t i = 0; i < jointNames.size(); ++i)
     ROS_INFO("Joint %s: %f", jointNames[i].c_str(), jointValues[i]);
 
-  // Define state for f0
-  Eigen::Affine3d f0State;
-  Eigen::Vector3d f0Trans(0.52513, 0.24236, 1.3241);//(0.56917, 0.032293, 1.2175);
-  Eigen::Quaterniond f0Rot(0.50593, -0.45106, -0.67222, -0.29783);//(-0.40753, 0.61482, 0.45611, -0.49787);
-  f0State.translation() = f0Trans;
-  f0State.linear() = f0Rot.toRotationMatrix();
 
-  ROS_INFO_STREAM("f0 Translation: " << f0State.translation());
-  ROS_INFO_STREAM("f0 Rotation: " << f0State.rotation());
+  // Define state for lArm
+  Eigen::Affine3d lArmState;
+  Eigen::Vector3d lArmTrans(0.81487, -0.4565, 1.1645);
+  Eigen::Quaterniond lArmRot(-0.15709, 0.65954, 0.73273, -0.058614);
+  lArmState.translation() = lArmTrans;
+  lArmState.linear() = lArmRot.toRotationMatrix();
 
-  // Define state for pa10
-  Eigen::Affine3d pa10State;
-  Eigen::Vector3d pa10Trans(0.55285, 0.29603, 1.3962);//(0.61121, 0.12642, 1.1583);
-  Eigen::Quaterniond pa10Rot(0.57136, 0.34182, 0.64867, -0.36869);//(-0.44397, 0.16408, -0.60878, 0.63667);
-  pa10State.translation() = pa10Trans;
-  pa10State.linear() = pa10Rot.toRotationMatrix();
+  ROS_INFO_STREAM("lArm Translation: " << lArmState.translation());
+  ROS_INFO_STREAM("lArm Rotation: " << lArmState.rotation());
 
-  ROS_INFO_STREAM("pa10 Translation: " << pa10State.translation());
-  ROS_INFO_STREAM("pa10 Rotation: " << pa10State.rotation());
+  // Define state for lArmPalm
+  Eigen::Affine3d lArmPalmState;
+  Eigen::Vector3d lArmPalmTrans(0.73176, -0.22601, 1.1702);
+  Eigen::Quaterniond lArmPalmRot(0.39806, 0.70643, 0.33846, -0.47744);
+  lArmPalmState.translation() = lArmPalmTrans;
+  lArmPalmState.linear() = lArmPalmRot.toRotationMatrix();
+
+  ROS_INFO_STREAM("lArmPalm Translation: " << lArmPalmState.translation());
+  ROS_INFO_STREAM("lArmPalm Rotation: " << lArmPalmState.rotation());
+
+  // Define state for firstFinger
+  Eigen::Affine3d firstFingerState;
+  Eigen::Vector3d firstFingerTrans(0.62524, -0.1586, 1.1605);
+  Eigen::Quaterniond firstFingerRot(0.31394, -0.44123, 0.67504, 0.50108);
+  firstFingerState.translation() = firstFingerTrans;
+  firstFingerState.linear() = firstFingerRot.toRotationMatrix();
+
+  ROS_INFO_STREAM("firstFinger Translation: " << firstFingerState.translation());
+  ROS_INFO_STREAM("firstFinger Rotation: " << firstFingerState.rotation());
 
   // Define state for thumb
   Eigen::Affine3d thumbState;
-  Eigen::Vector3d thumbTrans(0.47438, 0.26677, 1.3501);//(0.47753, 0.08663, 1.2431);
-  Eigen::Quaterniond thumbRot(0.40338, 0.83083, 0.16893, 0.3442);//(0.86738, 0.413, -0.22734, -0.15938);
+  Eigen::Vector3d thumbTrans(0.67232, -0.16916, 1.2437);
+  Eigen::Quaterniond thumbRot(0.20622, -0.42953, -0.70455, 0.52591);
   thumbState.translation() = thumbTrans;
   thumbState.linear() = thumbRot.toRotationMatrix();
 
@@ -268,25 +279,29 @@ int main(int argc, char **argv) {
 
   // Preprare for IK solving
   EigenSTL::vector_Affine3d poses;
-  poses.push_back(f0State);
-  poses.push_back(pa10State);
+  poses.push_back(lArmState);
+  poses.push_back(lArmPalmState);
+  poses.push_back(firstFingerState);
   poses.push_back(thumbState);
 
   std::vector<std::string> tips;
-  tips.push_back("l_allegro_link_3_tip");
-  tips.push_back("l_allegro_base_link");
-  tips.push_back("l_allegro_link_15_tip");
+  tips.push_back("r_jr3_link");
+  tips.push_back("palm");
+  tips.push_back("ffdistal");
+  tips.push_back("thdistal");
 
   std::vector<std::vector<double> > limits;
-  std::vector<double> f0Limits(4, 0.1);
-  std::vector<double> pa10Limits(7, 0.1);
-  std::vector<double> thumbLimits(4, 0.1);
-  limits.push_back(f0Limits);
-  limits.push_back(pa10Limits);
+  std::vector<double> lArmLimits(7, 0.1);
+  std::vector<double> lArmPalmLimits(9, 0.1);
+  std::vector<double> firstFingerLimits(4, 0.1);
+  std::vector<double> thumbLimits(5, 0.1);
+  limits.push_back(lArmLimits);
+  limits.push_back(lArmPalmLimits);
+  limits.push_back(firstFingerLimits);
   limits.push_back(thumbLimits);
 
-  //bool foundIK = kinematicState->setFromIK(jointModelGroup, f0State, 10, 0.1);
-  bool foundIK = kinematicState->setFromIK(jointModelGroup, poses, tips, limits, 2, 10);
+  //bool foundIK = kinematicState->setFromIK(jointModelGroup, firstFingerState, 10, 0.1);
+  bool foundIK = kinematicState->setFromIK(jointModelGroup, poses, tips, 10, 0.1);
   //bool foundIK = kinematicState->setFromIKSubgroups(jointModelGroup, poses, tips, limits, 20, 0.5);
 
   if (foundIK) {

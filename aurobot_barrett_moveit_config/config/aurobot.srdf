@@ -9,35 +9,50 @@
     <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
     <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
     <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
-    <group name="barrett_f1">
+    <group name="l_arm">
+        <joint name="trunk_left_joint" />
+        <joint name="pa10_green_shoulder_roll_joint" />
+        <joint name="pa10_green_shoulder_lift_joint" />
+        <joint name="pa10_green_upper_arm_roll_joint" />
+        <joint name="pa10_green_elbow_flex_joint" />
+        <joint name="pa10_green_forearm_roll_joint" />
+        <joint name="pa10_green_wrist_flex_joint" />
+        <joint name="pa10_green_wrist_roll_joint" />
+    </group>
+    <group name="l_hand">
         <joint name="l_barrett_j11_joint" />
         <joint name="l_barrett_j12_joint" />
         <joint name="l_barrett_j13_joint" />
-    </group>
-    <group name="barrett_f2">
         <joint name="l_barrett_j21_joint" />
         <joint name="l_barrett_j22_joint" />
         <joint name="l_barrett_j23_joint" />
-    </group>
-    <group name="barrett_f3">
         <joint name="l_barrett_j31_joint" />
         <joint name="l_barrett_j32_joint" />
         <joint name="l_barrett_j33_joint" />
     </group>
-    <group name="barrett">
+    <group name="l_arm_palm">
         <joint name="l_barrett_base_joint" />
-        <group name="barrett_f1" />
-        <group name="barrett_f2" />
-        <group name="barrett_f3" />
+        <group name="l_arm" />
     </group>
-    <group name="left_pa10">
-        <chain base_link="pa10_green_shoulder_roll_link" tip_link="l_jr3_link" />
+    <group name="l_first_finger">
+        <chain base_link="l_barrett_base_link" tip_link="l_barrett_finger_13_link" />
+    </group>
+    <group name="l_second_finger">
+        <chain base_link="l_barrett_base_link" tip_link="l_barrett_finger_23_link" />
+    </group>
+    <group name="l_third_finger">
+        <chain base_link="l_barrett_base_link" tip_link="l_barrett_finger_33_link" />
+    </group>
+    <group name="l_fingers">
+        <group name="l_first_finger" />
+        <group name="l_second_finger" />
+        <group name="l_third_finger" />
     </group>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
-    <end_effector name="barrett_f1_eef" parent_link="l_barrett_base_link" group="barrett_f1" />
-    <end_effector name="barrett_f2_eef" parent_link="l_barrett_base_link" group="barrett_f2" />
-    <end_effector name="barrett_f3" parent_link="l_barrett_base_link" group="barrett_f3" />
-    <end_effector name="barrett_eef" parent_link="l_jr3_link" group="barrett" />
+    <end_effector name="l_fitip_ee" parent_link="l_barrett_finger_13_link" group="l_first_finger" parent_group="l_hand" />
+    <end_effector name="l_setip_ee" parent_link="l_barrett_finger_23_link" group="l_second_finger" parent_group="l_hand" />
+    <end_effector name="l_thtip_ee" parent_link="l_barrett_finger_33_link" group="l_third_finger" parent_group="l_hand" />
+    <end_effector name="l_hand" parent_link="l_jr3_link" group="l_hand" parent_group="l_arm" />
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="base_down_link" link2="base_up_link" reason="Adjacent" />
     <disable_collisions link1="base_down_link" link2="bearing_above_link" reason="Never" />
