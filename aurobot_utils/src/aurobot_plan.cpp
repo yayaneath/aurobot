@@ -64,41 +64,14 @@ int main(int argc, char **argv) {
   target_pose1.header.stamp = ros::Time::now();
   target_pose1.header.frame_id = "/world";
 
-  if (PLANNING_GROUP == "l_arm_palm") {
-    target_pose1.pose.position.x = 0.468008;
-    target_pose1.pose.position.y = 0.26961;
-    target_pose1.pose.position.z = 1.09587;
-    target_pose1.pose.orientation.x = -0.687511;
-    target_pose1.pose.orientation.y = -0.0424757;
-    target_pose1.pose.orientation.z = -0.724707;
-    target_pose1.pose.orientation.w = 0.0180148;
-  }
-  else if (END_EFFECTOR_LINK == "l_barrett_finger_13_link") {
-    target_pose1.pose.position.x = 0.594424;
-    target_pose1.pose.position.y = 0.317063;
-    target_pose1.pose.position.z = 1.06479;
-    target_pose1.pose.orientation.x = -0.0850373;
-    target_pose1.pose.orientation.y = 0.141775;
-    target_pose1.pose.orientation.z = 0.940728;
-    target_pose1.pose.orientation.w = 0.296141;
-  }
-  else if (END_EFFECTOR_LINK == "l_barrett_finger_23_link") {
-    target_pose1.pose.position.x = 0.590324;
-    target_pose1.pose.position.y = 0.317075;
-    target_pose1.pose.position.z = 1.13665;
-    target_pose1.pose.orientation.x = 0.0274441;
-    target_pose1.pose.orientation.y = -0.126509;
-    target_pose1.pose.orientation.z = 0.941023;
-    target_pose1.pose.orientation.w = 0.312598;
-  }
-  else if (END_EFFECTOR_LINK == "l_barrett_finger_33_link") {
-    target_pose1.pose.position.x = 0.58082;
-    target_pose1.pose.position.y = 0.17584; 
-    target_pose1.pose.position.z = 1.1049;
-    target_pose1.pose.orientation.x = 0.31122;
-    target_pose1.pose.orientation.y = 0.94982;
-    target_pose1.pose.orientation.z = -0.0070576;
-    target_pose1.pose.orientation.w = 0.030593;
+  if (PLANNING_GROUP == "l_arm_third") {
+    target_pose1.pose.position.x = 0.72956;
+    target_pose1.pose.position.y = -0.0033136;
+    target_pose1.pose.position.z = 1.257;
+    target_pose1.pose.orientation.x = 0.77129; 
+    target_pose1.pose.orientation.y = 0.014485;
+    target_pose1.pose.orientation.z = 0.63544;
+    target_pose1.pose.orientation.w = -0.03349;
   }
 
   std::cout << "=== Target Pose ===\n" << target_pose1 << "\n";
@@ -112,7 +85,7 @@ int main(int argc, char **argv) {
   moveit::planning_interface::MoveGroupInterface::Plan my_plan;
 
   move_group.setPlannerId("TRRTkConfigDefault");
-  move_group.setPlanningTime(5.0);
+  move_group.setPlanningTime(10.0);
   move_group.setNumPlanningAttempts(10);
   move_group.setMaxVelocityScalingFactor(1.0);
   move_group.setMaxAccelerationScalingFactor(1.0);

@@ -145,6 +145,8 @@ l_arm:
     - LazyPRMstarkConfigDefault
     - SPARSkConfigDefault
     - SPARStwokConfigDefault
+  projection_evaluator: joints(pa10_green_shoulder_roll_joint,pa10_green_shoulder_lift_joint)
+  longest_valid_segment_fraction: 0.005
 l_hand:
   planner_configs:
     - SBLkConfigDefault
@@ -197,6 +199,8 @@ l_arm_palm:
     - LazyPRMstarkConfigDefault
     - SPARSkConfigDefault
     - SPARStwokConfigDefault
+  projection_evaluator: joints(pa10_green_shoulder_roll_joint,pa10_green_shoulder_lift_joint)
+  longest_valid_segment_fraction: 0.005
 l_first_finger:
   planner_configs:
     - SBLkConfigDefault
@@ -302,4 +306,31 @@ l_fingers:
     - SPARSkConfigDefault
     - SPARStwokConfigDefault
   projection_evaluator: joints(l_barrett_j11_joint,l_barrett_j12_joint)
+  longest_valid_segment_fraction: 0.005
+l_arm_third:
+  planner_configs:
+    - SBLkConfigDefault
+    - ESTkConfigDefault
+    - LBKPIECEkConfigDefault
+    - BKPIECEkConfigDefault
+    - KPIECEkConfigDefault
+    - RRTkConfigDefault
+    - RRTConnectkConfigDefault
+    - RRTstarkConfigDefault
+    - TRRTkConfigDefault
+    - PRMkConfigDefault
+    - PRMstarkConfigDefault
+    - FMTkConfigDefault
+    - BFMTkConfigDefault
+    - PDSTkConfigDefault
+    - STRIDEkConfigDefault
+    - BiTRRTkConfigDefault
+    - LBTRRTkConfigDefault
+    - BiESTkConfigDefault
+    - ProjESTkConfigDefault
+    - LazyPRMkConfigDefault
+    - LazyPRMstarkConfigDefault
+    - SPARSkConfigDefault
+    - SPARStwokConfigDefault
+  projection_evaluator: joints(pa10_green_shoulder_roll_joint,pa10_green_shoulder_lift_joint)
   longest_valid_segment_fraction: 0.005
