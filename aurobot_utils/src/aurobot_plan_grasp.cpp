@@ -1,19 +1,25 @@
+// Standard
 #include <iostream>
 #include <vector>
 
-#include <moveit/move_group_interface/move_group_interface.h>
-
+// ROS
+#include <ros/topic.h>
 #include <tf/transform_listener.h>
 
+// MoveIt!
+#include <moveit/move_group_interface/move_group_interface.h>
+#include <rviz_visual_tools/rviz_visual_tools.h>
+
+// Custom
 #include <aurobot_utils/GraspConfiguration.h> // Custom message for publishing grasps
 
 
 
-ros::Subscriber sub;
-
 // Grasp planner
 void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Transform the coordinates from the camera frame to the world
+
   tf::TransformListener transformer;
   tf::Stamped<tf::Point> firstPointIn, firstPointOut, secondPointIn, secondPointOut;
   firstPointIn.setX(inputGrasp->first_point_x);
@@ -45,41 +51,100 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
     << "> y = " << secondPointOut.y() << "\n"
     << "> z = " << secondPointOut.z() << "\n";
 
-  // Plan the first point for the pa10_thumb move group
-  /*moveit::planning_interface::MoveGroupInterface moveGroupFirstContact("left_pa10_gripper");
+  Eigen::Vector3d midPoint((firstPointOut.getX() + secondPointOut.getX()) / 2.0,
+    (firstPointOut.getY() + secondPointOut.getY()) / 2.0,
+    (firstPointOut.getZ() + secondPointOut.getZ()) / 2.0);
 
-  ROS_INFO_NAMED("aurobot_plan_grasp", "Reference frame: %s", moveGroupFirstContact.getPlanningFrame().c_str());
-  ROS_INFO_NAMED("aurobot_plan_grasp", "End effector link: %s", moveGroupFirstContact.getEndEffectorLink().c_str());
+  // [TODO]
+  // Depending on the orientation of the object, this should be performed
+  // in a different way. 
+  // - For objects standing it can be done by substracting a distance to the X axis.
+  // - For objects laying on the table, it should be substracgint to the Z axis.
+  midPoint[0] = midPoint[0] - 0.12; // 12cm backwards in X of the world to leave space for the fingers
 
-  geometry_msgs::Pose targetPoseThumb;
-  targetPoseThumb.position.x = firstPointOut.x();
-  targetPoseThumb.position.y = firstPointOut.y();
-  targetPoseThumb.position.z = firstPointOut.z();
+  std::cout << "Min point out:\n" << midPoint << "\n";
 
-  moveGroupFirstContact.setPoseTarget(targetPoseThumb);
+  // [TODO]
+  // Orientation of the midPoint should place the Z axis of the gripper forward from
+  // the pregrasp midPoint to the original midPoint (the point between the contact points).
+  // In addition, the X axis must be in the same direction as the object orientation. If it
+  // is standing, that is: pointing upwards. 
 
-  moveit::planning_interface::MoveGroupInterface::Plan firstPointPlan;
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+  // Visualize points
 
-  moveGroupFirstContact.setPlannerId("TRRTkConfigDefault");
-  bool success = moveGroupFirstContact.plan(firstPointPlan);
+  rviz_visual_tools::RvizVisualToolsPtr visual_tools;
+  visual_tools.reset(new rviz_visual_tools::RvizVisualTools("/world","/rviz_visual_markers"));
+  
+  Eigen::Vector3d firstPoint(firstPointOut.getX(), firstPointOut.getY(), firstPointOut.getZ());
+  Eigen::Vector3d secondPoint(secondPointOut.getX(), secondPointOut.getY(), secondPointOut.getZ());
 
-  ROS_INFO_NAMED("aurobot_plan_grasp", "PA10 Thumb plan %s", success ? "SUCCEED" : "FAILED");
+  visual_tools->publishSphere(firstPoint, rviz_visual_tools::BLUE, rviz_visual_tools::XLARGE);
+  visual_tools->publishSphere(secondPoint, rviz_visual_tools::RED, rviz_visual_tools::XLARGE);
+  visual_tools->publishSphere(midPoint, rviz_visual_tools::GREEN, rviz_visual_tools::XLARGE);
+  visual_tools->trigger();
 
-  //moveGroupFirstContact.move();*/
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+  // Moving arm + palm
 
-  sub.shutdown(); // Unsubscribe so we do no longer receive messages
+  static const std::string PLANNING_GROUP = "l_arm_palm";
+  static const std::string END_EFFECTOR_LINK = "l_barrett_base_link"; 
+
+  moveit::planning_interface::MoveGroupInterface barrettPalmMoveGroup(PLANNING_GROUP);
+  moveit::planning_interface::MoveGroupInterface::Plan barrettPalmPlan;
+  geometry_msgs::PoseStamped barrettPalmPose;
+  bool successBarretPalmPlan = false;
+  
+  barrettPalmMoveGroup.clearPathConstraints();
+
+  ROS_INFO("Reference frame: %s", barrettPalmMoveGroup.getPlanningFrame().c_str());
+  ROS_INFO("End effector link: %s", barrettPalmMoveGroup.getEndEffectorLink().c_str());
+
+  std::cout << "** Current Pose **\n" << 
+    barrettPalmMoveGroup.getCurrentPose(END_EFFECTOR_LINK);
+
+  barrettPalmPose.header.stamp = ros::Time::now();
+  barrettPalmPose.header.frame_id = "/world";
+  barrettPalmPose.pose.position.x = midPoint[0];
+  barrettPalmPose.pose.position.y = midPoint[1];
+  barrettPalmPose.pose.position.z = midPoint[2];
+  barrettPalmPose.pose.orientation.x = 0.77129; 
+  barrettPalmPose.pose.orientation.y = 0.014485;
+  barrettPalmPose.pose.orientation.z = 0.63544;
+  barrettPalmPose.pose.orientation.w = -0.03349;
+
+  std::cout << "** Target Pose **\n" << barrettPalmPose << "\n";
+
+  barrettPalmMoveGroup.setPoseTarget(barrettPalmPose, END_EFFECTOR_LINK);
+  barrettPalmMoveGroup.setPlannerId("TRRTkConfigDefault");
+  barrettPalmMoveGroup.setPlanningTime(5.0);
+  barrettPalmMoveGroup.setNumPlanningAttempts(10);
+  barrettPalmMoveGroup.setMaxVelocityScalingFactor(1.0);
+  barrettPalmMoveGroup.setMaxAccelerationScalingFactor(1.0);
+
+  successBarretPalmPlan = barrettPalmMoveGroup.plan(barrettPalmPlan);
+
+  ROS_INFO("Plan 1 (pose goal) %s", successBarretPalmPlan ? "" : "FAILED");
+
+  /*if (successBarretPalmPlan)
+    barrettPalmMoveGroup.move();*/
+
+  //ros::shutdown();
 }
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "aurobot_grasp_planner");
-  ros::NodeHandle nh;
-  /*ros::AsyncSpinner spinner(1);
-  spinner.start();*/
+  ros::NodeHandle node_handle;
+  ros::AsyncSpinner spinner(1);
+  spinner.start();
+  
+  std::cout << "Empezando...\n";
 
-  sub = nh.subscribe<aurobot_utils::GraspConfiguration>("/aurobot_utils/grasp_configuration",
-    1, planGrasp);
+  aurobot_utils::GraspConfigurationConstPtr receivedMessage = 
+    ros::topic::waitForMessage<aurobot_utils::GraspConfiguration>("/aurobot_utils/grasp_configuration");
+  planGrasp(receivedMessage);
 
-  ros::spin();  
-  ros::shutdown();
+  std::cout << "Cerrando...\n";
+
   return 0;
 }

@@ -4,3 +4,6 @@ float32 first_point_z
 float32 second_point_x
 float32 second_point_y
 float32 second_point_z
+float32 grasp_normal_x
+float32 grasp_normal_y
+float32 grasp_normal_z

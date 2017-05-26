@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
   target_pose1.header.stamp = ros::Time::now();
   target_pose1.header.frame_id = "/world";
 
-  if (PLANNING_GROUP == "l_arm_third") {
+  if (PLANNING_GROUP == "l_arm_palm") {
     target_pose1.pose.position.x = 0.72956;
     target_pose1.pose.position.y = -0.0033136;
     target_pose1.pose.position.z = 1.257;

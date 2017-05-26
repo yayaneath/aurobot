@@ -121,6 +121,24 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       graspPoints.compute();
 
       GraspConfiguration bestGrasp = graspPoints.getBestGrasp();
+      /*Eigen::Vector3f graspNormal = graspPoints.getGraspNormal();
+
+      // Center point axis
+      pcl::ModelCoefficients axeXcoeff, axeYcoeff, axeZcoeff;
+      Eigen::Vector3f axeX, axeY, axeZ;
+      Eigen::Vector3f firstPoint(bestGrasp.firstPoint.x, bestGrasp.firstPoint.y, bestGrasp.firstPoint.z);
+      Eigen::Vector3f secondPoint(bestGrasp.secondPoint.x, bestGrasp.secondPoint.y, bestGrasp.secondPoint.z);
+      Eigen::Vector3f midPoint((firstPoint[0] + secondPoint[0]) / 2.0,
+        (firstPoint[1] + secondPoint[1]) / 2.0,
+        (firstPoint[2] + secondPoint[2]) / 2.0);
+
+      axeY = secondPoint - firstPoint;
+      axeZ = axeY.cross(graspNormal);
+      axeX = axeY.cross(axeZ);
+
+      axeXcoeff.values.resize(6); axeYcoeff.values.resize(6); axeZcoeff.values.resize(6);*/
+
+
 
       // Visualize the result
       pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGB> rgb(objectCloud);
@@ -133,6 +151,10 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       converter << objectNumber;
       objectLabel += converter.str();
       objectLabel += "-";
+
+      /*viewer->addLine(axeX, "Axe X");
+      viewer->addLine(axeY, "Axe Y");
+      viewer->addLine(axeZ, "Axe Z");*/
 
       viewer->addPointCloud<pcl::PointXYZRGB>(objectCloud, rgb, objectLabel + "Object");
       viewer->addSphere(bestGrasp.firstPoint, 0.01, 0, 255, 255,
@@ -152,6 +174,9 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
         msg.second_point_x = bestGrasp.secondPoint.x;
         msg.second_point_y = bestGrasp.secondPoint.y;
         msg.second_point_z = bestGrasp.secondPoint.z;
+        /*msg.grasp_normal_x = graspNormal[0];
+        msg.grasp_normal_y = graspNormal[1];
+        msg.grasp_normal_z = graspNormal[2];*/
 
         pub.publish(msg);
       }
