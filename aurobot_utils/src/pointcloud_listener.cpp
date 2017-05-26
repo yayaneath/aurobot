@@ -121,10 +121,12 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       graspPoints.compute();
 
       GraspConfiguration bestGrasp = graspPoints.getBestGrasp();
-      /*Eigen::Vector3f graspNormal = graspPoints.getGraspNormal();
+      Eigen::Vector3f graspNormal = graspPoints.getGraspNormal();
 
       // Center point axis
-      pcl::ModelCoefficients axeXcoeff, axeYcoeff, axeZcoeff;
+      pcl::ModelCoefficients axeXcoeff;
+      pcl::ModelCoefficients axeYcoeff;
+      pcl::ModelCoefficients axeZcoeff;
       Eigen::Vector3f axeX, axeY, axeZ;
       Eigen::Vector3f firstPoint(bestGrasp.firstPoint.x, bestGrasp.firstPoint.y, bestGrasp.firstPoint.z);
       Eigen::Vector3f secondPoint(bestGrasp.secondPoint.x, bestGrasp.secondPoint.y, bestGrasp.secondPoint.z);
@@ -134,11 +136,23 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
 
       axeY = secondPoint - firstPoint;
       axeZ = axeY.cross(graspNormal);
+      axeZ = -axeZ;
       axeX = axeY.cross(axeZ);
 
-      axeXcoeff.values.resize(6); axeYcoeff.values.resize(6); axeZcoeff.values.resize(6);*/
+      std::cout << "Axe X: " << axeX << "\n";
+      std::cout << "Axe Y: " << axeY << "\n";
+      std::cout << "Axe Z: " << axeZ << "\n";
 
+      axeXcoeff.values.resize(6); axeYcoeff.values.resize(6); axeZcoeff.values.resize(6);
 
+      axeXcoeff.values[0] = midPoint[0]; axeXcoeff.values[1] = midPoint[1]; axeXcoeff.values[2] = midPoint[2];
+      axeXcoeff.values[3] = axeX[0]; axeXcoeff.values[4] = axeX[1]; axeXcoeff.values[5] = axeX[2];
+
+      axeYcoeff.values[0] = midPoint[0]; axeYcoeff.values[1] = midPoint[1]; axeYcoeff.values[2] = midPoint[2];
+      axeYcoeff.values[3] = axeY[0]; axeYcoeff.values[4] = axeY[1]; axeYcoeff.values[5] = axeY[2];
+
+      axeZcoeff.values[0] = midPoint[0]; axeZcoeff.values[1] = midPoint[1]; axeZcoeff.values[2] = midPoint[2];
+      axeZcoeff.values[3] = axeZ[0]; axeZcoeff.values[4] = axeZ[1]; axeZcoeff.values[5] = axeZ[2];
 
       // Visualize the result
       pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGB> rgb(objectCloud);
@@ -152,9 +166,10 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       objectLabel += converter.str();
       objectLabel += "-";
 
-      /*viewer->addLine(axeX, "Axe X");
-      viewer->addLine(axeY, "Axe Y");
-      viewer->addLine(axeZ, "Axe Z");*/
+      // Por alguna extraña razón esto no compila sin poner std::string
+      viewer->addLine(axeXcoeff, std::string("Axe X"));
+      viewer->addLine(axeYcoeff, std::string("Axe Y"));
+      viewer->addLine(axeZcoeff, std::string("Axe Z"));
 
       viewer->addPointCloud<pcl::PointXYZRGB>(objectCloud, rgb, objectLabel + "Object");
       viewer->addSphere(bestGrasp.firstPoint, 0.01, 0, 255, 255,
@@ -174,9 +189,9 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
         msg.second_point_x = bestGrasp.secondPoint.x;
         msg.second_point_y = bestGrasp.secondPoint.y;
         msg.second_point_z = bestGrasp.secondPoint.z;
-        /*msg.grasp_normal_x = graspNormal[0];
+        msg.grasp_normal_x = graspNormal[0];
         msg.grasp_normal_y = graspNormal[1];
-        msg.grasp_normal_z = graspNormal[2];*/
+        msg.grasp_normal_z = graspNormal[2];
 
         pub.publish(msg);
       }
@@ -184,7 +199,8 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       objectNumber++;
     }
 
-    viewer->spinOnce();
+    //viewer->spinOnce();
+    viewer->spin();
   }
 }
 
@@ -196,7 +212,7 @@ int main(int argc, char **argv) {
   viewer->addCoordinateSystem(0.1);
 
   ros::NodeHandle nh;
-  ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2>("/camera/depth_registered/points",
+  ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2>("/cloud_pcd",//"/camera/depth_registered/points",
     1, cloudCallback);
   pub = nh.advertise<aurobot_utils::GraspConfiguration>("/aurobot_utils/grasp_configuration", 1);
 
