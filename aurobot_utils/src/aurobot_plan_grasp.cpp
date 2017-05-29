@@ -5,6 +5,7 @@
 // ROS
 #include <ros/topic.h>
 #include <tf/transform_listener.h>
+#include <tf_conversions/tf_eigen.h>
 
 // MoveIt!
 #include <moveit/move_group_interface/move_group_interface.h>
@@ -68,30 +69,34 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Calcule grasper palm position and orientation
 
-  Eigen::Vector3d axeX, axeY, axeZ;
+  Eigen::Vector3d axeX, axeY, axeZ, aux;
   Eigen::Vector3d firstPoint(firstPointOut.getX(), firstPointOut.getY(), firstPointOut.getZ());
   Eigen::Vector3d secondPoint(secondPointOut.getX(), secondPointOut.getY(), secondPointOut.getZ());
   Eigen::Vector3d graspNormal(graspNormalOut.getX(), graspNormalOut.getY(), graspNormalOut.getZ());
   Eigen::Vector3d midPoint((firstPoint[0] + secondPoint[0]) / 2.0,
     (firstPoint[1] + secondPoint[1]) / 2.0, (firstPoint[2] + secondPoint[2]) / 2.0);
-
-  // [TODO]
-  // Depending on the orientation of the object, this should be performed
-  // in a different way. 
-  // - For objects standing it can be done by substracting a distance to the X axis.
-  // - For objects laying on the table, it should be substracting to the Z axis.
-  midPoint[0] = midPoint[0] - 0.12; // 12cm backwards in X of the world to leave space for the fingers
-
+  Eigen::Vector3d worldNormal(0, 0, 1);
+  float threshold = 0.9, graspCos = std::abs((worldNormal.dot(graspNormal)) / (worldNormal.norm() * graspNormal.norm()));
+  
   std::cout << "Mid point out:\n" << midPoint << "\n";
+  std::cout << "Grasp angle cosine to world surface: " << graspCos << "\n";
 
-  axeY = secondPoint - firstPoint;
-  axeZ = axeY.cross(graspNormal);
-  axeZ = -axeZ;
-  axeX = axeY.cross(axeZ);
+  if (graspCos > threshold) {
+    axeY = secondPoint - firstPoint;
+    axeZ = axeY.cross(-graspNormal);
+    axeX = axeY.cross(axeZ);
+  }
+  else {
+    axeY = secondPoint - firstPoint;
+    axeZ = axeY.cross(-graspNormal);
+    axeX = axeY.cross(axeZ);
 
-  axeX.normalize();
-  axeY.normalize();
-  axeZ.normalize();
+    aux = axeZ;
+    axeZ = -axeX;
+    axeX = aux;
+  }
+
+  axeX.normalize();  axeY.normalize();  axeZ.normalize();
 
   std::cout << "Axe X: " << axeX << "\n";
   std::cout << "Axe Y: " << axeY << "\n";
@@ -108,16 +113,32 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   ROS_INFO_STREAM("Mid point Translation: " << midPointPose.translation());
   ROS_INFO_STREAM("Mid point Rotation: " << midPointPose.rotation());
 
+  // Moving the pose backwards 
+
+  Eigen::Vector3d midPointCentered(0, 0, -0.1);
+  tf::Transform midPointTransform;
+  tf::Vector3 midPointTF, midPointTFed;
+
+  tf::transformEigenToTF(midPointPose, midPointTransform);
+  tf::vectorEigenToTF(midPointCentered, midPointTF);
+
+  midPointTFed = midPointTransform(midPointTF);
+
+  tf::vectorTFToEigen(midPointTFed, midPointCentered);
+
+  //midPointPose.translation() = midPointCentered;
+
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Visualize points
 
   rviz_visual_tools::RvizVisualToolsPtr visual_tools;
   visual_tools.reset(new rviz_visual_tools::RvizVisualTools("/world","/rviz_visual_markers"));
   
-  visual_tools->publishSphere(firstPoint, rviz_visual_tools::BLUE, rviz_visual_tools::XLARGE);
-  visual_tools->publishSphere(secondPoint, rviz_visual_tools::RED, rviz_visual_tools::XLARGE);
+  visual_tools->publishSphere(firstPoint, rviz_visual_tools::BLUE, rviz_visual_tools::LARGE);
+  visual_tools->publishSphere(secondPoint, rviz_visual_tools::RED, rviz_visual_tools::LARGE);
   visual_tools->publishSphere(midPoint, rviz_visual_tools::GREEN, rviz_visual_tools::LARGE);
-  visual_tools->publishAxis(midPointPose, rviz_visual_tools::XLARGE);
+  visual_tools->publishSphere(midPointCentered, rviz_visual_tools::PINK, rviz_visual_tools::LARGE);
+  visual_tools->publishAxis(midPointPose, rviz_visual_tools::MEDIUM);
   visual_tools->trigger();
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
@@ -139,7 +160,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   std::cout << "** Current Pose **\n" << 
     barrettPalmMoveGroup.getCurrentPose(END_EFFECTOR_LINK);
 
-  barrettPalmPose.header.stamp = ros::Time::now();
+  /*barrettPalmPose.header.stamp = ros::Time::now();
   barrettPalmPose.header.frame_id = "/world";
   barrettPalmPose.pose.position.x = midPoint[0];
   barrettPalmPose.pose.position.y = midPoint[1];
@@ -149,7 +170,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   barrettPalmPose.pose.orientation.z = 0.63544;
   barrettPalmPose.pose.orientation.w = -0.03349;
 
-  std::cout << "** Target Pose **\n" << barrettPalmPose << "\n";
+  std::cout << "** Target Pose **\n" << barrettPalmPose << "\n";*/
 
   barrettPalmMoveGroup.setPoseTarget(midPointPose, END_EFFECTOR_LINK);
   barrettPalmMoveGroup.setPlannerId("TRRTkConfigDefault");
@@ -162,8 +183,8 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   ROS_INFO("Plan 1 (pose goal) %s", successBarretPalmPlan ? "" : "FAILED");
 
-  if (successBarretPalmPlan)
-    barrettPalmMoveGroup.move();
+  /*if (successBarretPalmPlan)
+    barrettPalmMoveGroup.move();*/
 
   //ros::shutdown();
 }

@@ -37,10 +37,6 @@ controller_list:
       - l_barrett_j21_joint
       - l_barrett_j22_joint
       - l_barrett_j23_joint
-  - name: fake_l_third_finger_controller
-    joints:
-      - l_barrett_j32_joint
-      - l_barrett_j33_joint
   - name: fake_l_fingers_controller
     joints:
       - l_barrett_j11_joint
@@ -51,14 +47,7 @@ controller_list:
       - l_barrett_j23_joint
       - l_barrett_j32_joint
       - l_barrett_j33_joint
-  - name: fake_l_arm_third_controller
+  - name: fake_l_third_finger_controller
     joints:
-      - pa10_green_shoulder_roll_joint
-      - pa10_green_shoulder_lift_joint
-      - pa10_green_upper_arm_roll_joint
-      - pa10_green_elbow_flex_joint
-      - pa10_green_forearm_roll_joint
-      - pa10_green_wrist_flex_joint
-      - pa10_green_wrist_roll_joint
       - l_barrett_j32_joint
       - l_barrett_j33_joint

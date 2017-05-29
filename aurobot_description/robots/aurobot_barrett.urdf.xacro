@@ -124,7 +124,7 @@
     <origin xyz="0 0 0" rpy="0 0 3.1415926536"/>
   </joint> -->
 
-  <!-- Allegro left hand -->
+  <!-- Barret left hand -->
   <xacro:bhand_macro parent="l_jr3_link" name="l_barrett">
     <origin xyz="0 0 0" rpy="0 0 3.1415926536" />
   </xacro:bhand_macro>

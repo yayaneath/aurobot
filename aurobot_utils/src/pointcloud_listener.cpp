@@ -166,10 +166,17 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       objectLabel += converter.str();
       objectLabel += "-";
 
-      // Por alguna extraña razón esto no compila sin poner std::string
-      viewer->addLine(axeXcoeff, std::string("Axe X"));
-      viewer->addLine(axeYcoeff, std::string("Axe Y"));
-      viewer->addLine(axeZcoeff, std::string("Axe Z"));
+      // Por alguna extraña razón esto no compila sin poner std::string      
+      //viewer->addLine(axeXcoeff, std::string("Axe X"));
+      //viewer->addLine(axeYcoeff, std::string("Axe Y"));
+      //viewer->addLine(axeZcoeff, std::string("Axe Z"));
+
+
+      pcl::ModelCoefficients graspCoeff;
+      graspCoeff.values.resize(6);
+      graspCoeff.values[0] = midPoint[0]; graspCoeff.values[1] = midPoint[1]; graspCoeff.values[2] = midPoint[2];
+      graspCoeff.values[3] = graspNormal[0]; graspCoeff.values[4] = graspNormal[1]; graspCoeff.values[5] = graspNormal[2];
+      viewer->addLine(graspCoeff, std::string("Grasp Normal"));
 
       viewer->addPointCloud<pcl::PointXYZRGB>(objectCloud, rgb, objectLabel + "Object");
       viewer->addSphere(bestGrasp.firstPoint, 0.01, 0, 255, 255,
@@ -212,7 +219,7 @@ int main(int argc, char **argv) {
   viewer->addCoordinateSystem(0.1);
 
   ros::NodeHandle nh;
-  ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2>("/cloud_pcd",//"/camera/depth_registered/points",
+  ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2>("/camera/depth_registered/points",//"/cloud_pcd",
     1, cloudCallback);
   pub = nh.advertise<aurobot_utils::GraspConfiguration>("/aurobot_utils/grasp_configuration", 1);
 
