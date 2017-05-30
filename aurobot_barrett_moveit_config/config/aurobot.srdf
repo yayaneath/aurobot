@@ -28,16 +28,19 @@
         <joint name="l_barrett_j31_joint" />
         <joint name="l_barrett_j32_joint" />
         <joint name="l_barrett_j33_joint" />
+        <joint name="l_barrett_j33_tip_joint" />
+        <joint name="l_barrett_j13_tip_joint" />
+        <joint name="l_barrett_j23_tip_joint" />
     </group>
     <group name="l_arm_palm">
         <joint name="l_barrett_base_joint" />
         <group name="l_arm" />
     </group>
     <group name="l_first_finger">
-        <chain base_link="l_barrett_base_link" tip_link="l_barrett_finger_13_link" />
+        <chain base_link="l_barrett_base_link" tip_link="l_barrett_finger_13_tip_link" />
     </group>
     <group name="l_second_finger">
-        <chain base_link="l_barrett_base_link" tip_link="l_barrett_finger_23_link" />
+        <chain base_link="l_barrett_base_link" tip_link="l_barrett_finger_23_tip_link" />
     </group>
     <group name="l_fingers">
         <group name="l_first_finger" />
@@ -45,13 +48,13 @@
         <group name="l_third_finger" />
     </group>
     <group name="l_third_finger">
-        <chain base_link="l_barrett_base_link" tip_link="l_barrett_finger_33_link" />
+        <chain base_link="l_barrett_base_link" tip_link="l_barrett_finger_33_tip_link" />
     </group>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
-    <end_effector name="l_fitip_ee" parent_link="l_barrett_finger_13_link" group="l_first_finger" parent_group="l_hand" />
-    <end_effector name="l_setip_ee" parent_link="l_barrett_finger_23_link" group="l_second_finger" parent_group="l_hand" />
+    <end_effector name="l_fitip_ee" parent_link="l_barrett_finger_13_tip_link" group="l_first_finger" parent_group="l_hand" />
+    <end_effector name="l_setip_ee" parent_link="l_barrett_finger_23_tip_link" group="l_second_finger" parent_group="l_hand" />
     <end_effector name="l_hand" parent_link="l_jr3_link" group="l_hand" parent_group="l_arm" />
-    <end_effector name="l_thtip_ee" parent_link="l_barrett_finger_33_link" group="l_third_finger" parent_group="l_hand" />
+    <end_effector name="l_thtip_ee" parent_link="l_barrett_finger_33_tip_link" group="l_third_finger" parent_group="l_hand" />
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="base_down_link" link2="base_up_link" reason="Adjacent" />
     <disable_collisions link1="base_down_link" link2="bearing_above_link" reason="Never" />

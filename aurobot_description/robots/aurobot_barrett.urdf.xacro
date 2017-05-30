@@ -129,4 +129,49 @@
     <origin xyz="0 0 0" rpy="0 0 3.1415926536" />
   </xacro:bhand_macro>
 
+  <!-- finger 13 tip link -->
+  <link name="l_barrett_finger_13_tip_link">
+    <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+    </inertial>
+  </link>
+
+  <joint name="l_barrett_j13_tip_joint" type="fixed">
+    <parent link="l_barrett_finger_13_link"/>
+    <child link="l_barrett_finger_13_tip_link"/>
+    <origin xyz="-0.037 0.041 0" rpy="0 0 0" />
+  </joint>
+
+  <!-- finger 23 tip link -->
+  <link name="l_barrett_finger_23_tip_link">
+    <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+    </inertial>
+  </link>
+
+  <joint name="l_barrett_j23_tip_joint" type="fixed">
+    <parent link="l_barrett_finger_23_link"/>
+    <child link="l_barrett_finger_23_tip_link"/>
+    <origin xyz="-0.037 0.041 0" rpy="0 0 0" />
+  </joint>
+
+  <!-- finger 33 tip link -->
+  <link name="l_barrett_finger_33_tip_link">
+    <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+    </inertial>
+  </link>
+
+  <joint name="l_barrett_j33_tip_joint" type="fixed">
+    <parent link="l_barrett_finger_33_link"/>
+    <child link="l_barrett_finger_33_tip_link"/>
+    <origin xyz="-0.037 0.041 0" rpy="0 0 0" />
+  </joint>
+
 </robot>
