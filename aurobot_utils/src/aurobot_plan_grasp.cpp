@@ -149,6 +149,8 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
     std::cout << "[ERROR] Fingers movement for pregrasp pose failed!\n";
     return;
   }
+
+  ROS_INFO("[AUROBOT] FINGERS POSITIONED IN PRE GRASPING POSE");
     
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Calcule grasper palm position and orientation
@@ -244,9 +246,12 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   if (successBarretPalmPlan) {
     barrettPalmMoveGroup.move();
+    ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN GRASPING POSE");
     
     if (!moveFingersGrasp(pointsDistance, false))
       std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";
+
+    ROS_INFO("[AUROBOT] GRASP COMPLETED");
   }
 
   ros::shutdown();

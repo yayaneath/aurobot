@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
 
   ros::NodeHandle n;
   ros::NodeHandle nh;
-  ros::Subscriber sub = n.subscribe<sensor_msgs::PointCloud2>(PCD_CAMERA_TOPIC,
+  ros::Subscriber sub = n.subscribe<sensor_msgs::PointCloud2>(REAL_CAMERA_TOPIC,
     1, cloudCallback);
  
   pub = nh.advertise<sensor_msgs::PointCloud2>("/camera/depth_registered/points_tfed", 30);
