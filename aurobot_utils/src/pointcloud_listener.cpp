@@ -27,6 +27,10 @@
 #include <aurobot_utils/GraspConfiguration.h> // Custom message for publishing grasps
 
 
+const std::string REAL_CAMERA_TOPIC = "/camera/depth_registered/points";
+const std::string PCD_CAMERA_TOPIC = "/cloud_pcd";
+
+
 // Global variables needed for the callback function
 pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer("Cloud viewer"));
 ros::Publisher pub;
@@ -219,7 +223,7 @@ int main(int argc, char **argv) {
   viewer->addCoordinateSystem(0.1);
 
   ros::NodeHandle nh;
-  ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2>("/camera/depth_registered/points",//"/cloud_pcd",
+  ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2>(PCD_CAMERA_TOPIC,
     1, cloudCallback);
   pub = nh.advertise<aurobot_utils::GraspConfiguration>("/aurobot_utils/grasp_configuration", 1);
 

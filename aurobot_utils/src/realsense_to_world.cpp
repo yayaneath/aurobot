@@ -6,6 +6,8 @@
 #include <tf/transform_listener.h>
 #include <pcl_ros/transforms.h>
 
+const std::string REAL_CAMERA_TOPIC = "/camera/depth_registered/points";
+const std::string PCD_CAMERA_TOPIC = "/cloud_pcd";
 
 ros::Publisher pub;
 
@@ -29,7 +31,7 @@ int main(int argc, char **argv) {
 
   ros::NodeHandle n;
   ros::NodeHandle nh;
-  ros::Subscriber sub = n.subscribe<sensor_msgs::PointCloud2>("/camera/depth_registered/points",//"/cloud_pcd",
+  ros::Subscriber sub = n.subscribe<sensor_msgs::PointCloud2>(PCD_CAMERA_TOPIC,
     1, cloudCallback);
  
   pub = nh.advertise<sensor_msgs::PointCloud2>("/camera/depth_registered/points_tfed", 30);

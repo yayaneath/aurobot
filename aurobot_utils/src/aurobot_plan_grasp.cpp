@@ -1,6 +1,7 @@
 // Standard
 #include <iostream>
 #include <vector>
+#include <math.h>
 
 // ROS
 #include <ros/topic.h>
@@ -15,15 +16,112 @@
 #include <aurobot_utils/GraspConfiguration.h> // Custom message for publishing grasps
 
 
+//
+// CONST VARIABLES
+//
 
-// Grasp planner
+const std::string FINGERS_PLANNING_GROUP = "l_fingers";
+const std::string FIRST_FINGER_PLANNING_GROUP = "l_first_finger";
+const std::string FIRST_FINGER_END_EFFECTOR_LINK = "l_barrett_finger_13_tip_link"; 
+const std::string PALM_PLANNING_GROUP = "l_arm_palm";
+const std::string PALM_END_EFFECTOR_LINK = "l_barrett_base_link"; 
+const double FINGERS_POSITION_PREGRASP_DIFF = 0.1;
+
+//
+//  AUXILIAR POINTS TRANSFORMER FUNCTION
+//
+//  This function transform a given point from a source frame to a target frame.
+//
+
+Eigen::Vector3d transformPoint(const tf::Stamped<tf::Point> & tfPointIn, 
+    const std::string & sourceFrame, const std::string & targetFrame) {
+  tf::TransformListener transformer;
+  tf::Stamped<tf::Point> tfPointOut;
+
+  transformer.waitForTransform(targetFrame, sourceFrame, ros::Time(0), ros::Duration(3.0));
+  transformer.transformPoint(targetFrame, tfPointIn, tfPointOut);
+
+  Eigen::Vector3d outputPoint(tfPointOut.getX(), tfPointOut.getY(), tfPointOut.getZ());
+
+  return outputPoint;
+}
+
+
+//
+//  AUXILIAR JOINTS POSITION FINDING FUNCTION
+//
+//  This function holds the relationship between a certain tips width and 
+//  the jx2 joints of the Barrett fingers.
+//
+
+double getJointsPosition(double width) {
+  double a = -32.3411575486, b = 11.0048328179, c = -5.41125268, d = 1.6406172149;
+  return a * std::pow(width, 3) + b  * std::pow(width, 2) + c * width + d;
+}
+
+
+//
+//  AUXILIAR GRASPING FUNCTION
+//
+//  This functions positions the fingers second joint regarding the object's width.
+//
+
+bool moveFingersGrasp(double objectWidth, bool isPregrasp) {
+  double jointsPosition = getJointsPosition(objectWidth);
+
+  if (isPregrasp)
+    jointsPosition -= FINGERS_POSITION_PREGRASP_DIFF; // A little bit open so we later finish the grasp
+
+  moveit::planning_interface::MoveGroupInterface fingersMoveGroup(FINGERS_PLANNING_GROUP);
+  moveit::planning_interface::MoveGroupInterface::Plan firstPlan, secondPlan, thirdPlan;
+  bool firstPlanSuccess = false, secondPlanSuccess = false, thirdPlanSuccess = false;
+  
+  fingersMoveGroup.setJointValueTarget("l_barrett_j12_joint", jointsPosition);
+  firstPlanSuccess = fingersMoveGroup.plan(firstPlan);
+
+  if(!firstPlanSuccess){
+    std::cout << "[ERROR] First finger planning for joint poisition failed!\n";
+    return false;
+  }
+  
+  fingersMoveGroup.setJointValueTarget("l_barrett_j22_joint", jointsPosition);
+  secondPlanSuccess = fingersMoveGroup.plan(secondPlan);
+
+  if(!secondPlanSuccess){
+    std::cout << "[ERROR] Second finger planning for joint poisition failed!\n";
+    return false;
+  }
+  
+  fingersMoveGroup.setJointValueTarget("l_barrett_j32_joint", jointsPosition);
+  thirdPlanSuccess = fingersMoveGroup.plan(thirdPlan);
+
+  if(!thirdPlanSuccess){
+    std::cout << "[ERROR] Third finger planning for joint poisition failed!\n";
+    return false;
+  }
+
+  fingersMoveGroup.move();
+
+  return true;
+}
+
+
+//
+//  GRASPER FUNCTION
+//
+//  This functions executes the whole grasping process given a tuple of contact points.
+//  The process is the following:
+//  - Transform the contact points to the /world frame
+//  - Preprosition the robotic fingers to a pre grasping position
+//  - Calculate the palm pose regarding the object orientation and the contact points
+//  - Move the arm and the palm to such pose and close the fingers
+//
+
 void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Transform the coordinates from the camera frame to the world
 
-  tf::TransformListener transformer;
-  tf::Stamped<tf::Point> firstPointIn, firstPointOut, secondPointIn, secondPointOut,
-    graspNormalIn, graspNormalOut;
+  tf::Stamped<tf::Point> firstPointIn, secondPointIn, graspNormalIn;
   firstPointIn.setX(inputGrasp->first_point_x);
   firstPointIn.setY(inputGrasp->first_point_y);
   firstPointIn.setZ(inputGrasp->first_point_z);
@@ -37,49 +135,30 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   graspNormalIn.setZ(inputGrasp->grasp_normal_z);
   graspNormalIn.frame_id_ = "/head_link";
 
-  transformer.waitForTransform("/world", "/head_link", ros::Time(0), ros::Duration(3.0));
-  transformer.transformPoint("/world", firstPointIn, firstPointOut);
-  transformer.transformPoint("/world", secondPointIn, secondPointOut);
-  transformer.transformPoint("/world", graspNormalIn, graspNormalOut);
+  Eigen::Vector3d firstPoint = transformPoint(firstPointIn, "/head_link", "/world");
+  Eigen::Vector3d secondPoint = transformPoint(secondPointIn, "/head_link", "/world");
+  Eigen::Vector3d graspNormal = transformPoint(graspNormalIn, "/head_link", "/world");
 
-  std::cout << "First point in:\n" << "> x = " << firstPointIn.x() << "\n"
-    << "> y = " << firstPointIn.y() << "\n"
-    << "> z = " << firstPointIn.z() << "\n";
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+  // Preposition gripper joints for reaching
 
-  std::cout << "First point out:\n" << "> x = " << firstPointOut.x() << "\n"
-    << "> y = " << firstPointOut.y() << "\n"
-    << "> z = " << firstPointOut.z() << "\n";
-
-  std::cout << "Second point in:\n" << "> x = " << secondPointIn.x() << "\n"
-    << "> y = " << secondPointIn.y() << "\n"
-    << "> z = " << secondPointIn.z() << "\n";
-
-  std::cout << "Second point out:\n" << "> x = " << secondPointOut.x() << "\n"
-    << "> y = " << secondPointOut.y() << "\n"
-    << "> z = " << secondPointOut.z() << "\n";
-
-  std::cout << "Grasp normal in:\n" << "> x = " << graspNormalIn.x() << "\n"
-    << "> y = " << graspNormalIn.y() << "\n"
-    << "> z = " << graspNormalIn.z() << "\n";
-
-  std::cout << "Grasp normal out:\n" << "> x = " << graspNormalOut.x() << "\n"
-    << "> y = " << graspNormalOut.y() << "\n"
-    << "> z = " << graspNormalOut.z() << "\n";
-
+  double pointsDistance = std::sqrt(std::pow(firstPoint[0] - secondPoint[0], 2) + 
+      std::pow(firstPoint[1] - secondPoint[1], 2) + std::pow(firstPoint[2] - secondPoint[2], 2));
+  
+  if (!moveFingersGrasp(pointsDistance, true)){
+    std::cout << "[ERROR] Fingers movement for pregrasp pose failed!\n";
+    return;
+  }
+    
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Calcule grasper palm position and orientation
 
-  Eigen::Vector3d axeX, axeY, axeZ, aux;
-  Eigen::Vector3d firstPoint(firstPointOut.getX(), firstPointOut.getY(), firstPointOut.getZ());
-  Eigen::Vector3d secondPoint(secondPointOut.getX(), secondPointOut.getY(), secondPointOut.getZ());
-  Eigen::Vector3d graspNormal(graspNormalOut.getX(), graspNormalOut.getY(), graspNormalOut.getZ());
+  Eigen::Vector3d axeX, axeY, axeZ;
+  Eigen::Vector3d worldNormal(0, 0, 1);
   Eigen::Vector3d midPoint((firstPoint[0] + secondPoint[0]) / 2.0,
     (firstPoint[1] + secondPoint[1]) / 2.0, (firstPoint[2] + secondPoint[2]) / 2.0);
-  Eigen::Vector3d worldNormal(0, 0, 1);
-  float threshold = 0.9, graspCos = std::abs((worldNormal.dot(graspNormal)) / (worldNormal.norm() * graspNormal.norm()));
-  
-  std::cout << "Mid point out:\n" << midPoint << "\n";
-  std::cout << "Grasp angle cosine to world surface: " << graspCos << "\n";
+  float threshold = 0.9, graspCos = std::abs((worldNormal.dot(graspNormal)) / 
+    (worldNormal.norm() * graspNormal.norm()));
 
   if (graspCos > threshold) {
     axeY = secondPoint - firstPoint;
@@ -87,6 +166,8 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
     axeX = axeY.cross(axeZ);
   }
   else {
+    Eigen::Vector3d aux;
+
     axeY = secondPoint - firstPoint;
     axeZ = axeY.cross(-graspNormal);
     axeX = axeY.cross(axeZ);
@@ -98,10 +179,6 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   axeX.normalize();  axeY.normalize();  axeZ.normalize();
 
-  std::cout << "Axe X: " << axeX << "\n";
-  std::cout << "Axe Y: " << axeY << "\n";
-  std::cout << "Axe Z: " << axeZ << "\n";
-
   Eigen::Affine3d midPointPose;
   Eigen::Matrix3d midPointRotation;
   midPointRotation << axeX[0], axeY[0], axeZ[0],
@@ -110,12 +187,18 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   midPointPose.translation() = midPoint;
   midPointPose.linear() = midPointRotation;
 
-  ROS_INFO_STREAM("Mid point Translation: " << midPointPose.translation());
-  ROS_INFO_STREAM("Mid point Rotation: " << midPointPose.rotation());
-
   // Moving the pose backwards 
 
-  Eigen::Vector3d midPointCentered(0, 0, -0.1);
+  moveit::planning_interface::MoveGroupInterface firstMoveGroup(FIRST_FINGER_PLANNING_GROUP);
+  geometry_msgs::PoseStamped firstCurrentPose = firstMoveGroup.getCurrentPose(FIRST_FINGER_END_EFFECTOR_LINK);
+  tf::Stamped<tf::Point> fingerTipIn;
+  fingerTipIn.setX(firstCurrentPose.pose.position.x);
+  fingerTipIn.setY(firstCurrentPose.pose.position.y);
+  fingerTipIn.setZ(firstCurrentPose.pose.position.z);
+  fingerTipIn.frame_id_ = "/world";
+
+  Eigen::Vector3d fingerTipVector = transformPoint(fingerTipIn, "/world", "/l_barrett_base_link");
+  Eigen::Vector3d midPointCentered(0, 0, -fingerTipVector[2]);
   tf::Transform midPointTransform;
   tf::Vector3 midPointTF, midPointTFed;
 
@@ -126,7 +209,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   tf::vectorTFToEigen(midPointTFed, midPointCentered);
 
-  //midPointPose.translation() = midPointCentered;
+  midPointPose.translation() = midPointCentered;
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Visualize points
@@ -142,37 +225,13 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   visual_tools->trigger();
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
-  // Moving arm + palm
+  // Moving arm + palm and close grasp
 
-  static const std::string PLANNING_GROUP = "l_arm_palm";
-  static const std::string END_EFFECTOR_LINK = "l_barrett_base_link"; 
-
-  moveit::planning_interface::MoveGroupInterface barrettPalmMoveGroup(PLANNING_GROUP);
+  moveit::planning_interface::MoveGroupInterface barrettPalmMoveGroup(PALM_PLANNING_GROUP);
   moveit::planning_interface::MoveGroupInterface::Plan barrettPalmPlan;
-  geometry_msgs::PoseStamped barrettPalmPose;
   bool successBarretPalmPlan = false;
-  
-  barrettPalmMoveGroup.clearPathConstraints();
 
-  ROS_INFO("Reference frame: %s", barrettPalmMoveGroup.getPlanningFrame().c_str());
-  ROS_INFO("End effector link: %s", barrettPalmMoveGroup.getEndEffectorLink().c_str());
-
-  std::cout << "** Current Pose **\n" << 
-    barrettPalmMoveGroup.getCurrentPose(END_EFFECTOR_LINK);
-
-  /*barrettPalmPose.header.stamp = ros::Time::now();
-  barrettPalmPose.header.frame_id = "/world";
-  barrettPalmPose.pose.position.x = midPoint[0];
-  barrettPalmPose.pose.position.y = midPoint[1];
-  barrettPalmPose.pose.position.z = midPoint[2];
-  barrettPalmPose.pose.orientation.x = 0.77129; 
-  barrettPalmPose.pose.orientation.y = 0.014485;
-  barrettPalmPose.pose.orientation.z = 0.63544;
-  barrettPalmPose.pose.orientation.w = -0.03349;
-
-  std::cout << "** Target Pose **\n" << barrettPalmPose << "\n";*/
-
-  barrettPalmMoveGroup.setPoseTarget(midPointPose, END_EFFECTOR_LINK);
+  barrettPalmMoveGroup.setPoseTarget(midPointPose, PALM_END_EFFECTOR_LINK);
   barrettPalmMoveGroup.setPlannerId("TRRTkConfigDefault");
   barrettPalmMoveGroup.setPlanningTime(5.0);
   barrettPalmMoveGroup.setNumPlanningAttempts(10);
@@ -181,16 +240,28 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   successBarretPalmPlan = barrettPalmMoveGroup.plan(barrettPalmPlan);
 
-  ROS_INFO("Plan 1 (pose goal) %s", successBarretPalmPlan ? "" : "FAILED");
+  ROS_INFO("Palm plan %s", successBarretPalmPlan ? "" : "FAILED");
 
-  /*if (successBarretPalmPlan)
-    barrettPalmMoveGroup.move();*/
+  if (successBarretPalmPlan) {
+    barrettPalmMoveGroup.move();
+    
+    if (!moveFingersGrasp(pointsDistance, false))
+      std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";
+  }
 
-  //ros::shutdown();
+  ros::shutdown();
 }
 
+
+//
+//  MAIN FUNCTION
+//
+//  Waits for the last published message with the contact points and passes it to the
+//  function in charge of planning and moving the hand to them.
+//
+
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "aurobot_grasp_planner");
+  ros::init(argc, argv, "aurobot_grasper");
   ros::NodeHandle node_handle;
   ros::AsyncSpinner spinner(1);
   spinner.start();
