@@ -2,14 +2,18 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
+#include <cmath>
 
 // ROS
 #include <ros/topic.h>
 #include <tf/transform_listener.h>
 #include <tf_conversions/tf_eigen.h>
+#include <pcl_ros/transforms.h>
+#include <pcl_conversions/pcl_conversions.h>
 
 // MoveIt!
 #include <moveit/move_group_interface/move_group_interface.h>
+#include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include <rviz_visual_tools/rviz_visual_tools.h>
 
 // Custom
@@ -118,6 +122,10 @@ bool moveFingersGrasp(double objectWidth, bool isPregrasp) {
 //
 
 void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
+  rviz_visual_tools::RvizVisualToolsPtr visualTools;
+  visualTools.reset(new rviz_visual_tools::RvizVisualTools("/world","/rviz_visual_markers"));
+  moveit::planning_interface::MoveGroupInterface barrettPalmMoveGroup(PALM_PLANNING_GROUP);
+
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Transform the coordinates from the camera frame to the world
 
@@ -139,8 +147,88 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   Eigen::Vector3d secondPoint = transformPoint(secondPointIn, "/head_link", "/world");
   Eigen::Vector3d graspNormal = transformPoint(graspNormalIn, "/head_link", "/world");
 
+  visualTools->publishSphere(firstPoint, rviz_visual_tools::BLUE, rviz_visual_tools::LARGE);
+  visualTools->publishSphere(secondPoint, rviz_visual_tools::RED, rviz_visual_tools::LARGE);
+  visualTools->trigger();
+
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
-  // Preposition gripper joints for reaching
+  // Read the object's cloud message, transform it and get the boundary coordinates
+
+  sensor_msgs::PointCloud2 objectcloudsMsgIn = inputGrasp->object_cloud, objectCloudMsgOut;
+  tf::TransformListener tfListener;
+  tf::StampedTransform transform;
+
+  tfListener.waitForTransform("/world", "/head_link", ros::Time(0), ros::Duration(3.0));
+  tfListener.lookupTransform("/world", "/head_link", ros::Time(0), transform);
+  pcl_ros::transformPointCloud("/world", transform, objectcloudsMsgIn, objectCloudMsgOut);
+
+  pcl::PointCloud<pcl::PointXYZRGB>::Ptr objectCloud(new pcl::PointCloud<pcl::PointXYZRGB>());
+  pcl::fromROSMsg<pcl::PointXYZRGB>(objectCloudMsgOut, *objectCloud);
+
+  std::cout << "Object's cloud size: " << objectCloud->width * objectCloud->height << "\n";
+
+  float minX, minY, minZ, maxX, maxY, maxZ;
+  minX = minY = minZ = std::numeric_limits<float>::max();
+  maxX = maxY = maxZ = -std::numeric_limits<float>::max();
+
+  for (size_t i = 0; i < objectCloud->points.size(); ++i) {
+    if (objectCloud->points[i].x < minX)
+      minX = objectCloud->points[i].x;
+    if (objectCloud->points[i].x > maxX)
+      maxX = objectCloud->points[i].x;
+
+    if (objectCloud->points[i].y < minY)
+      minY = objectCloud->points[i].y;
+    if (objectCloud->points[i].y > maxY)
+      maxY = objectCloud->points[i].y;
+
+    if (objectCloud->points[i].z < minZ)
+      minZ = objectCloud->points[i].z;
+    if (objectCloud->points[i].z > maxZ)
+      maxZ = objectCloud->points[i].z;
+  }
+
+  Eigen::Vector3d minBoundingPoint(minX, minY, minZ), maxBoundingPoint(maxX, maxY, maxZ);
+
+  visualTools->publishCuboid(minBoundingPoint, maxBoundingPoint, rviz_visual_tools::TRANSLUCENT);
+  visualTools->trigger();
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+  // Add the cloud as a collision object
+
+  moveit::planning_interface::PlanningSceneInterface planningSceneInterface;
+  moveit_msgs::CollisionObject collisionObject;
+  collisionObject.header.frame_id = barrettPalmMoveGroup.getPlanningFrame();
+
+  // The id of the object is used to identify it.
+  collisionObject.id = "grasping_object";
+
+  // Define a box to add to the world.
+  shape_msgs::SolidPrimitive primitive;
+  primitive.type = primitive.BOX;
+  primitive.dimensions.resize(3);
+  // Scaled a little bit down so the bounding box does not exceed the real object boundaries
+  primitive.dimensions[0] = 0.5 * std::abs(minBoundingPoint[0] - maxBoundingPoint[0]);
+  primitive.dimensions[1] = 0.5 * std::abs(minBoundingPoint[1] - maxBoundingPoint[1]);
+  primitive.dimensions[2] = 0.5 * std::abs(minBoundingPoint[2] - maxBoundingPoint[2]);
+
+  //Define a pose for the box (specified relative to frame_id)
+  geometry_msgs::Pose boxPose;
+  boxPose.orientation.w = 1.0;
+  boxPose.position.x = (minBoundingPoint[0] + maxBoundingPoint[0]) / 2.0;
+  boxPose.position.y = (minBoundingPoint[1] + maxBoundingPoint[1]) / 2.0;
+  boxPose.position.z = (minBoundingPoint[2] + maxBoundingPoint[2]) / 2.0;
+
+  collisionObject.primitives.push_back(primitive);
+  collisionObject.primitive_poses.push_back(boxPose);
+  collisionObject.operation = collisionObject.ADD;
+
+  // Now, let's add the collision object into the world
+  ROS_INFO("[AUROBOT] Add collision object into the world");
+  planningSceneInterface.applyCollisionObject(collisionObject);
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+  // Place gripper joints for reaching
 
   double pointsDistance = std::sqrt(std::pow(firstPoint[0] - secondPoint[0], 2) + 
       std::pow(firstPoint[1] - secondPoint[1], 2) + std::pow(firstPoint[2] - secondPoint[2], 2));
@@ -213,23 +301,14 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   midPointPose.translation() = midPointCentered;
 
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
-  // Visualize points
-
-  rviz_visual_tools::RvizVisualToolsPtr visual_tools;
-  visual_tools.reset(new rviz_visual_tools::RvizVisualTools("/world","/rviz_visual_markers"));
-  
-  visual_tools->publishSphere(firstPoint, rviz_visual_tools::BLUE, rviz_visual_tools::LARGE);
-  visual_tools->publishSphere(secondPoint, rviz_visual_tools::RED, rviz_visual_tools::LARGE);
-  visual_tools->publishSphere(midPoint, rviz_visual_tools::GREEN, rviz_visual_tools::LARGE);
-  visual_tools->publishSphere(midPointCentered, rviz_visual_tools::PINK, rviz_visual_tools::LARGE);
-  visual_tools->publishAxis(midPointPose, rviz_visual_tools::MEDIUM);
-  visual_tools->trigger();
+  visualTools->publishSphere(midPoint, rviz_visual_tools::GREEN, rviz_visual_tools::LARGE);
+  visualTools->publishSphere(midPointCentered, rviz_visual_tools::PINK, rviz_visual_tools::LARGE);
+  visualTools->publishAxis(midPointPose, rviz_visual_tools::MEDIUM);
+  visualTools->trigger();
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Moving arm + palm and close grasp
 
-  moveit::planning_interface::MoveGroupInterface barrettPalmMoveGroup(PALM_PLANNING_GROUP);
   moveit::planning_interface::MoveGroupInterface::Plan barrettPalmPlan;
   bool successBarretPalmPlan = false;
 
@@ -242,7 +321,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   successBarretPalmPlan = barrettPalmMoveGroup.plan(barrettPalmPlan);
 
-  ROS_INFO("Palm plan %s", successBarretPalmPlan ? "" : "FAILED");
+  ROS_INFO("Palm plan %s", successBarretPalmPlan ? "SUCCEED" : "FAILED");
 
   if (successBarretPalmPlan) {
     barrettPalmMoveGroup.move();

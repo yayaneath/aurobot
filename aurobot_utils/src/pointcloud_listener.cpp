@@ -35,7 +35,6 @@ const std::string PCD_CAMERA_TOPIC = "/cloud_pcd";
 pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer("Cloud viewer"));
 ros::Publisher pub;
 
-
 // callback signature
 void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZRGB>());
@@ -175,12 +174,11 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       //viewer->addLine(axeYcoeff, std::string("Axe Y"));
       //viewer->addLine(axeZcoeff, std::string("Axe Z"));
 
-
       pcl::ModelCoefficients graspCoeff;
       graspCoeff.values.resize(6);
       graspCoeff.values[0] = midPoint[0]; graspCoeff.values[1] = midPoint[1]; graspCoeff.values[2] = midPoint[2];
       graspCoeff.values[3] = graspNormal[0]; graspCoeff.values[4] = graspNormal[1]; graspCoeff.values[5] = graspNormal[2];
-      viewer->addLine(graspCoeff, std::string("Grasp Normal"));
+      viewer->addLine(graspCoeff, std::string(objectLabel + "Grasp Normal"));
 
       viewer->addPointCloud<pcl::PointXYZRGB>(objectCloud, rgb, objectLabel + "Object");
       viewer->addSphere(bestGrasp.firstPoint, 0.01, 0, 255, 255,
@@ -203,6 +201,7 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
         msg.grasp_normal_x = graspNormal[0];
         msg.grasp_normal_y = graspNormal[1];
         msg.grasp_normal_z = graspNormal[2];
+        pcl::toROSMsg<pcl::PointXYZRGB>(*objectCloud, msg.object_cloud);
 
         pub.publish(msg);
       }

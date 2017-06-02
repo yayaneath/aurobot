@@ -38,8 +38,7 @@ add_message_files (DIRECTORY msg
 )
 
 generate_messages(
-  DEPENDENCIES
-  std_msgs
+  DEPENDENCIES sensor_msgs std_msgs
 )
 
 catkin_package(

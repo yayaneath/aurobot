@@ -7,3 +7,4 @@ float32 second_point_z
 float32 grasp_normal_x
 float32 grasp_normal_y
 float32 grasp_normal_z
+sensor_msgs/PointCloud2 object_cloud
