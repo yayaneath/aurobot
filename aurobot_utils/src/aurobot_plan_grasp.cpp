@@ -225,7 +225,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   // Now, let's add the collision object into the world
   ROS_INFO("[AUROBOT] Add collision object into the world");
-  planningSceneInterface.applyCollisionObject(collisionObject);
+  //planningSceneInterface.applyCollisionObject(collisionObject);
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Place gripper joints for reaching
@@ -250,21 +250,21 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   float threshold = 0.9, graspCos = std::abs((worldNormal.dot(graspNormal)) / 
     (worldNormal.norm() * graspNormal.norm()));
 
-  if (graspCos > threshold) {
-    axeY = secondPoint - firstPoint;
-    axeZ = axeY.cross(-graspNormal);
-    axeX = axeY.cross(axeZ);
-  }
-  else {
-    Eigen::Vector3d aux;
+  axeY = secondPoint - firstPoint;
+  axeZ = axeY.cross(-graspNormal);
+  axeX = axeY.cross(axeZ);
 
-    axeY = secondPoint - firstPoint;
-    axeZ = axeY.cross(-graspNormal);
-    axeX = axeY.cross(axeZ);
+  if (graspCos < threshold && -axeX[0] >= 0) {
+    Eigen::Vector3d aux;
 
     aux = axeZ;
     axeZ = -axeX;
     axeX = aux;
+  }
+
+  if (axeZ[2] > 0) { // In case the axe is pointing up
+    axeZ = -axeZ;
+    axeY = -axeY;
   }
 
   axeX.normalize();  axeY.normalize();  axeZ.normalize();

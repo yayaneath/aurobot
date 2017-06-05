@@ -44,7 +44,7 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
   pcl::PassThrough<pcl::PointXYZRGB> ptFilter;
   ptFilter.setInputCloud(cloud);
   ptFilter.setFilterFieldName("z");
-  //ptFilter.setFilterLimits(0.0, 1.0);
+  ptFilter.setFilterLimits(0.0, 1.3);
   ptFilter.filter(*cloud);
 
   // Create the segmentation object for the planar model and set all the parameters
@@ -127,35 +127,8 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       Eigen::Vector3f graspNormal = graspPoints.getGraspNormal();
 
       // Center point axis
-      pcl::ModelCoefficients axeXcoeff;
-      pcl::ModelCoefficients axeYcoeff;
-      pcl::ModelCoefficients axeZcoeff;
-      Eigen::Vector3f axeX, axeY, axeZ;
       Eigen::Vector3f firstPoint(bestGrasp.firstPoint.x, bestGrasp.firstPoint.y, bestGrasp.firstPoint.z);
       Eigen::Vector3f secondPoint(bestGrasp.secondPoint.x, bestGrasp.secondPoint.y, bestGrasp.secondPoint.z);
-      Eigen::Vector3f midPoint((firstPoint[0] + secondPoint[0]) / 2.0,
-        (firstPoint[1] + secondPoint[1]) / 2.0,
-        (firstPoint[2] + secondPoint[2]) / 2.0);
-
-      axeY = secondPoint - firstPoint;
-      axeZ = axeY.cross(graspNormal);
-      axeZ = -axeZ;
-      axeX = axeY.cross(axeZ);
-
-      std::cout << "Axe X: " << axeX << "\n";
-      std::cout << "Axe Y: " << axeY << "\n";
-      std::cout << "Axe Z: " << axeZ << "\n";
-
-      axeXcoeff.values.resize(6); axeYcoeff.values.resize(6); axeZcoeff.values.resize(6);
-
-      axeXcoeff.values[0] = midPoint[0]; axeXcoeff.values[1] = midPoint[1]; axeXcoeff.values[2] = midPoint[2];
-      axeXcoeff.values[3] = axeX[0]; axeXcoeff.values[4] = axeX[1]; axeXcoeff.values[5] = axeX[2];
-
-      axeYcoeff.values[0] = midPoint[0]; axeYcoeff.values[1] = midPoint[1]; axeYcoeff.values[2] = midPoint[2];
-      axeYcoeff.values[3] = axeY[0]; axeYcoeff.values[4] = axeY[1]; axeYcoeff.values[5] = axeY[2];
-
-      axeZcoeff.values[0] = midPoint[0]; axeZcoeff.values[1] = midPoint[1]; axeZcoeff.values[2] = midPoint[2];
-      axeZcoeff.values[3] = axeZ[0]; axeZcoeff.values[4] = axeZ[1]; axeZcoeff.values[5] = axeZ[2];
 
       // Visualize the result
       pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGB> rgb(objectCloud);
@@ -169,16 +142,8 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       objectLabel += converter.str();
       objectLabel += "-";
 
-      // Por alguna extraña razón esto no compila sin poner std::string      
-      //viewer->addLine(axeXcoeff, std::string("Axe X"));
-      //viewer->addLine(axeYcoeff, std::string("Axe Y"));
-      //viewer->addLine(axeZcoeff, std::string("Axe Z"));
-
-      pcl::ModelCoefficients graspCoeff;
-      graspCoeff.values.resize(6);
-      graspCoeff.values[0] = midPoint[0]; graspCoeff.values[1] = midPoint[1]; graspCoeff.values[2] = midPoint[2];
-      graspCoeff.values[3] = graspNormal[0]; graspCoeff.values[4] = graspNormal[1]; graspCoeff.values[5] = graspNormal[2];
-      viewer->addLine(graspCoeff, std::string(objectLabel + "Grasp Normal"));
+      pcl::ModelCoefficients objAxisCoeff = graspPoints.getObjectAxisCoeff();
+      viewer->addLine(objAxisCoeff, std::string(objectLabel + "Object axis vector"));
 
       viewer->addPointCloud<pcl::PointXYZRGB>(objectCloud, rgb, objectLabel + "Object");
       viewer->addSphere(bestGrasp.firstPoint, 0.01, 0, 255, 255,
