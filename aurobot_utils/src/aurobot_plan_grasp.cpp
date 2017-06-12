@@ -241,7 +241,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   ROS_INFO("[AUROBOT] FINGERS POSITIONED IN PRE GRASPING POSE");
     
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
-  // Calcule grasper palm position and orientation
+  // Calculate grasper palm position and orientation
 
   Eigen::Vector3d axeX, axeY, axeZ;
   Eigen::Vector3d worldNormal(0, 0, 1);
@@ -345,7 +345,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 //
 
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "aurobot_grasper");
+  ros::init(argc, argv, "aurobot_grasp_planner");
   ros::NodeHandle node_handle;
   ros::AsyncSpinner spinner(1);
   spinner.start();

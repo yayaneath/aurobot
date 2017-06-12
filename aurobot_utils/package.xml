@@ -17,6 +17,7 @@
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>message_generation</build_depend>
   <build_depend>grasping_clouds</build_depend>
+  <build_depend>pa10</build_depend>
   <build_depend>cmake_modules</build_depend>
   <build_depend>pcl_conversions</build_depend>
   <build_depend>pcl_ros</build_depend>
@@ -32,6 +33,7 @@
 
   <run_depend>message_runtime</run_depend>
   <run_depend>grasping_clouds</run_depend>
+  <run_depend>pa10</run_depend>
   <run_depend>cmake_modules</run_depend>
   <run_depend>pcl_conversions</run_depend>
   <run_depend>pcl_ros</run_depend>
