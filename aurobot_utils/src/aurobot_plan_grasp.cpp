@@ -31,6 +31,54 @@ const std::string PALM_PLANNING_GROUP = "l_arm_palm";
 const std::string PALM_END_EFFECTOR_LINK = "l_barrett_base_link"; 
 const double FINGERS_POSITION_PREGRASP_DIFF = 0.1;
 
+// 
+// AUXLIIAR SCENE COLLISIONS PUBLISHER
+// 
+
+void publishRoomCollisions() {
+  moveit::planning_interface::PlanningSceneInterface planningSceneInterface;
+  moveit_msgs::CollisionObject collisionObject;
+  collisionObject.header.frame_id = "/world";
+  collisionObject.id = "room_walls";
+
+  shape_msgs::SolidPrimitive leftWall;
+  leftWall.type = leftWall.BOX;
+  leftWall.dimensions.resize(3);
+  leftWall.dimensions[0] = 3.1;  leftWall.dimensions[1] = 0.1;  leftWall.dimensions[2] = 2.80;
+
+  geometry_msgs::Pose leftWallPose;
+  leftWallPose.orientation.w = 1.0;
+  leftWallPose.position.x = 0;  leftWallPose.position.y = 1.85;  leftWallPose.position.z = 1.40;
+
+  shape_msgs::SolidPrimitive backWall;
+  backWall.type = backWall.BOX;
+  backWall.dimensions.resize(3);
+  backWall.dimensions[0] = 0.1;  backWall.dimensions[1] = 3.7;  backWall.dimensions[2] = 2.80;
+
+  geometry_msgs::Pose backWallPose;
+  backWallPose.orientation.w = 1.0;
+  backWallPose.position.x = -1.58;  backWallPose.position.y = 0;  backWallPose.position.z = 1.40;
+
+  shape_msgs::SolidPrimitive wardrobe;
+  wardrobe.type = wardrobe.BOX;
+  wardrobe.dimensions.resize(3);
+  wardrobe.dimensions[0] = 0.80;  wardrobe.dimensions[1] = 0.40;  wardrobe.dimensions[2] = 1.97;
+
+  geometry_msgs::Pose wardrobePose;
+  wardrobePose.orientation.w = 1.0;
+  wardrobePose.position.x = -1.13;  wardrobePose.position.y = 1.60;  wardrobePose.position.z = 0.985;
+
+  collisionObject.primitives.push_back(leftWall);
+  collisionObject.primitives.push_back(backWall);
+  collisionObject.primitives.push_back(wardrobe);
+  collisionObject.primitive_poses.push_back(leftWallPose);
+  collisionObject.primitive_poses.push_back(backWallPose);
+  collisionObject.primitive_poses.push_back(wardrobePose);
+  collisionObject.operation = collisionObject.ADD;
+  planningSceneInterface.applyCollisionObject(collisionObject);
+}
+
+
 //
 //  AUXILIAR POINTS TRANSFORMER FUNCTION
 //
@@ -225,7 +273,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   // Now, let's add the collision object into the world
   ROS_INFO("[AUROBOT] Add collision object into the world");
-  //planningSceneInterface.applyCollisionObject(collisionObject);
+  planningSceneInterface.applyCollisionObject(collisionObject);
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Place gripper joints for reaching
@@ -351,6 +399,8 @@ int main(int argc, char **argv) {
   spinner.start();
   
   std::cout << "Empezando...\n";
+
+  publishRoomCollisions();
 
   aurobot_utils::GraspConfigurationConstPtr receivedMessage = 
     ros::topic::waitForMessage<aurobot_utils::GraspConfiguration>("/aurobot_utils/grasp_configuration");
