@@ -393,7 +393,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 //
 
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "aurobot_grasp_planner");
+  ros::init(argc, argv, "barrett_grasp_planner");
   ros::NodeHandle node_handle;
   ros::AsyncSpinner spinner(1);
   spinner.start();
