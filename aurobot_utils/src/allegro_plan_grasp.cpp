@@ -384,7 +384,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   // Now, let's add the collision object into the world
   ROS_INFO("[AUROBOT] Add collision object into the world");
-  planningSceneInterface.applyCollisionObject(collisionObject);
+  //planningSceneInterface.applyCollisionObject(collisionObject);
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Place gripper joints for reaching
@@ -397,74 +397,20 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
     return;
   }
 
-  drawReferencePoints(visualTools);
+  //drawReferencePoints(visualTools);
   ROS_INFO("[AUROBOT] FINGERS POSITIONED IN PRE GRASPING POSE");
     
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Calculate grasper palm position and orientation
-  
-  geometry_msgs::PoseStamped palmCurrentPose = allegroPalmMoveGroup.getCurrentPose(PALM_END_EFFECTOR_LINK);
-  Eigen::Vector3d palmPoint(palmCurrentPose.pose.position.x, palmCurrentPose.pose.position.y,
-    palmCurrentPose.pose.position.z);
-  Eigen::Vector3d graspMiddle = computeMiddlePoint();
-  Eigen::Vector3d transPalm = palmPoint - graspMiddle;
-  Eigen::Quaternion<double> quatPalm = Eigen::Quaternion<double>::FromTwoVectors(graspMiddle, palmPoint);
 
-  std::cout << "Computed quaternion from middle grasp to palm:\n" 
-    << quatPalm.normalized().toRotationMatrix() << "\n";
-
-  std::cout << "Computed translation from middle grasp to palm:\n" << transPalm << "\n";
-
-  /*
-  LA TRANSFORMACIÓN DEBE SER DEL PUNTO GRASPMIDDLE AL ALLEGRO_BASE_LINK PERO EN EL SISTEMA DE REFERENCIA
-  DE ALLEGRO_BASE_LINK. ESA TRANSFORMACIÓN ES DE ALGÚN MODO FIJA: NO SE TRATARÁ DE BAJAR EN Z DEL MUNDO
-  SINO QUE ES BAJAR EN X DE ALLEGRO_BASE_LINK. SI LA ORIENTAMOS EN OTRA POSTURA, SEGUIRÁ SIENDO BAJAR
-  EN X DE ALLEGRO_BASE_LINK.
-
-  ASÍ QUE LA TRASLACIÓN DEBE CALCULARSE COMO LA POSICIÓN DE GRASPMIDDLE EN ALLEGRO_BASE_LINK. LUEGO,
-  LA ORIENTACIÓN NO LA TENEMOS DEFINIDA EN EL PUNTO. LO SUYO DEBE SER ORIENTAR EL PUNTO PARA QUE SE 
-  ALINEE CON EL PUNTO QUE CALCULAMOS EN MEDIO DE LOS AGARRES. ASÍ, SI TENEMOS EL PUNTO GRASPMIDDLE
-  EN EL SISTEMA DE ALLEGRO_BASE_LINK CON UNOS EJES ALINEADOS CON LOS DEL AGARRE (OJO, LA POSTURA NO
-  SE DEBE AGARRAR EN EL SISTEMA DEL MUNDO SINO EN EL SISTEMA DE ALLEGRO_BASE_LINK), LA ORIENTACIÓN
-  DE LA TRANSFORMACIÓN ES ESE SISTEMA DE REFERENCIA.
-  */
-
-  Eigen::Affine3d graspMiddlePose;
-  graspMiddlePose.translation() = transPalm;
-  graspMiddlePose.linear() = Eigen::Quaternion<double>::Identity().normalized().toRotationMatrix();
-  //quatPalm.normalized().toRotationMatrix(); 
-
-  Eigen::Vector3d midPointTransformed;
-  tf::Transform midPointTransform;
-  tf::Vector3 midPointTF, midPointTFed;
-
-  tf::transformEigenToTF(graspMiddlePose, midPointTransform);
-  tf::vectorEigenToTF(graspMiddle, midPointTF);
-
-  midPointTFed = midPointTransform(midPointTF);
-  tf::vectorTFToEigen(midPointTFed, midPointTransformed);
-
-  visualTools->publishSphere(midPointTransformed, rviz_visual_tools::PINK, rviz_visual_tools::LARGE);
-  visualTools->trigger();
-
-
-  Eigen::Vector3d graspMidTransformed;
   Eigen::Vector3d midPoint((firstPoint[0] + secondPoint[0]) / 2.0,
     (firstPoint[1] + secondPoint[1]) / 2.0, (firstPoint[2] + secondPoint[2]) / 2.0);
-
-  tf::vectorEigenToTF(midPoint, midPointTF);
-  midPointTFed = midPointTransform(midPointTF);
-  tf::vectorTFToEigen(midPointTFed, graspMidTransformed);
 
   visualTools->publishSphere(midPoint, rviz_visual_tools::GREEN, rviz_visual_tools::LARGE);
-  visualTools->publishSphere(graspMidTransformed, rviz_visual_tools::GREEN, rviz_visual_tools::LARGE);
   visualTools->trigger();
 
-/*
   Eigen::Vector3d axeX, axeY, axeZ;
   Eigen::Vector3d worldNormal(0, 0, 1);
-  Eigen::Vector3d midPoint((firstPoint[0] + secondPoint[0]) / 2.0,
-    (firstPoint[1] + secondPoint[1]) / 2.0, (firstPoint[2] + secondPoint[2]) / 2.0);
   float threshold = 0.9, graspCos = std::abs((worldNormal.dot(graspNormal)) / 
     (worldNormal.norm() * graspNormal.norm()));
 
@@ -489,24 +435,26 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   Eigen::Affine3d midPointPose;
   Eigen::Matrix3d midPointRotation;
-  midPointRotation << axeX[0], axeY[0], axeZ[0],
-                      axeX[1], axeY[1], axeZ[1],
-                      axeX[2], axeY[2], axeZ[2];
+  midPointRotation << axeZ[0], -axeX[0], -axeY[0],
+                      axeZ[1], -axeX[1], -axeY[1],
+                      axeZ[2], -axeX[2], -axeY[2];
   midPointPose.translation() = midPoint;
   midPointPose.linear() = midPointRotation;
 
+  visualTools->publishAxis(midPointPose, rviz_visual_tools::MEDIUM);
+  visualTools->trigger();
+
+  Eigen::Vector3d allegroMiddle = computeMiddlePoint();
+  tf::Stamped<tf::Point> allegroMiddleIn;
+  allegroMiddleIn.setX(allegroMiddle[0]);
+  allegroMiddleIn.setY(allegroMiddle[1]);
+  allegroMiddleIn.setZ(allegroMiddle[2]);
+  allegroMiddleIn.frame_id_ = "/world";
+
+  allegroMiddle = transformPoint(allegroMiddleIn, "/world", "/l_allegro_base_link");
+
   // Moving the pose backwards 
-
-  moveit::planning_interface::MoveGroupInterface firstMoveGroup(FIRST_FINGER_PLANNING_GROUP);
-  geometry_msgs::PoseStamped firstCurrentPose = firstMoveGroup.getCurrentPose(FIRST_FINGER_END_EFFECTOR_LINK);
-  tf::Stamped<tf::Point> fingerTipIn;
-  fingerTipIn.setX(firstCurrentPose.pose.position.x);
-  fingerTipIn.setY(firstCurrentPose.pose.position.y);
-  fingerTipIn.setZ(firstCurrentPose.pose.position.z);
-  fingerTipIn.frame_id_ = "/world";
-
-  Eigen::Vector3d fingerTipVector = transformPoint(fingerTipIn, "/world", "/l_barrett_base_link");
-  Eigen::Vector3d midPointCentered(0, 0, -fingerTipVector[2]);
+  Eigen::Vector3d midPointCentered = -allegroMiddle;
   tf::Transform midPointTransform;
   tf::Vector3 midPointTF, midPointTFed;
 
@@ -517,40 +465,42 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   tf::vectorTFToEigen(midPointTFed, midPointCentered);
 
-  midPointPose.translation() = midPointCentered;
+  Eigen::Affine3d allegroMidPointPose = midPointPose;
+  allegroMidPointPose.translation() = midPointCentered;
 
-  visualTools->publishSphere(midPoint, rviz_visual_tools::GREEN, rviz_visual_tools::LARGE);
   visualTools->publishSphere(midPointCentered, rviz_visual_tools::PINK, rviz_visual_tools::LARGE);
-  visualTools->publishAxis(midPointPose, rviz_visual_tools::MEDIUM);
+  visualTools->publishAxis(allegroMidPointPose, rviz_visual_tools::MEDIUM);
   visualTools->trigger();
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Moving arm + palm and close grasp
 
-  moveit::planning_interface::MoveGroupInterface::Plan barrettPalmPlan;
-  bool successBarretPalmPlan = false;
+  moveit::planning_interface::MoveGroupInterface::Plan allegroPalmPlan;
+  bool successAllegroPalmPlan = false;
 
-  barrettPalmMoveGroup.setPoseTarget(midPointPose, PALM_END_EFFECTOR_LINK);
-  barrettPalmMoveGroup.setPlannerId("TRRTkConfigDefault");
-  barrettPalmMoveGroup.setPlanningTime(5.0);
-  barrettPalmMoveGroup.setNumPlanningAttempts(10);
-  barrettPalmMoveGroup.setMaxVelocityScalingFactor(1.0);
-  barrettPalmMoveGroup.setMaxAccelerationScalingFactor(1.0);
+  allegroPalmMoveGroup.setPoseTarget(allegroMidPointPose, PALM_END_EFFECTOR_LINK);
+  allegroPalmMoveGroup.setPlannerId("TRRTkConfigDefault");
+  allegroPalmMoveGroup.setPlanningTime(5.0);
+  allegroPalmMoveGroup.setNumPlanningAttempts(10);
+  allegroPalmMoveGroup.setMaxVelocityScalingFactor(1.0);
+  allegroPalmMoveGroup.setMaxAccelerationScalingFactor(1.0);
 
-  successBarretPalmPlan = barrettPalmMoveGroup.plan(barrettPalmPlan);
+  successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
 
-  ROS_INFO("Palm plan %s", successBarretPalmPlan ? "SUCCEED" : "FAILED");
+  ROS_INFO("Palm plan %s", successAllegroPalmPlan ? "SUCCEED" : "FAILED");
 
-  if (successBarretPalmPlan) {
-    barrettPalmMoveGroup.move();
+  if (successAllegroPalmPlan) {
+    allegroPalmMoveGroup.move();
     ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN GRASPING POSE");
     
-    if (!moveFingersGrasp(pointsDistance, false))
-      std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";
+    // Esta mano no parece necesitar reajustar los dedos por el error en la función
+    // que relaciona joints con amplitud.
+    /*if (!moveFingersGrasp(pointsDistance, false)) 
+      std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";*/
 
     ROS_INFO("[AUROBOT] GRASP COMPLETED");
   }
-*/
+
   ros::shutdown();
 }
 
@@ -570,7 +520,7 @@ int main(int argc, char **argv) {
   
   std::cout << "Empezando...\n";
 
-  publishRoomCollisions();
+  //publishRoomCollisions();
 
   aurobot_utils::GraspConfigurationConstPtr receivedMessage = 
     ros::topic::waitForMessage<aurobot_utils::GraspConfiguration>("/aurobot_utils/grasp_configuration");
