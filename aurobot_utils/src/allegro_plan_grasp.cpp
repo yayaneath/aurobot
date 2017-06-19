@@ -282,7 +282,7 @@ Eigen::Vector3d computeMiddlePoint() {
 
 void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   rviz_visual_tools::RvizVisualToolsPtr visualTools;
-  visualTools.reset(new rviz_visual_tools::RvizVisualTools("/world","/rviz_visual_markers"));
+  visualTools.reset(new rviz_visual_tools::RvizVisualTools("/world", "/rviz_visual_markers"));
   moveit::planning_interface::MoveGroupInterface allegroPalmMoveGroup(PALM_PLANNING_GROUP);
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
@@ -435,7 +435,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   Eigen::Affine3d midPointPose;
   Eigen::Matrix3d midPointRotation;
-  midPointRotation << axeZ[0], -axeX[0], -axeY[0],
+  midPointRotation << axeZ[0], -axeX[0], -axeY[0], //Re-arrenged for the allegro pose
                       axeZ[1], -axeX[1], -axeY[1],
                       axeZ[2], -axeX[2], -axeY[2];
   midPointPose.translation() = midPoint;
