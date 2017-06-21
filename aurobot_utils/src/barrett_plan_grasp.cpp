@@ -309,7 +309,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   // Now, let's add the collision object into the world
   ROS_INFO("[AUROBOT] Add collision object into the world");
-  planningSceneInterface.applyCollisionObject(collisionObject);
+  //planningSceneInterface.applyCollisionObject(collisionObject);
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
   // Place gripper joints for reaching
