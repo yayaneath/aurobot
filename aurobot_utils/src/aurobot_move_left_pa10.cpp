@@ -21,13 +21,13 @@ void jointsCallback(const sensor_msgs::JointStateConstPtr & inputJointsMsg) {
   std::vector<float> state;
   bool sameState = true;
 
-  for (size_t i = 7; i < 14; ++i) {
+  for (size_t i = 0; i < 7; ++i) {
     std::cout << "Joint " << i << " - " << inputJointsMsg->name[i] << ":\n";
     std::cout << "-> Position: " << inputJointsMsg->position[i] << "\n";
 
     state.push_back((float) inputJointsMsg->position[i]);
 
-    if ((float) inputJointsMsg->position[i] != LAST_STATE[i-7])
+    if ((float) inputJointsMsg->position[i] != LAST_STATE[i])
       sameState = false;
   }
 
@@ -42,14 +42,17 @@ void jointsCallback(const sensor_msgs::JointStateConstPtr & inputJointsMsg) {
     LAST_STATE[4], LAST_STATE[5], LAST_STATE[6];
 
   std::cout << "Moving to...\n" << angulars << "\n";
-
-  PA10Wrapper pa10(62004);
+  
+  PA10Wrapper pa10(62005);
+  pa10.arm();
   pa10.setVel(0.3);
   pa10.goTo(angulars);
+
+  std::cout << "Moved!\n";
 }
 
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "aurobot_grasp_executer");
+  ros::init(argc, argv, "aurobot_left_pa10_mover");
 
   ros::NodeHandle n;
   ros::Subscriber sub = n.subscribe<sensor_msgs::JointState>("/joint_states",

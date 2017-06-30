@@ -43,8 +43,7 @@ generate_messages(
 )
 
 catkin_package(
-  CATKIN_DEPENDS message_runtime grasping_clouds pa10 cmake_modules pcl_conversions pcl_ros roscpp tf sensor_msgs
-  moveit_core moveit_ros_planning_interface moveit_msgs rviz_visual_tools eigen_stl_containers
+  CATKIN_DEPENDS message_runtime grasping_clouds pa10 cmake_modules pcl_conversions pcl_ros roscpp tf sensor_msgs moveit_core moveit_ros_planning_interface moveit_msgs rviz_visual_tools eigen_stl_containers
   DEPENDS boost eigen
 )
 
@@ -53,7 +52,10 @@ add_executable(pointcloud_listener src/pointcloud_listener.cpp)
 add_executable(aurobot_plan src/aurobot_plan.cpp)
 add_executable(barrett_plan_grasp src/barrett_plan_grasp.cpp)
 add_executable(allegro_plan_grasp src/allegro_plan_grasp.cpp)
-add_executable(aurobot_execute_grasp src/aurobot_execute_grasp.cpp)
+add_executable(aurobot_move_left_pa10 src/aurobot_move_left_pa10.cpp)
+add_executable(aurobot_move_left_allegro src/aurobot_move_left_allegro.cpp)
+
+
 add_executable(barrett_amp_aprox src/barrett_amp_aprox.cpp)
 add_executable(allegro_amp_aprox src/allegro_amp_aprox.cpp)
 
@@ -62,6 +64,8 @@ target_link_libraries(pointcloud_listener ${Eigen_LIBRARIES} ${Boost_LIBRARIES} 
 target_link_libraries(aurobot_plan ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(barrett_plan_grasp ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(allegro_plan_grasp ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
-target_link_libraries(aurobot_execute_grasp ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(aurobot_move_left_pa10 ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(aurobot_move_left_allegro ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
+
 target_link_libraries(barrett_amp_aprox ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(allegro_amp_aprox ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
