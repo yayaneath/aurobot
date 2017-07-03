@@ -8,7 +8,7 @@
 #include <sensor_msgs/JointState.h>
 
 ros::Publisher pub;
-std::vector<float> LAST_STATE(16, 0.0);
+std::vector<double> LAST_STATE(16, 0.0);
 
 void jointsCallback(const sensor_msgs::JointStateConstPtr & inputJointsMsg) {
   std::cout << "########################\n";
@@ -16,16 +16,16 @@ void jointsCallback(const sensor_msgs::JointStateConstPtr & inputJointsMsg) {
   std::cout << "* Stamp: " << inputJointsMsg->header.stamp << "\n";
   std::cout << "* Frame ID: " << inputJointsMsg->header.frame_id << "\n";
 
-  std::vector<float> state;
+  std::vector<double> state;
   bool sameState = true;
 
   for (size_t i = 7; i < 23; ++i) {
     std::cout << "Joint " << i << " - " << inputJointsMsg->name[i] << ":\n";
     std::cout << "-> Position: " << inputJointsMsg->position[i] << "\n";
 
-    state.push_back((float) inputJointsMsg->position[i]);
+    state.push_back((double) inputJointsMsg->position[i]);
 
-    if ((float) inputJointsMsg->position[i] != LAST_STATE[i-7])
+    if ((double) inputJointsMsg->position[i] != LAST_STATE[i-7])
       sameState = false;
   }
 

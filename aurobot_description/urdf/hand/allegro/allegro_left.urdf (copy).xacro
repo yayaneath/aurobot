@@ -5,7 +5,7 @@
        xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
        xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <!--<xacro:include filename="$(find aurobot_description)/urdf/hand/allegro/allegro_left.transmission.xacro" />-->
+  <xacro:include filename="$(find aurobot_description)/urdf/hand/allegro/allegro_left.transmission.xacro" />
 
   <xacro:property name="DEG2RAD" value="0.01745329251" />
 
@@ -79,12 +79,10 @@
 
     <!-- [LINK 12] -->
     <link name="l_allegro_link_${finger_num*4+0}">  
-      <inertial> <!-- BRAYAN (03/07/2017): Changed to be equal to those on the allegro ros package-->
-        <mass value="0.0176" />
+      <inertial> <!-- dummy inertia-->
         <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="1.89273333333e-5" ixy="7.16716e-06" ixz="5.35568e-06"
-                 iyy="1.43008213333e-05" iyz="6.8068e-06"
-                 izz="1.89273333333e-05" />
+        <mass value="0.40"/>
+        <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500" /> 
       </inertial> 
       <visual>
         <geometry>
@@ -105,21 +103,18 @@
     
     <joint name="l_allegro_joint_${finger_num*4}" type="revolute">
       <axis xyz="+1 0 0"/>
-      <limit effort="15" velocity="7" lower="${limit_0_t_low-joint_safety_margin}" upper="${limit_0_t_up-joint_safety_margin}" />
+      <limit effort="0" velocity="0" lower="${limit_0_t_low-joint_safety_margin}" upper="${limit_0_t_up-joint_safety_margin}" />
       <parent link="l_allegro_base_link"/>
       <child link="l_allegro_link_${finger_num*4+0}"/>
       <origin rpy="${finger_angle_r} ${finger_angle_p} ${finger_angle_y}" xyz="${offset_origin_x} ${offset_origin_y} ${offset_origin_z}"/>  
-      <dynamics damping="3" friction="10"/>
     </joint>
     
     <!-- [LINK 13] -->
     <link name="l_allegro_link_${finger_num*4+1}">  
-      <inertial> <!-- BRAYAN (03/07/2017): Changed to be equal to those on the allegro ros package-->
-        <mass value="0.0119" />
+      <inertial> <!-- dummy inertia-->
         <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="4.24250866667e-06" ixy="1.032087e-06" ixz="1.603525e-06"
-                 iyy="4.52362633333e-06" iyz="1.44808125e-06"
-                 izz="4.24250866667e-06" />
+        <mass value="0.40"/>
+        <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500" /> 
       </inertial> 
       <visual>
         <geometry>
@@ -139,20 +134,18 @@
 
     <joint name="l_allegro_joint_${finger_num*4+1}" type="revolute">
       <axis xyz="0 0 -1"/>
-      <limit effort="15" velocity="7" lower="${limit_1_t_low+joint_safety_margin}" upper="${limit_1_t_up-joint_safety_margin}" />
+      <limit effort="0" velocity="0" lower="${limit_1_t_low+joint_safety_margin}" upper="${limit_1_t_up-joint_safety_margin}" />
       <parent link="l_allegro_link_${finger_num*4+0}"/>
       <child link="l_allegro_link_${finger_num*4+1}"/>
       <origin xyz="-0.027 -0.005 0.0399"/>
-      <dynamics damping="3" friction="5"/>
     </joint>  
 
     <!-- [LINK 14] -->
     <link name="l_allegro_link_${finger_num*4+2}">  
-      <inertial> <!-- BRAYAN (03/07/2017): Changed to be equal to those on the allegro ros package-->
-        <mass value="0.038" />
+      <inertial> <!-- dummy inertia-->
         <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="4.30439933333e-05" ixy="9.57068e-06" ixz="5.1205e-06" iyy="1.44451933333e-05"
-                 iyz="1.342825e-05" izz="4.30439933333e-05" />
+        <mass value="0.40"/>
+        <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500" /> 
       </inertial> 
       <visual>
         <geometry>
@@ -170,21 +163,18 @@
     
     <joint name="l_allegro_joint_${finger_num*4+2}" type="revolute">
       <axis xyz="0 1 0"/>
-      <limit effort="15" velocity="7" lower="${limit_2_t_low+joint_safety_margin}" upper="${limit_2_t_up-joint_safety_margin}" />
+      <limit effort="0" velocity="0" lower="${limit_2_t_low+joint_safety_margin}" upper="${limit_2_t_up-joint_safety_margin}" />
       <parent link="l_allegro_link_${finger_num*4+1}"/>
       <child link="l_allegro_link_${finger_num*4+2}"/>
       <origin xyz="0 0 ${link1_t_z}"/>
-      <dynamics damping="3" friction="10"/>
     </joint>  
    
     <!-- [LINK 15] -->
     <link name="l_allegro_link_${finger_num*4+3}">  
-      <inertial> <!-- BRAYAN (03/07/2017): Changed to be equal to those on the allegro ros package-->
-        <mass value="0.0388" />
+      <inertial> <!-- dummy inertia-->
         <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="3.29223173333e-05" ixy="8.042076e-06" ixz="5.2283e-06"
-                 iyy="1.47493026667e-5" iyz="1.1283525e-5"
-                 izz="3.29223173333e-05" />
+        <mass value="0.40"/>
+        <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500" /> 
       </inertial> 
       <visual>
         <geometry>
@@ -202,21 +192,18 @@
     
     <joint name="l_allegro_joint_${finger_num*4+3}" type="revolute">
       <axis xyz="0 1 0"/>
-      <limit effort="15" velocity="7" lower="${limit_3_t_low+joint_safety_margin}" upper="${limit_3_t_up-joint_safety_margin}" />
+      <limit effort="0" velocity="0" lower="${limit_3_t_low+joint_safety_margin}" upper="${limit_3_t_up-joint_safety_margin}" />
       <parent link="l_allegro_link_${finger_num*4+2}"/>
       <child link="l_allegro_link_${finger_num*4+3}"/>
       <origin xyz="0 0 ${link2_t_z}"/>
-      <dynamics damping="3" friction="12"/>
     </joint>      
       
     <!-- [FINGER TIP] -->
     <link name="l_allegro_link_${finger_num*4+3}_tip">      
-      <inertial> <!-- BRAYAN (03/07/2017): Changed to be equal to those on the allegro ros package-->
-        <mass value="0.0168" />
+      <inertial> <!-- dummy inertia-->
         <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="9.68e-07" ixy="0" ixz="0"
-                 iyy="9.68e-07" iyz="0"
-                 izz="9.68e-07" />
+        <mass value="0.40"/>
+        <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500" /> 
       </inertial> 
       <visual>
         <geometry>
@@ -251,12 +238,10 @@
 
     <!-- [LINK 0, 4, 8] -->
     <link name="l_allegro_link_${finger_num*4+0}">
-      <inertial> <!-- BRAYAN (03/07/2017): Changed to be equal to those on the allegro ros package-->
-        <mass value="0.0119" />
+      <inertial> <!-- dummy inertia-->
         <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="1.01666658333e-06" ixy="0.0" ixz="0.0"
-                 iyy="6.47677333333e-07" iyz="0.0"
-                 izz="1.01666658333e-06" />
+        <mass value="0.40"/>
+        <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500" />
       </inertial>
       <visual>
         <geometry>
@@ -274,21 +259,18 @@
 
     <joint name="l_allegro_joint_${finger_num*4+0}" type="revolute">
       <axis xyz="0 0 1"/>
-      <limit effort="15" velocity="7" lower="${limit_0_low+joint_safety_margin}" upper="${limit_0_up-joint_safety_margin}" />
+      <limit effort="0" velocity="0" lower="${limit_0_low+joint_safety_margin}" upper="${limit_0_up-joint_safety_margin}" />
       <parent link="l_allegro_base_link"/>
       <child link="l_allegro_link_${finger_num*4+0}"/>
       <origin rpy="${finger_angle_r} 0 0" xyz="${offset_origin_x} ${offset_origin_y} ${offset_origin_z}"/>
-      <dynamics damping="3" friction="10"/>
     </joint>
 
     <!-- [LINK 1, 5, 9] -->
     <link name="l_allegro_link_${finger_num*4+1}">
-      <inertial> <!-- BRAYAN (03/07/2017): Changed to be equal to those on the allegro ros package-->
-        <mass value="0.065" />
+      <inertial> <!-- dummy inertia-->
         <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="7.95654166667e-05" ixy="1.7199e-05" ixz="8.75875e-06"
-                 iyy="2.47088833333e-05" iyz="2.413125e-05"
-                 izz="7.95654166667e-05" />
+        <mass value="0.40"/>
+        <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500" />
       </inertial>
       <visual>
         <geometry>
@@ -305,22 +287,19 @@
     </link>
 
     <joint name="l_allegro_joint_${finger_num*4+1}" type="revolute">
+      <limit effort="0" velocity="0" lower="${limit_1_low+joint_safety_margin}" upper="${limit_1_up-joint_safety_margin}" />
       <axis xyz="0 1 0"/>
-      <limit effort="15" velocity="7" lower="${limit_1_low+joint_safety_margin}" upper="${limit_1_up-joint_safety_margin}" />
       <parent link="l_allegro_link_${finger_num*4+0}"/>
       <child link="l_allegro_link_${finger_num*4+1}"/>
       <origin xyz="0 0 ${link0_z}"/>
-      <dynamics damping="3" friction="5"/>
     </joint>
 
     <!-- [LINK 2, 6, 10]-->
     <link name="l_allegro_link_${finger_num*4+2}">
-      <inertial> <!-- BRAYAN (03/07/2017): Changed to be equal to those on the allegro ros package-->
-        <mass value="0.0355" />
+      <inertial> <!-- dummy inertia-->
         <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="2.63979183333e-05" ixy="6.67968e-06" ixz="4.783625e-06"
-                 iyy="1.34948516667e-05" iyz="9.372e-06"
-                 izz="2.63979183333e-05" />
+        <mass value="0.40"/>
+        <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500" />
       </inertial>
       <visual>
         <geometry>
@@ -338,21 +317,18 @@
 
     <joint name="l_allegro_joint_${finger_num*4+2}" type="revolute">
       <axis xyz="0 1 0"/>
-      <limit effort="15" velocity="7" lower="${limit_2_low+joint_safety_margin}" upper="${limit_2_up-joint_safety_margin}" />
+      <limit effort="0" velocity="0" lower="${limit_2_low+joint_safety_margin}" upper="${limit_2_up-joint_safety_margin}" />
       <parent link="l_allegro_link_${finger_num*4+1}"/>
       <child link="l_allegro_link_${finger_num*4+2}"/>
       <origin xyz="0 0 ${link1_z}"/>
-      <dynamics damping="8" friction="10"/>
     </joint>
 
     <!-- [LINK 3, 7, 11] -->
     <link name="l_allegro_link_${finger_num*4+3}">
-      <inertial> <!-- BRAYAN (03/07/2017): Changed to be equal to those on the allegro ros package-->
-        <mass value="0.0096" />
+      <inertial> <!-- dummy inertia-->
         <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="4.701248e-06" ixy="1.255968e-06" ixz="1.2936e-06"
-                 iyy="3.649312e-06" iyz="1.7622e-06"
-                 izz="4.701248e-06" />
+        <mass value="0.40"/>
+        <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500" />
       </inertial>
       <visual>
         <geometry>
@@ -370,21 +346,18 @@
 
     <joint name="l_allegro_joint_${finger_num*4+3}" type="revolute">
       <axis xyz="0 1 0"/>
-      <limit effort="15" velocity="7" lower="${limit_3_low+joint_safety_margin}" upper="${limit_3_up-joint_safety_margin}" />
+      <limit effort="0" velocity="0" lower="${limit_3_low+joint_safety_margin}" upper="${limit_3_up-joint_safety_margin}" />
       <parent link="l_allegro_link_${finger_num*4+2}"/>
       <child link="l_allegro_link_${finger_num*4+3}"/>
       <origin xyz="0 0 ${link2_z}"/>
-      <dynamics damping="10" friction="12"/>
     </joint>
 
     <!-- [FINGER TIP] -->
     <link name="l_allegro_link_${finger_num*4+3}_tip">
-      <inertial> <!-- BRAYAN (03/07/2017): Changed to be equal to those on the allegro ros package-->
-        <mass value="0.0168" />
+      <inertial> <!-- dummy inertia-->
         <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="9.68e-07" ixy="0" ixz="0"
-                 iyy="9.68e-07" iyz="0"
-                 izz="9.68e-07" />
+        <mass value="0.40"/>
+        <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500" />
       </inertial>
       <visual>
         <geometry>
@@ -417,13 +390,10 @@
 
     <!-- BASE -->
     <link name="l_allegro_base_link">
-      <inertial> <!-- BRAYAN (03/07/2017): Changed to be equal to those on the allegro ros package-->
-          <origin xyz="0 0 ${base_link_z/2}" rpy="0 0 0"/>
-          <mass value="0.4154"/>
-          <inertia
-              ixx="1e-4" ixy="0.0" ixz="0.0"
-              iyy="1e-4" iyz="0.0"
-              izz="1e-4"/>
+      <inertial> <!-- dummy inertia-->
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.40"/>
+        <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500" /> 
       </inertial> 
       <visual>
         <geometry>
@@ -483,7 +453,7 @@
    
   </xacro:macro>
 
-  <!--<xacro:left_hand_transmission />-->
+  <xacro:left_hand_transmission />
 
 </robot>
 
