@@ -33,7 +33,7 @@ const std::string THUMB_PLANNING_GROUP = "l_thumb";
 const std::string THUMB_END_EFFECTOR_LINK = "l_allegro_link_15_tip";
 const std::string PALM_PLANNING_GROUP = "l_armpalm";
 const std::string PALM_END_EFFECTOR_LINK = "l_allegro_base_link"; 
-const double FINGERS_POSITION_PREGRASP_DIFF = 0.1;
+const double FINGERS_POSITION_PREGRASP_DIFF = 0.15;
 
 
 // 
@@ -367,9 +367,9 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   primitive.type = primitive.BOX;
   primitive.dimensions.resize(3);
   // Scaled a little bit down so the bounding box does not exceed the real object boundaries
-  primitive.dimensions[0] = 0.5 * std::abs(minBoundingPoint[0] - maxBoundingPoint[0]);
-  primitive.dimensions[1] = 0.5 * std::abs(minBoundingPoint[1] - maxBoundingPoint[1]);
-  primitive.dimensions[2] = 0.5 * std::abs(minBoundingPoint[2] - maxBoundingPoint[2]);
+  primitive.dimensions[0] = 0.4 * std::abs(minBoundingPoint[0] - maxBoundingPoint[0]);
+  primitive.dimensions[1] = 0.4 * std::abs(minBoundingPoint[1] - maxBoundingPoint[1]);
+  primitive.dimensions[2] = 0.4 * std::abs(minBoundingPoint[2] - maxBoundingPoint[2]);
 
   //Define a pose for the box (specified relative to frame_id)
   geometry_msgs::Pose boxPose;
@@ -384,7 +384,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   // Now, let's add the collision object into the world
   ROS_INFO("[AUROBOT] Add collision object into the world");
-  //planningSceneInterface.applyCollisionObject(collisionObject);
+  planningSceneInterface.applyCollisionObject(collisionObject);
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Place gripper joints for reaching
@@ -472,6 +472,8 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   visualTools->publishAxis(allegroMidPointPose, rviz_visual_tools::MEDIUM);
   visualTools->trigger();
 
+  moveFingersGrasp(pointsDistance * 1.1, true);
+
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Moving arm + palm and close grasp
 
@@ -482,7 +484,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   allegroPalmMoveGroup.setPlannerId("TRRTkConfigDefault");
   allegroPalmMoveGroup.setPlanningTime(5.0);
   allegroPalmMoveGroup.setNumPlanningAttempts(10);
-  allegroPalmMoveGroup.setMaxVelocityScalingFactor(1.0);
+  allegroPalmMoveGroup.setMaxVelocityScalingFactor(0.50);
   allegroPalmMoveGroup.setMaxAccelerationScalingFactor(1.0);
 
   successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
@@ -490,6 +492,8 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   ROS_INFO("Palm plan %s", successAllegroPalmPlan ? "SUCCEED" : "FAILED");
 
   if (successAllegroPalmPlan) {
+    ros::Duration(20).sleep();
+
     allegroPalmMoveGroup.move();
     ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN GRASPING POSE");
     
@@ -497,6 +501,8 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
     // que relaciona joints con amplitud.
     /*if (!moveFingersGrasp(pointsDistance, false)) 
       std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";*/
+      
+    moveFingersGrasp(pointsDistance, true);
 
     ROS_INFO("[AUROBOT] GRASP COMPLETED");
   }
@@ -520,7 +526,7 @@ int main(int argc, char **argv) {
   
   std::cout << "Empezando...\n";
 
-  //publishRoomCollisions();
+  publishRoomCollisions();
 
   aurobot_utils::GraspConfigurationConstPtr receivedMessage = 
     ros::topic::waitForMessage<aurobot_utils::GraspConfiguration>("/aurobot_utils/grasp_configuration");

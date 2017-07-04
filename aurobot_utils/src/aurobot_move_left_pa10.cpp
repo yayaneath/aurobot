@@ -45,7 +45,7 @@ void jointsCallback(const sensor_msgs::JointStateConstPtr & inputJointsMsg) {
   
   PA10Wrapper pa10(62005);
   pa10.arm();
-  pa10.setVel(0.3);
+  pa10.setVel(0.1);
   pa10.goTo(angulars);
 
   std::cout << "Moved!\n";
@@ -55,10 +55,15 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "aurobot_left_pa10_mover");
 
   ros::NodeHandle n;
-  ros::Subscriber sub = n.subscribe<sensor_msgs::JointState>("/joint_states",
-    100, jointsCallback);
+  ros::Rate r(1); // This rate works fine with 0.1 velocity in the PA10 and 0.50 in MoveIt
 
-  ros::spin();
+  while(ros::ok()) {
+    sensor_msgs::JointStateConstPtr receivedMessage = 
+      ros::topic::waitForMessage<sensor_msgs::JointState>("/joint_states");
+    jointsCallback(receivedMessage);
+
+    r.sleep();
+  }
 
   return 0;
 }
