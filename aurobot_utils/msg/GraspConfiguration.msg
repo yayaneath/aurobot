@@ -4,7 +4,10 @@ float32 first_point_z
 float32 second_point_x
 float32 second_point_y
 float32 second_point_z
-float32 grasp_normal_x
-float32 grasp_normal_y
-float32 grasp_normal_z
+float32 obj_axis_coeff_0
+float32 obj_axis_coeff_1
+float32 obj_axis_coeff_2
+float32 obj_axis_coeff_3
+float32 obj_axis_coeff_4
+float32 obj_axis_coeff_5
 sensor_msgs/PointCloud2 object_cloud

@@ -103,6 +103,19 @@ Eigen::Vector3d transformPoint(const tf::Stamped<tf::Point> & tfPointIn,
   return outputPoint;
 }
 
+Eigen::Vector3d transformVector(const tf::Stamped<tf::Vector3> & tfVectorIn, 
+    const std::string & sourceFrame, const std::string & targetFrame) {
+  tf::TransformListener transformer;
+  tf::Stamped<tf::Vector3> tfVectorOut;
+
+  transformer.waitForTransform(targetFrame, sourceFrame, ros::Time(0), ros::Duration(3.0));
+  transformer.transformVector(targetFrame, tfVectorIn, tfVectorOut);
+
+  Eigen::Vector3d outputVector(tfVectorOut.getX(), tfVectorOut.getY(), tfVectorOut.getZ());
+
+  return outputVector;
+}
+
 
 //
 //  AUXILIAR JOINTS POSITION FINDING FUNCTION
@@ -150,6 +163,8 @@ bool moveFingersGrasp(double objectWidth, bool isPregrasp) {
   firstJointsValues.push_back(0.5840); // l_allegro_joint_3
 
   firstMoveGroup.setJointValueTarget(firstJointsValues);
+  firstMoveGroup.setMaxVelocityScalingFactor(0.50);
+
   firstPlanSuccess = firstMoveGroup.plan(firstPlan);
 
   if(!firstPlanSuccess){
@@ -163,6 +178,8 @@ bool moveFingersGrasp(double objectWidth, bool isPregrasp) {
   middleJointsValues.push_back(0.5840); // l_allegro_joint_7
   
   middleMoveGroup.setJointValueTarget(middleJointsValues);
+  middleMoveGroup.setMaxVelocityScalingFactor(0.50);
+
   middlePlanSuccess = middleMoveGroup.plan(middlePlan);
 
   if(!middlePlanSuccess){
@@ -176,6 +193,8 @@ bool moveFingersGrasp(double objectWidth, bool isPregrasp) {
   thumbJointsValues.push_back(0.7372); // l_allegro_joint_15
 
   thumbMoveGroup.setJointValueTarget(thumbJointsValues);
+  thumbMoveGroup.setMaxVelocityScalingFactor(0.50);
+  
   thumbPlanSuccess = thumbMoveGroup.plan(thumbPlan);
 
   if(!thumbPlanSuccess){
@@ -188,50 +207,6 @@ bool moveFingersGrasp(double objectWidth, bool isPregrasp) {
   thumbMoveGroup.move();
 
   return true;
-}
-
-void drawReferencePoints(rviz_visual_tools::RvizVisualToolsPtr visualTools){ 
-  // First finger
-
-  moveit::planning_interface::MoveGroupInterface firstMoveGroup(FIRST_PLANNING_GROUP);
-  geometry_msgs::PoseStamped firstCurrentPose = firstMoveGroup.getCurrentPose(FIRST_END_EFFECTOR_LINK);
-  Eigen::Vector3d firstPoint(firstCurrentPose.pose.position.x, firstCurrentPose.pose.position.y,
-    firstCurrentPose.pose.position.z);
-
-  // Middle finger
-
-  moveit::planning_interface::MoveGroupInterface middleMoveGroup(MIDDLE_PLANNING_GROUP);
-  geometry_msgs::PoseStamped middleCurrentPose = middleMoveGroup.getCurrentPose(MIDDLE_END_EFFECTOR_LINK);
-  Eigen::Vector3d middlePoint(middleCurrentPose.pose.position.x, middleCurrentPose.pose.position.y,
-    middleCurrentPose.pose.position.z);
-
-  // Thumb finger
-
-  moveit::planning_interface::MoveGroupInterface thumbMoveGroup(THUMB_PLANNING_GROUP);
-  geometry_msgs::PoseStamped thumbCurrentPose = thumbMoveGroup.getCurrentPose(THUMB_END_EFFECTOR_LINK);
-  Eigen::Vector3d thumbPoint(thumbCurrentPose.pose.position.x, thumbCurrentPose.pose.position.y,
-    thumbCurrentPose.pose.position.z);
-
-  // Palm 
-
-  moveit::planning_interface::MoveGroupInterface palmMoveGroup(PALM_PLANNING_GROUP);
-  geometry_msgs::PoseStamped palmCurrentPose = palmMoveGroup.getCurrentPose(PALM_END_EFFECTOR_LINK);
-  Eigen::Vector3d palmPoint(palmCurrentPose.pose.position.x, palmCurrentPose.pose.position.y,
-    palmCurrentPose.pose.position.z);
-
-  // Midpoint between first and second fingers
-
-  Eigen::Vector3d fingersMidPoint((firstPoint[0] + middlePoint[0]) / 2.0,
-    (firstPoint[1] + middlePoint[1]) / 2.0, (firstPoint[2] + middlePoint[2]) / 2.0);
-
-  Eigen::Vector3d graspMiddle((fingersMidPoint[0] + thumbPoint[0]) / 2.0,
-    (fingersMidPoint[1] + thumbPoint[1]) / 2.0, (fingersMidPoint[2] + thumbPoint[2]) / 2.0);  
-
-  visualTools->publishSphere(fingersMidPoint, rviz_visual_tools::BLUE, rviz_visual_tools::LARGE);
-  visualTools->publishSphere(thumbPoint, rviz_visual_tools::RED, rviz_visual_tools::LARGE);
-  visualTools->publishSphere(graspMiddle, rviz_visual_tools::YELLOW, rviz_visual_tools::LARGE);
-  visualTools->publishSphere(palmPoint, rviz_visual_tools::BROWN, rviz_visual_tools::LARGE);
-  visualTools->trigger();
 }
 
 
@@ -269,6 +244,37 @@ Eigen::Vector3d computeMiddlePoint() {
 }
 
 
+void drawReferencePoints(rviz_visual_tools::RvizVisualToolsPtr visualTools){ 
+  // Thumb finger
+
+  moveit::planning_interface::MoveGroupInterface thumbMoveGroup(THUMB_PLANNING_GROUP);
+  geometry_msgs::PoseStamped thumbCurrentPose = thumbMoveGroup.getCurrentPose(THUMB_END_EFFECTOR_LINK);
+  Eigen::Vector3d thumbPoint(thumbCurrentPose.pose.position.x, thumbCurrentPose.pose.position.y,
+    thumbCurrentPose.pose.position.z);
+
+  // Palm 
+
+  moveit::planning_interface::MoveGroupInterface palmMoveGroup(PALM_PLANNING_GROUP);
+  geometry_msgs::PoseStamped palmCurrentPose = palmMoveGroup.getCurrentPose(PALM_END_EFFECTOR_LINK);
+  Eigen::Vector3d palmPoint(palmCurrentPose.pose.position.x, palmCurrentPose.pose.position.y,
+    palmCurrentPose.pose.position.z);
+
+  // Midpoint between first and second fingers
+
+  Eigen::Vector3d fingersMidPoint = computeMiddlePoint();
+
+  Eigen::Vector3d graspMiddle((fingersMidPoint[0] + thumbPoint[0]) / 2.0,
+    (fingersMidPoint[1] + thumbPoint[1]) / 2.0, (fingersMidPoint[2] + thumbPoint[2]) / 2.0);  
+
+  visualTools->publishSphere(fingersMidPoint, rviz_visual_tools::BLUE, rviz_visual_tools::LARGE);
+  visualTools->publishSphere(thumbPoint, rviz_visual_tools::RED, rviz_visual_tools::LARGE);
+  visualTools->publishSphere(graspMiddle, rviz_visual_tools::YELLOW, rviz_visual_tools::LARGE);
+  visualTools->publishSphere(palmPoint, rviz_visual_tools::BROWN, rviz_visual_tools::LARGE);
+  visualTools->trigger();
+}
+
+
+
 //
 //  GRASPER FUNCTION
 //
@@ -288,7 +294,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Transform the coordinates from the camera frame to the world
 
-  tf::Stamped<tf::Point> firstPointIn, secondPointIn, graspNormalIn;
+  tf::Stamped<tf::Point> firstPointIn, secondPointIn, objAxisCenterIn;
   firstPointIn.setX(inputGrasp->first_point_x);
   firstPointIn.setY(inputGrasp->first_point_y);
   firstPointIn.setZ(inputGrasp->first_point_z);
@@ -297,17 +303,30 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   secondPointIn.setY(inputGrasp->second_point_y);
   secondPointIn.setZ(inputGrasp->second_point_z);
   secondPointIn.frame_id_ = "/head_link";
-  graspNormalIn.setX(inputGrasp->grasp_normal_x);
-  graspNormalIn.setY(inputGrasp->grasp_normal_y);
-  graspNormalIn.setZ(inputGrasp->grasp_normal_z);
-  graspNormalIn.frame_id_ = "/head_link";
+  objAxisCenterIn.setX(inputGrasp->obj_axis_coeff_0);
+  objAxisCenterIn.setY(inputGrasp->obj_axis_coeff_1);
+  objAxisCenterIn.setZ(inputGrasp->obj_axis_coeff_2);
+  objAxisCenterIn.frame_id_ = "/head_link";
 
   Eigen::Vector3d firstPoint = transformPoint(firstPointIn, "/head_link", "/world");
   Eigen::Vector3d secondPoint = transformPoint(secondPointIn, "/head_link", "/world");
-  Eigen::Vector3d graspNormal = transformPoint(graspNormalIn, "/head_link", "/world");
+  Eigen::Vector3d objAxisCenter = transformPoint(objAxisCenterIn, "/head_link", "/world");
+
+  tf::Stamped<tf::Vector3> objAxisVectorIn;
+  objAxisVectorIn.setX(inputGrasp->obj_axis_coeff_3);
+  objAxisVectorIn.setY(inputGrasp->obj_axis_coeff_4);
+  objAxisVectorIn.setZ(inputGrasp->obj_axis_coeff_5);
+  objAxisVectorIn.frame_id_ = "/head_link";
+
+  Eigen::Vector3d objAxisVector = transformVector(objAxisVectorIn, "/head_link", "/world");
+
+  std::cout << "Obj axis:\n" << objAxisCenter << "\n" << objAxisVector << "\n"; 
 
   visualTools->publishSphere(firstPoint, rviz_visual_tools::BLUE, rviz_visual_tools::LARGE);
   visualTools->publishSphere(secondPoint, rviz_visual_tools::RED, rviz_visual_tools::LARGE);
+  visualTools->publishSphere(objAxisCenter, rviz_visual_tools::GREY, rviz_visual_tools::LARGE);
+  visualTools->publishLine(objAxisCenter, objAxisCenter + objAxisVector, rviz_visual_tools::GREY,
+    rviz_visual_tools::MEDIUM);
   visualTools->trigger();
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
@@ -392,14 +411,14 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   double pointsDistance = std::sqrt(std::pow(firstPoint[0] - secondPoint[0], 2) + 
       std::pow(firstPoint[1] - secondPoint[1], 2) + std::pow(firstPoint[2] - secondPoint[2], 2));
   
-  if (!moveFingersGrasp(pointsDistance, true)){
+  if (!moveFingersGrasp(pointsDistance*1.2, true)){
     std::cout << "[ERROR] Fingers movement for pregrasp pose failed!\n";
     return;
   }
 
-  //drawReferencePoints(visualTools);
+  drawReferencePoints(visualTools);
   ROS_INFO("[AUROBOT] FINGERS POSITIONED IN PRE GRASPING POSE");
-    
+   
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Calculate grasper palm position and orientation
 
@@ -411,33 +430,40 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   Eigen::Vector3d axeX, axeY, axeZ;
   Eigen::Vector3d worldNormal(0, 0, 1);
-  float threshold = 0.9, graspCos = std::abs((worldNormal.dot(graspNormal)) / 
-    (worldNormal.norm() * graspNormal.norm()));
+  float threshold = 0.9, graspCos = std::abs((worldNormal.dot(objAxisVector)) / 
+    (worldNormal.norm() * objAxisVector.norm()));
 
-  axeY = secondPoint - firstPoint;
-  axeZ = axeY.cross(-graspNormal);
-  axeX = axeY.cross(axeZ);
+  std::cout << "Cosine grasp - world: " << graspCos << "\n";
+  
+  //Re-arrenged for the allegro pose
+  axeZ = secondPoint - firstPoint;
+  axeX = axeZ.cross(-objAxisVector);
+  axeY = axeZ.cross(axeX);
 
-  if (graspCos < threshold && -axeX[0] >= 0) {
+  if (graspCos < threshold && -axeY[0] >= 0) {
+    std::cout << "Change 1 to Axe X and Y\n";
+
     Eigen::Vector3d aux;
 
-    aux = axeZ;
-    axeZ = -axeX;
-    axeX = aux;
+    aux = axeX;
+    axeX = -axeY;
+    axeY = aux;
   }
 
-  if (axeZ[2] > 0) { // In case the axe is pointing up
-    axeZ = -axeZ;
+  /*if (axeY[2] < 0) { // In case the axe is pointing up
+    std::cout << "Change 2 to Axe Y and Z\n";
+
     axeY = -axeY;
-  }
+    axeZ = -axeZ;
+  }*/
 
-  axeX.normalize();  axeY.normalize();  axeZ.normalize();
+  axeY.normalize();  axeZ.normalize();  axeX.normalize();
 
   Eigen::Affine3d midPointPose;
   Eigen::Matrix3d midPointRotation;
-  midPointRotation << axeZ[0], -axeX[0], -axeY[0], //Re-arrenged for the allegro pose
-                      axeZ[1], -axeX[1], -axeY[1],
-                      axeZ[2], -axeX[2], -axeY[2];
+  midPointRotation << axeX[0], -axeY[0], -axeZ[0], 
+                      axeX[1], -axeY[1], -axeZ[1],
+                      axeX[2], -axeY[2], -axeZ[2];
   midPointPose.translation() = midPoint;
   midPointPose.linear() = midPointRotation;
 
@@ -472,7 +498,10 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   visualTools->publishAxis(allegroMidPointPose, rviz_visual_tools::MEDIUM);
   visualTools->trigger();
 
-  moveFingersGrasp(pointsDistance * 1.1, true);
+  //moveFingersGrasp(pointsDistance * 1.1, true);
+
+  std::cout << "PRESS ENTER TO CONTINUE\n";
+  std::getchar();
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Moving arm + palm and close grasp
@@ -492,17 +521,11 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   ROS_INFO("Palm plan %s", successAllegroPalmPlan ? "SUCCEED" : "FAILED");
 
   if (successAllegroPalmPlan) {
-    ros::Duration(20).sleep();
-
     allegroPalmMoveGroup.move();
     ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN GRASPING POSE");
     
-    // Esta mano no parece necesitar reajustar los dedos por el error en la función
-    // que relaciona joints con amplitud.
-    /*if (!moveFingersGrasp(pointsDistance, false)) 
-      std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";*/
-      
-    moveFingersGrasp(pointsDistance, true);
+    if (!moveFingersGrasp(pointsDistance, false)) 
+      std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";
 
     ROS_INFO("[AUROBOT] GRASP COMPLETED");
   }

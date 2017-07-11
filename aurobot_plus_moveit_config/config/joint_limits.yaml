@@ -123,83 +123,83 @@ joint_limits:
     has_acceleration_limits: false
     max_acceleration: 0
   l_allegro_joint_0:
-    has_velocity_limits: false
-    max_velocity: 0
+    has_velocity_limits: true
+    max_velocity: 7
     has_acceleration_limits: false
     max_acceleration: 0
   l_allegro_joint_1:
-    has_velocity_limits: false
-    max_velocity: 0
+    has_velocity_limits: true
+    max_velocity: 7
     has_acceleration_limits: false
     max_acceleration: 0
   l_allegro_joint_10:
-    has_velocity_limits: false
-    max_velocity: 0
+    has_velocity_limits: true
+    max_velocity: 7
     has_acceleration_limits: false
     max_acceleration: 0
   l_allegro_joint_11:
-    has_velocity_limits: false
-    max_velocity: 0
+    has_velocity_limits: true
+    max_velocity: 7
     has_acceleration_limits: false
     max_acceleration: 0
   l_allegro_joint_12:
-    has_velocity_limits: false
-    max_velocity: 0
+    has_velocity_limits: true
+    max_velocity: 7
     has_acceleration_limits: false
     max_acceleration: 0
   l_allegro_joint_13:
-    has_velocity_limits: false
-    max_velocity: 0
+    has_velocity_limits: true
+    max_velocity: 7
     has_acceleration_limits: false
     max_acceleration: 0
   l_allegro_joint_14:
-    has_velocity_limits: false
-    max_velocity: 0
+    has_velocity_limits: true
+    max_velocity: 7
     has_acceleration_limits: false
     max_acceleration: 0
   l_allegro_joint_15:
-    has_velocity_limits: false
-    max_velocity: 0
+    has_velocity_limits: true
+    max_velocity: 7
     has_acceleration_limits: false
     max_acceleration: 0
   l_allegro_joint_2:
-    has_velocity_limits: false
-    max_velocity: 0
+    has_velocity_limits: true
+    max_velocity: 7
     has_acceleration_limits: false
     max_acceleration: 0
   l_allegro_joint_3:
-    has_velocity_limits: false
-    max_velocity: 0
+    has_velocity_limits: true
+    max_velocity: 7
     has_acceleration_limits: false
     max_acceleration: 0
   l_allegro_joint_4:
-    has_velocity_limits: false
-    max_velocity: 0
+    has_velocity_limits: true
+    max_velocity: 7
     has_acceleration_limits: false
     max_acceleration: 0
   l_allegro_joint_5:
-    has_velocity_limits: false
-    max_velocity: 0
+    has_velocity_limits: true
+    max_velocity: 7
     has_acceleration_limits: false
     max_acceleration: 0
   l_allegro_joint_6:
-    has_velocity_limits: false
-    max_velocity: 0
+    has_velocity_limits: true
+    max_velocity: 7
     has_acceleration_limits: false
     max_acceleration: 0
   l_allegro_joint_7:
-    has_velocity_limits: false
-    max_velocity: 0
+    has_velocity_limits: true
+    max_velocity: 7
     has_acceleration_limits: false
     max_acceleration: 0
   l_allegro_joint_8:
-    has_velocity_limits: false
-    max_velocity: 0
+    has_velocity_limits: true
+    max_velocity: 7
     has_acceleration_limits: false
     max_acceleration: 0
   l_allegro_joint_9:
-    has_velocity_limits: false
-    max_velocity: 0
+    has_velocity_limits: true
+    max_velocity: 7
     has_acceleration_limits: false
     max_acceleration: 0
   pa10_blue_elbow_flex_joint:

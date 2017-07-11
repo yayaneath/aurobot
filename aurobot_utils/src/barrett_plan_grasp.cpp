@@ -198,7 +198,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
   // Transform the coordinates from the camera frame to the world
 
-  tf::Stamped<tf::Point> firstPointIn, secondPointIn, graspNormalIn;
+  tf::Stamped<tf::Point> firstPointIn, secondPointIn;
   firstPointIn.setX(inputGrasp->first_point_x);
   firstPointIn.setY(inputGrasp->first_point_y);
   firstPointIn.setZ(inputGrasp->first_point_z);
@@ -207,16 +207,10 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   secondPointIn.setY(inputGrasp->second_point_y);
   secondPointIn.setZ(inputGrasp->second_point_z);
   secondPointIn.frame_id_ = "/head_link";
-  graspNormalIn.setX(inputGrasp->grasp_normal_x);
-  graspNormalIn.setY(inputGrasp->grasp_normal_y);
-  graspNormalIn.setZ(inputGrasp->grasp_normal_z);
-  graspNormalIn.frame_id_ = "/head_link";
 
   Eigen::Vector3d firstPoint = transformPoint(firstPointIn, "/head_link",
     "/world");
   Eigen::Vector3d secondPoint = transformPoint(secondPointIn, "/head_link",
-    "/world");
-  Eigen::Vector3d graspNormal = transformPoint(graspNormalIn, "/head_link",
     "/world");
 
   visualTools->publishSphere(firstPoint, rviz_visual_tools::BLUE,
@@ -328,7 +322,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
   // Calculate grasper palm position and orientation
 
-  Eigen::Vector3d axeX, axeY, axeZ;
+  Eigen::Vector3d axeX, axeY, axeZ, graspNormal; // TODO: FIX THE GRASP NORMAL COMPUTATION
   Eigen::Vector3d worldNormal(0, 0, 1);
   Eigen::Vector3d midPoint((firstPoint[0] + secondPoint[0]) / 2.0,
     (firstPoint[1] + secondPoint[1]) / 2.0, 

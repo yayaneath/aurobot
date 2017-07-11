@@ -44,8 +44,8 @@
       <!-- BRAYAN (16-05-2017): Temporalmente puesto como una cabeza adelantada orientada hacia adelante. 
       -1.570796327 0 -1.570796327-->
       <!-- <origin xyz="0.045 -0.025 1.71" rpy="-2.2689280276 0 -1.570796327"/> -->
-      <!-- BRAYAN (04/07/2017): posicion a la izquierda -->
-      <origin xyz="0.69 1.366 1.765" rpy="-1.9722220548 0 3.1415926536"/>
+      <!-- BRAYAN (10/07/2017): posicion a la izquierda. Tiene rotado en Z unos 180 + 3 grados de desviacion -->
+      <origin xyz="0.717 1.5334 1.731" rpy="-1.9722220548 0 3.1590459461"/>
     </joint>
     <joint name="trunk_right_joint" type="fixed">
       <parent link="trunk_link"/>

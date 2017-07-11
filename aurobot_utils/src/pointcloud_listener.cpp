@@ -124,7 +124,6 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       graspPoints.compute();
 
       GraspConfiguration bestGrasp = graspPoints.getBestGrasp();
-      Eigen::Vector3f graspNormal = graspPoints.getGraspNormal();
 
       // Center point axis
       Eigen::Vector3f firstPoint(bestGrasp.firstPoint.x, bestGrasp.firstPoint.y, bestGrasp.firstPoint.z);
@@ -145,6 +144,8 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       pcl::ModelCoefficients objAxisCoeff = graspPoints.getObjectAxisCoeff();
       viewer->addLine(objAxisCoeff, std::string(objectLabel + "Object axis vector"));
 
+      std::cout << "Obj axis: " << objAxisCoeff << "\n";
+
       viewer->addPointCloud<pcl::PointXYZRGB>(objectCloud, rgb, objectLabel + "Object");
       viewer->addSphere(bestGrasp.firstPoint, 0.01, 0, 255, 255,
         objectLabel + "First best grasp point");
@@ -163,9 +164,12 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
         msg.second_point_x = bestGrasp.secondPoint.x;
         msg.second_point_y = bestGrasp.secondPoint.y;
         msg.second_point_z = bestGrasp.secondPoint.z;
-        msg.grasp_normal_x = graspNormal[0];
-        msg.grasp_normal_y = graspNormal[1];
-        msg.grasp_normal_z = graspNormal[2];
+        msg.obj_axis_coeff_0 = objAxisCoeff.values[0];
+        msg.obj_axis_coeff_1 = objAxisCoeff.values[1];
+        msg.obj_axis_coeff_2 = objAxisCoeff.values[2];
+        msg.obj_axis_coeff_3 = objAxisCoeff.values[3];
+        msg.obj_axis_coeff_4 = objAxisCoeff.values[4];
+        msg.obj_axis_coeff_5 = objAxisCoeff.values[5];
         pcl::toROSMsg<pcl::PointXYZRGB>(*objectCloud, msg.object_cloud);
 
         pub.publish(msg);

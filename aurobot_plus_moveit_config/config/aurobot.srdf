@@ -165,6 +165,15 @@
         <joint name="l_allegro_joint_8" value="0" />
         <joint name="l_allegro_joint_9" value="0" />
     </group_state>
+    <group_state name="right_pa10_home" group="r_arm">
+        <joint name="pa10_blue_elbow_flex_joint" value="0" />
+        <joint name="pa10_blue_forearm_roll_joint" value="0" />
+        <joint name="pa10_blue_shoulder_lift_joint" value="1.05" />
+        <joint name="pa10_blue_shoulder_roll_joint" value="0" />
+        <joint name="pa10_blue_upper_arm_roll_joint" value="0" />
+        <joint name="pa10_blue_wrist_flex_joint" value="0" />
+        <joint name="pa10_blue_wrist_roll_joint" value="0" />
+    </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="r_hand" parent_link="forearm" group="r_hand" parent_group="r_arm" />
     <end_effector name="r_palm" parent_link="palm" group="r_fingers" />

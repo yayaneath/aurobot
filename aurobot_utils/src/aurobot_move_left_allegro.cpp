@@ -29,10 +29,10 @@ void jointsCallback(const sensor_msgs::JointStateConstPtr & inputJointsMsg) {
       sameState = false;
   }
 
-  if (sameState) {
+  /*if (sameState) {
     std::cout << "WE KEEP SAME POSITION\n";
     return;
-  }
+  }*/
 
   LAST_STATE = state;
 

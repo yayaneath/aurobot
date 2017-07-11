@@ -18,7 +18,7 @@
     <link name="profiles_link">
       <inertial>
         <mass value="12.43"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 0.006" rpy="0 0 0"/> <!-- BRAYAN (10/07/2017): Se suma 0.006m de las patas de goma -->
         <inertia ixx="0.00"  ixy="0.00"  ixz="0.00" iyy="0.00" iyz="0.00" izz="0.00"/>
       </inertial>
       <visual>
