@@ -81,18 +81,18 @@
   
   <!-- JR3 left -->
   <link name="l_jr3_link">
-  <inertial>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <mass value="0.40"/>
-    <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500"/>
-  </inertial>
-  <visual>
-    <geometry>
-    <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.40"/>
+      <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500"/>
+    </inertial>
+    <visual>
+      <geometry>
+      <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
       <geometry>
         <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
       </geometry>
@@ -102,7 +102,9 @@
   <joint name="l_jr3_joint" type="fixed">
     <parent link="l_jr3_link"/>
     <child link="l_allegro_base_link"/>
-    <origin xyz="0 0 0.1" rpy="0 0 3.1415926536"/>
+      <!-- BRAYAN (12/07/2017): Medimos y no tiene 10cm, son 4.7cm goma + jr3 + placa
+       <origin xyz="0 0 0.1" rpy="0 0 3.1415926536"/> -->
+    <origin xyz="0 0 0.047" rpy="0 0 3.1415926536"/>
   </joint>
 
   <!-- Allegro left hand -->
@@ -115,18 +117,18 @@
 
   <!-- JR3 right -->
   <link name="r_jr3_link">
-  <inertial>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <mass value="0.40"/>
-    <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500"/>
-  </inertial>
-  <visual>
-    <geometry>
-    <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
-    </geometry>
-    <material name="black"/>
-  </visual>
-  <collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.40"/>
+      <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500"/>
+    </inertial>
+    <visual>
+      <geometry>
+      <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
       <geometry>
         <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
       </geometry>

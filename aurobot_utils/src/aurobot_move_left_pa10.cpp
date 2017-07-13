@@ -11,6 +11,8 @@
 #include <pa10/pa10_wrapper.h>
 
 std::vector<float> LAST_STATE(7, 0.0);
+PA10Wrapper pa10(62005);
+bool braked = false;
 
 void jointsCallback(const sensor_msgs::JointStateConstPtr & inputJointsMsg) {
   std::cout << "########################\n";
@@ -33,7 +35,18 @@ void jointsCallback(const sensor_msgs::JointStateConstPtr & inputJointsMsg) {
 
   if (sameState) {
     std::cout << "WE KEEP SAME POSITION\n";
+
+    if (!braked) {
+      pa10.disarm();
+      braked = true;
+    }
+
     return;
+  }
+
+  if (braked) {
+    pa10.arm();
+    braked = false;
   }
 
   LAST_STATE = state;
@@ -43,8 +56,6 @@ void jointsCallback(const sensor_msgs::JointStateConstPtr & inputJointsMsg) {
 
   std::cout << "Moving to...\n" << angulars << "\n";
   
-  PA10Wrapper pa10(62005);
-  pa10.arm();
   pa10.setVel(0.1);
   pa10.goTo(angulars);
 

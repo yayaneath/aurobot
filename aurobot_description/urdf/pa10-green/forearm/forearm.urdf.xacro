@@ -41,7 +41,7 @@
       <child link="pa10_green_wrist_roll_link"/>
       <origin xyz="0 0 0.05" rpy="0 0 0"/>
       <axis xyz="0 1 0"/>
-      <limit effort="1000.0" lower="-2.88" upper="2.88" velocity="0.628"/>
+      <limit effort="1000.0" lower="-2.8797932658" upper="2.8797932658" velocity="0.628"/>
       <cfm>0.7</cfm>
     </joint>
     
@@ -69,9 +69,11 @@
     <joint name="pa10_green_wrist_roll_joint" type="revolute">
       <parent link="pa10_green_wrist_roll_link"/>
       <child link="${child}"/>
-      <origin xyz="0 0 0.050" rpy="0 0 0"/>
+      <!-- BRAYAN (12/07/2017): Segun el manual nos falta 0.03 <origin xyz="0 0 0.050" rpy="0 0 0"/> -->
+      <origin xyz="0 0 0.080" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
-      <limit effort="1000.0" lower="-2.0" upper="2.28" velocity="0.628"/>
+      <!-- BRAYAN (13/07/2017): gran cambio en lower y upper, casi el doble hemos puesto -->
+      <limit effort="1000.0" lower="-6.2831853072" upper="6.2831853072" velocity="0.628"/>
       <cfm>0.7</cfm>
     </joint>
 

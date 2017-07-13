@@ -37,9 +37,10 @@
     <joint name="pa10_green_shoulder_roll_joint" type="revolute">
       <parent link="pa10_green_shoulder_roll_link"/>
       <child link="pa10_green_shoulder_lift_link"/>
-      <origin xyz="0 0 0.201" rpy="0 0 0"/>
+      <!-- BRAYAN (12/07/2017): Segun el manual nos sobra 0.001 <origin xyz="0 0 0.201" rpy="0 0 0"/> -->
+      <origin xyz="0 0 0.20" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
-      <limit effort="1000.0" lower="-3.09" upper="3.09" velocity="0.1"/> 
+      <limit effort="1000.0" lower="-3.089232776" upper="3.089232776" velocity="0.1"/> 
       <cfm>0.7</cfm>
       <damping>10.0</damping>
     </joint>
@@ -70,7 +71,7 @@
       <child link="pa10_green_upper_arm_roll_link"/>
       <origin xyz="0 0 0.115" rpy="0 0 0"/>
       <axis xyz="0 1 0"/>
-      <limit effort="1000.0" lower="-1.59" upper="1.59" velocity="0.1"/>
+      <limit effort="1000.0" lower="-1.5882496193" upper="1.5882496193" velocity="0.1"/>
       <cfm>0.7</cfm>
       <damping>10.0</damping>
     </joint>
@@ -99,7 +100,7 @@
       <child link="${child}"/>
       <axis xyz="0 0 1"/>
       <origin xyz="0 0 0.325" rpy="0 0 0"/>
-      <limit effort="1000.0" lower="-3.04" upper="3.04" velocity="0.2"/>
+      <limit effort="1000.0" lower="-3.0368728985" upper="3.0368728985" velocity="0.2"/>
       <cfm>0.7</cfm>
       <damping>10.0</damping>
     </joint>

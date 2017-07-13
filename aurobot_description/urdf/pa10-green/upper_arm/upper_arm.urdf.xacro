@@ -41,7 +41,7 @@
       <child link="pa10_green_forearm_roll_link"/>
       <origin xyz="0 0 0.125" rpy="0 0 0"/>
       <axis xyz="0 1 0"/>
-      <limit effort="1000.0" lower="-2.39" upper="2.39" velocity="0.2"/>
+      <limit effort="1000.0" lower="-2.3911010752" upper="2.3911010752" velocity="0.2"/>
       <cfm>0.7</cfm>
       <damping>10.0</damping>
     </joint>
@@ -70,7 +70,8 @@
       <child link="${child}"/>
       <axis xyz="0 0 1"/>
       <origin xyz="0 0 0.450" rpy="0 0 0"/>
-      <limit effort="1000.0" lower="-2.0" upper="2.0" velocity="0.628"/>
+      <!-- BRAYAN (13/07/2017): gran cambio en lower y upper, casi el doble hemos puesto -->
+      <limit effort="1000.0" lower="-4.4505895926" upper="4.4505895926" velocity="0.628"/>
     </joint>
     
     <!-- extensions-->

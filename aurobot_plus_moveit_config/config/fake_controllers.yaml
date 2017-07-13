@@ -195,3 +195,17 @@ controller_list:
       - l_allegro_joint_9
       - l_allegro_joint_10
       - l_allegro_joint_11
+  - name: fake_l_three_finger_grasp_controller
+    joints:
+      - l_allegro_joint_0
+      - l_allegro_joint_1
+      - l_allegro_joint_2
+      - l_allegro_joint_3
+      - l_allegro_joint_12
+      - l_allegro_joint_13
+      - l_allegro_joint_14
+      - l_allegro_joint_15
+      - l_allegro_joint_4
+      - l_allegro_joint_5
+      - l_allegro_joint_6
+      - l_allegro_joint_7

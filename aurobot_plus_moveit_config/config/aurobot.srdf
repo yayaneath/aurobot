@@ -137,6 +137,11 @@
         <group name="l_ring_finger" />
         <group name="l_thumb" />
     </group>
+    <group name="l_three_finger_grasp">
+        <group name="l_first_finger" />
+        <group name="l_middle_finger" />
+        <group name="l_thumb" />
+    </group>
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
     <group_state name="left_pa10_home" group="l_arm">
         <joint name="pa10_green_elbow_flex_joint" value="0" />
@@ -173,6 +178,15 @@
         <joint name="pa10_blue_upper_arm_roll_joint" value="0" />
         <joint name="pa10_blue_wrist_flex_joint" value="0" />
         <joint name="pa10_blue_wrist_roll_joint" value="0" />
+    </group_state>
+    <group_state name="pregrasp" group="l_arm">
+        <joint name="pa10_green_elbow_flex_joint" value="1.9698" />
+        <joint name="pa10_green_forearm_roll_joint" value="-2" />
+        <joint name="pa10_green_shoulder_lift_joint" value="-1.59" />
+        <joint name="pa10_green_shoulder_roll_joint" value="-3.09" />
+        <joint name="pa10_green_upper_arm_roll_joint" value="0" />
+        <joint name="pa10_green_wrist_flex_joint" value="0" />
+        <joint name="pa10_green_wrist_roll_joint" value="0" />
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="r_hand" parent_link="forearm" group="r_hand" parent_group="r_arm" />

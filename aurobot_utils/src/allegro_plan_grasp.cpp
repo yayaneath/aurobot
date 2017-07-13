@@ -31,9 +31,13 @@ const std::string MIDDLE_PLANNING_GROUP = "l_middle_finger";
 const std::string MIDDLE_END_EFFECTOR_LINK = "l_allegro_link_7_tip"; 
 const std::string THUMB_PLANNING_GROUP = "l_thumb";
 const std::string THUMB_END_EFFECTOR_LINK = "l_allegro_link_15_tip";
+
+const std::string ALLEGRO_HAND_PLANNING_GROUP = "l_hand";
+const std::string THREE_FINGER_PLANNING_GROUP = "l_three_finger_grasp";
 const std::string PALM_PLANNING_GROUP = "l_armpalm";
-const std::string PALM_END_EFFECTOR_LINK = "l_allegro_base_link"; 
-const double FINGERS_POSITION_PREGRASP_DIFF = 0.15;
+const std::string PALM_END_EFFECTOR_LINK = "l_allegro_base_link";
+
+const std::string COLLISION_OBJECT_ID = "grasping_object";
 
 
 // 
@@ -141,70 +145,88 @@ double getFingersJointPosition(double width) {
 //  This functions positions the fingers second joint regarding the object's width.
 //
 
-bool moveFingersGrasp(double objectWidth, bool isPregrasp) {
+bool moveAllegroPregrasp() {
+  moveit::planning_interface::MoveGroupInterface fingersMoveGroup(ALLEGRO_HAND_PLANNING_GROUP);
+  moveit::planning_interface::MoveGroupInterface::Plan fingersPlan;
+  std::vector<double> fingersJointsValues;
+  bool planSuccess = false;
+
+  // First finger
+  fingersJointsValues.push_back(0.0); // l_allegro_joint_0
+  fingersJointsValues.push_back(0.0); // l_allegro_joint_1
+  fingersJointsValues.push_back(0.0); // l_allegro_joint_2
+  fingersJointsValues.push_back(0.0); // l_allegro_joint_3
+  
+  // Thumb
+  fingersJointsValues.push_back(1.4968131524486665); // l_allegro_joint_12
+  fingersJointsValues.push_back(0.0); // l_allegro_joint_13
+  fingersJointsValues.push_back(0.0); // l_allegro_joint_14
+  fingersJointsValues.push_back(0.0); // l_allegro_joint_15
+  
+  // Middle finger
+  fingersJointsValues.push_back(0.0); // l_allegro_joint_4
+  fingersJointsValues.push_back(0.0); // l_allegro_joint_5
+  fingersJointsValues.push_back(0.0); // l_allegro_joint_6
+  fingersJointsValues.push_back(0.0); // l_allegro_joint_7
+  
+  // Ring finger
+  fingersJointsValues.push_back(0.0); // l_allegro_joint_8
+  fingersJointsValues.push_back(0.0); // l_allegro_joint_9
+  fingersJointsValues.push_back(0.0); // l_allegro_joint_10
+  fingersJointsValues.push_back(0.0); // l_allegro_joint_11
+
+  fingersMoveGroup.setJointValueTarget(fingersJointsValues);
+
+  planSuccess = fingersMoveGroup.plan(fingersPlan);
+
+  if(!planSuccess){
+    std::cout << "[ERROR] Fingers planning for joint poisition failed!\n";
+    return false;
+  }
+
+  fingersMoveGroup.move();
+
+  return true;
+}
+
+bool moveFingersGrasp(double objectWidth) {
   double fingersJointPosition = getFingersJointPosition(objectWidth);
   double thumbJointPosition = getThumbJointPosition(objectWidth);
 
-  if (isPregrasp) { // A little bit open so we later finish the grasp
-    fingersJointPosition -= FINGERS_POSITION_PREGRASP_DIFF;
-    thumbJointPosition -= FINGERS_POSITION_PREGRASP_DIFF;
-  }
+  moveit::planning_interface::MoveGroupInterface fingersMoveGroup(THREE_FINGER_PLANNING_GROUP);
+  moveit::planning_interface::MoveGroupInterface::Plan fingersPlan;
+  std::vector<double> fingersJointsValues;
+  bool planSuccess = false;
 
-  moveit::planning_interface::MoveGroupInterface firstMoveGroup(FIRST_PLANNING_GROUP);
-  moveit::planning_interface::MoveGroupInterface middleMoveGroup(MIDDLE_PLANNING_GROUP);
-  moveit::planning_interface::MoveGroupInterface thumbMoveGroup(THUMB_PLANNING_GROUP);
-  moveit::planning_interface::MoveGroupInterface::Plan firstPlan, middlePlan, thumbPlan;
-  std::vector<double> firstJointsValues, middleJointsValues, thumbJointsValues;
-  bool firstPlanSuccess = false, middlePlanSuccess = false, thumbPlanSuccess = false;
+  // First finger
+  fingersJointsValues.push_back(-0.1446); // l_allegro_joint_0
+  fingersJointsValues.push_back(fingersJointPosition); // l_allegro_joint_1
+  fingersJointsValues.push_back(0.6641); // l_allegro_joint_2
+  fingersJointsValues.push_back(0.5840); // l_allegro_joint_3
   
-  firstJointsValues.push_back(-0.1446); // l_allegro_joint_0
-  firstJointsValues.push_back(fingersJointPosition); // l_allegro_joint_1
-  firstJointsValues.push_back(0.6641); // l_allegro_joint_2
-  firstJointsValues.push_back(0.5840); // l_allegro_joint_3
-
-  firstMoveGroup.setJointValueTarget(firstJointsValues);
-  firstMoveGroup.setMaxVelocityScalingFactor(0.50);
-
-  firstPlanSuccess = firstMoveGroup.plan(firstPlan);
-
-  if(!firstPlanSuccess){
-    std::cout << "[ERROR] First finger planning for joint poisition failed!\n";
-    return false;
-  }
+  // Thumb
+  fingersJointsValues.push_back(1.3959); // l_allegro_joint_12
+  fingersJointsValues.push_back(0.0700); // l_allegro_joint_13
+  fingersJointsValues.push_back(thumbJointPosition); // l_allegro_joint_14
+  fingersJointsValues.push_back(0.7372); // l_allegro_joint_15
   
-  middleJointsValues.push_back(-0.1446); // l_allegro_joint_4
-  middleJointsValues.push_back(fingersJointPosition); // l_allegro_joint_5
-  middleJointsValues.push_back(0.6641); // l_allegro_joint_6
-  middleJointsValues.push_back(0.5840); // l_allegro_joint_7
-  
-  middleMoveGroup.setJointValueTarget(middleJointsValues);
-  middleMoveGroup.setMaxVelocityScalingFactor(0.50);
+  // Middle finger
+  fingersJointsValues.push_back(-0.1446); // l_allegro_joint_4
+  fingersJointsValues.push_back(fingersJointPosition); // l_allegro_joint_5
+  fingersJointsValues.push_back(0.6641); // l_allegro_joint_6
+  fingersJointsValues.push_back(0.5840); // l_allegro_joint_7
 
-  middlePlanSuccess = middleMoveGroup.plan(middlePlan);
+  fingersMoveGroup.setJointValueTarget(fingersJointsValues);
+  fingersMoveGroup.setMaxVelocityScalingFactor(0.50);
 
-  if(!middlePlanSuccess){
-    std::cout << "[ERROR] Second finger planning for joint poisition failed!\n";
-    return false;
-  }
-  
-  thumbJointsValues.push_back(1.3959); // l_allegro_joint_12
-  thumbJointsValues.push_back(0.0700); // l_allegro_joint_13
-  thumbJointsValues.push_back(thumbJointPosition); // l_allegro_joint_14
-  thumbJointsValues.push_back(0.7372); // l_allegro_joint_15
+  planSuccess = fingersMoveGroup.plan(fingersPlan);
 
-  thumbMoveGroup.setJointValueTarget(thumbJointsValues);
-  thumbMoveGroup.setMaxVelocityScalingFactor(0.50);
-  
-  thumbPlanSuccess = thumbMoveGroup.plan(thumbPlan);
-
-  if(!thumbPlanSuccess){
-    std::cout << "[ERROR] Third finger planning for joint poisition failed!\n";
+  if(!planSuccess){
+    std::cout << "[ERROR] Fingers planning for joint poisition failed!\n";
     return false;
   }
 
-  firstMoveGroup.move();
-  middleMoveGroup.move();
-  thumbMoveGroup.move();
+  fingersMoveGroup.move();
 
   return true;
 }
@@ -289,6 +311,7 @@ void drawReferencePoints(rviz_visual_tools::RvizVisualToolsPtr visualTools){
 void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   rviz_visual_tools::RvizVisualToolsPtr visualTools;
   visualTools.reset(new rviz_visual_tools::RvizVisualTools("/world", "/rviz_visual_markers"));
+  visualTools->trigger();
   moveit::planning_interface::MoveGroupInterface allegroPalmMoveGroup(PALM_PLANNING_GROUP);
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
@@ -319,8 +342,6 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   objAxisVectorIn.frame_id_ = "/head_link";
 
   Eigen::Vector3d objAxisVector = transformVector(objAxisVectorIn, "/head_link", "/world");
-
-  std::cout << "Obj axis:\n" << objAxisCenter << "\n" << objAxisVector << "\n"; 
 
   visualTools->publishSphere(firstPoint, rviz_visual_tools::BLUE, rviz_visual_tools::LARGE);
   visualTools->publishSphere(secondPoint, rviz_visual_tools::RED, rviz_visual_tools::LARGE);
@@ -379,16 +400,16 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   collisionObject.header.frame_id = allegroPalmMoveGroup.getPlanningFrame();
 
   // The id of the object is used to identify it.
-  collisionObject.id = "grasping_object";
+  collisionObject.id = COLLISION_OBJECT_ID;
 
   // Define a box to add to the world.
   shape_msgs::SolidPrimitive primitive;
   primitive.type = primitive.BOX;
   primitive.dimensions.resize(3);
   // Scaled a little bit down so the bounding box does not exceed the real object boundaries
-  primitive.dimensions[0] = 0.4 * std::abs(minBoundingPoint[0] - maxBoundingPoint[0]);
-  primitive.dimensions[1] = 0.4 * std::abs(minBoundingPoint[1] - maxBoundingPoint[1]);
-  primitive.dimensions[2] = 0.4 * std::abs(minBoundingPoint[2] - maxBoundingPoint[2]);
+  primitive.dimensions[0] = 0.6 * std::abs(minBoundingPoint[0] - maxBoundingPoint[0]);
+  primitive.dimensions[1] = 0.6 * std::abs(minBoundingPoint[1] - maxBoundingPoint[1]);
+  primitive.dimensions[2] = 0.6 * std::abs(minBoundingPoint[2] - maxBoundingPoint[2]);
 
   //Define a pose for the box (specified relative to frame_id)
   geometry_msgs::Pose boxPose;
@@ -411,7 +432,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   double pointsDistance = std::sqrt(std::pow(firstPoint[0] - secondPoint[0], 2) + 
       std::pow(firstPoint[1] - secondPoint[1], 2) + std::pow(firstPoint[2] - secondPoint[2], 2));
   
-  if (!moveFingersGrasp(pointsDistance*1.2, true)){
+  if (!moveFingersGrasp(pointsDistance)){
     std::cout << "[ERROR] Fingers movement for pregrasp pose failed!\n";
     return;
   }
@@ -450,20 +471,22 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
     axeY = aux;
   }
 
-  /*if (axeY[2] < 0) { // In case the axe is pointing up
-    std::cout << "Change 2 to Axe Y and Z\n";
+  axeY = -axeY; axeZ = -axeZ;
+
+  if (axeY[2] > 0) { // In case the axe is pointing up
+    std::cout << "Change 2 to Axe Y and X\n";
 
     axeY = -axeY;
-    axeZ = -axeZ;
-  }*/
+    axeX = -axeX;
+  }
 
   axeY.normalize();  axeZ.normalize();  axeX.normalize();
 
   Eigen::Affine3d midPointPose;
   Eigen::Matrix3d midPointRotation;
-  midPointRotation << axeX[0], -axeY[0], -axeZ[0], 
-                      axeX[1], -axeY[1], -axeZ[1],
-                      axeX[2], -axeY[2], -axeZ[2];
+  midPointRotation << axeX[0], axeY[0], axeZ[0], 
+                      axeX[1], axeY[1], axeZ[1],
+                      axeX[2], axeY[2], axeZ[2];
   midPointPose.translation() = midPoint;
   midPointPose.linear() = midPointRotation;
 
@@ -498,10 +521,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   visualTools->publishAxis(allegroMidPointPose, rviz_visual_tools::MEDIUM);
   visualTools->trigger();
 
-  //moveFingersGrasp(pointsDistance * 1.1, true);
-
-  std::cout << "PRESS ENTER TO CONTINUE\n";
-  std::getchar();
+  moveAllegroPregrasp();
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Moving arm + palm and close grasp
@@ -514,17 +534,27 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   allegroPalmMoveGroup.setPlanningTime(5.0);
   allegroPalmMoveGroup.setNumPlanningAttempts(10);
   allegroPalmMoveGroup.setMaxVelocityScalingFactor(0.50);
-  allegroPalmMoveGroup.setMaxAccelerationScalingFactor(1.0);
+  allegroPalmMoveGroup.setMaxAccelerationScalingFactor(0.50);
 
   successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
 
   ROS_INFO("Palm plan %s", successAllegroPalmPlan ? "SUCCEED" : "FAILED");
 
   if (successAllegroPalmPlan) {
+    std::cout << "PRESS ENTER TO MOVE PA10\n";
+    std::getchar();
+
     allegroPalmMoveGroup.move();
     ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN GRASPING POSE");
     
-    if (!moveFingersGrasp(pointsDistance, false)) 
+    std::cout << "PRESS ENTER TO GRASP\n";
+    std::getchar();
+
+    std::vector<std::string> objectId;
+    objectId.push_back(COLLISION_OBJECT_ID);
+    planningSceneInterface.removeCollisionObjects(objectId);
+
+    if (!moveFingersGrasp(pointsDistance)) 
       std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";
 
     ROS_INFO("[AUROBOT] GRASP COMPLETED");

@@ -57,8 +57,8 @@
   <xacro:property name="limit_3_up" value="1.718" />
   <xacro:property name="limit_3_low" value=" -0.327" />
 
-  <xacro:property name="limit_0_t_up" value="1.496" />
-  <xacro:property name="limit_0_t_low" value="0.363" />
+  <xacro:property name="limit_0_t_up" value="1.4968131524486665" />
+  <xacro:property name="limit_0_t_low" value="0.3635738998060688" />
   <xacro:property name="limit_1_t_up" value="1.263" />
   <xacro:property name="limit_1_t_low" value="-0.205" />
   <xacro:property name="limit_2_t_up" value="1.744" />
@@ -105,7 +105,8 @@
     
     <joint name="l_allegro_joint_${finger_num*4}" type="revolute">
       <axis xyz="+1 0 0"/>
-      <limit effort="15" velocity="7" lower="${limit_0_t_low-joint_safety_margin}" upper="${limit_0_t_up-joint_safety_margin}" />
+      <!-- <limit effort="15" velocity="7" lower="${limit_0_t_low-joint_safety_margin}" upper="${limit_0_t_up-joint_safety_margin}" /> -->
+      <limit effort="15" velocity="7" lower="${limit_0_t_low}" upper="${limit_0_t_up}" />
       <parent link="l_allegro_base_link"/>
       <child link="l_allegro_link_${finger_num*4+0}"/>
       <origin rpy="${finger_angle_r} ${finger_angle_p} ${finger_angle_y}" xyz="${offset_origin_x} ${offset_origin_y} ${offset_origin_z}"/>  
