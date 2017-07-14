@@ -43,9 +43,11 @@
       <child link="${head_child}"/>
       <!-- BRAYAN (16-05-2017): Temporalmente puesto como una cabeza adelantada orientada hacia adelante -->
       <!-- <origin xyz="0.045 -0.025 1.71" rpy="-2.2689280276 0 -1.570796327"/> -->
-      <!-- BRAYAN (10/07/2017): posicion a la izquierda. Tiene en Roll (X) 109 negativos.
-        Tiene rotado en Yaw (Z) unos 180 + 1 grados de desviacion -->
-      <origin xyz="0.71 1.526 1.793" rpy="-2.0071286398 0 3.1538099584"/>
+      <!-- BRAYAN (14/07/2017): posicion a la izquierda.
+        Tiene en Roll (X) 112.4 negativos.
+        Tiene en Pitch (Y) 0.
+        Tiene en Yaw (Z) unos 175.7 grados de desviacion -->
+      <origin xyz="0.775 1.540 1.733" rpy="-1.9634954085 0 3.0665434958"/>
     </joint>
     <joint name="trunk_right_joint" type="fixed">
       <parent link="trunk_link"/>

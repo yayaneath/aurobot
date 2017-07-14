@@ -40,6 +40,25 @@ const std::string PALM_END_EFFECTOR_LINK = "l_allegro_base_link";
 const std::string COLLISION_OBJECT_ID = "grasping_object";
 
 
+/* PREGRASP PARA EL BRAZO
+name: ['pa10_green_shoulder_roll_joint', 'pa10_green_shoulder_lift_joint', 'pa10_green_upper_arm_roll_joint', 
+'pa10_green_elbow_flex_joint', 'pa10_green_forearm_roll_joint', 'pa10_green_wrist_flex_joint', 
+'pa10_green_wrist_roll_joint', 'l_allegro_joint_12', 'l_allegro_joint_13', 'l_allegro_joint_14', 
+'l_allegro_joint_15', 'l_allegro_joint_8', 'l_allegro_joint_9', 'l_allegro_joint_10', 'l_allegro_joint_11', 
+'l_allegro_joint_4', 'l_allegro_joint_5', 'l_allegro_joint_6', 'l_allegro_joint_7', 'l_allegro_joint_0', 
+'l_allegro_joint_1', 'l_allegro_joint_2', 'l_allegro_joint_3', 'pa10_blue_shoulder_roll_joint', 
+'pa10_blue_shoulder_lift_joint', 'pa10_blue_upper_arm_roll_joint', 'pa10_blue_elbow_flex_joint', 
+'pa10_blue_forearm_roll_joint', 'pa10_blue_wrist_flex_joint', 'pa10_blue_wrist_roll_joint', 'WRJ2', 'WRJ1', 'FFJ4', 
+'FFJ3', 'FFJ2', 'FFJ1', 'MFJ4', 'MFJ3', 'MFJ2', 'MFJ1', 'RFJ4', 'RFJ3', 'RFJ2', 'RFJ1', 'LFJ5', 'LFJ4', 'LFJ3', 
+'LFJ2', 'LFJ1', 'THJ5', 'THJ4', 'THJ3', 'THJ2', 'THJ1']
+position: [-0.39501526247481616, 0.783829417742977, 1.3926185444240184, -0.8339432724677648, 4.020341569198964, 
+0.6141949835704216, -3.5589956365624116, 0.3635738998060001, -2.956993915140629e-05, 3.2753014657646424e-05, 
+3.212741934694351e-05, 7.999491612426938e-05, -3.394329003058375e-05, 1.567064370028675e-05, 6.98618661146611e-05, 
+9.431893564760685e-05, 2.1826591156423093e-05, 3.579758736304939e-05, 6.723192846402526e-06, 5.145225096493961e-05, 
+4.858152368105948e-05, -1.3675045734271412e-05, 9.300455474294722e-05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
+0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+*/
+
 // 
 // AUXLIIAR SCENE COLLISIONS PUBLISHER
 // 
@@ -407,9 +426,9 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   primitive.type = primitive.BOX;
   primitive.dimensions.resize(3);
   // Scaled a little bit down so the bounding box does not exceed the real object boundaries
-  primitive.dimensions[0] = 0.6 * std::abs(minBoundingPoint[0] - maxBoundingPoint[0]);
-  primitive.dimensions[1] = 0.6 * std::abs(minBoundingPoint[1] - maxBoundingPoint[1]);
-  primitive.dimensions[2] = 0.6 * std::abs(minBoundingPoint[2] - maxBoundingPoint[2]);
+  primitive.dimensions[0] = 0.8 * std::abs(minBoundingPoint[0] - maxBoundingPoint[0]);
+  primitive.dimensions[1] = 0.8 * std::abs(minBoundingPoint[1] - maxBoundingPoint[1]);
+  primitive.dimensions[2] = 0.8 * std::abs(minBoundingPoint[2] - maxBoundingPoint[2]);
 
   //Define a pose for the box (specified relative to frame_id)
   geometry_msgs::Pose boxPose;
@@ -502,8 +521,8 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   allegroMiddle = transformPoint(allegroMiddleIn, "/world", "/l_allegro_base_link");
 
-  // Moving the pose backwards 
-  Eigen::Vector3d midPointCentered = -allegroMiddle;
+  // Moving the pose backwards to set the palm position 
+  Eigen::Vector3d midPointCentered(-allegroMiddle[0] + 0.02, -allegroMiddle[1], -allegroMiddle[2]);
   tf::Transform midPointTransform;
   tf::Vector3 midPointTF, midPointTFed;
 
@@ -521,6 +540,34 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   visualTools->publishAxis(allegroMidPointPose, rviz_visual_tools::MEDIUM);
   visualTools->trigger();
 
+  // Pregrasp pose, a litle bit further
+  Eigen::Vector3d midPointCenteredPregrasp(-allegroMiddle[0] - 0.1, -allegroMiddle[1], -allegroMiddle[2]);
+
+  tf::vectorEigenToTF(midPointCenteredPregrasp, midPointTF);
+  midPointTFed = midPointTransform(midPointTF);
+  tf::vectorTFToEigen(midPointTFed, midPointCenteredPregrasp);
+
+  Eigen::Affine3d allegroMidPointPregraspPose = midPointPose;
+  allegroMidPointPregraspPose.translation() = midPointCenteredPregrasp;
+
+  visualTools->publishSphere(midPointCenteredPregrasp, rviz_visual_tools::ORANGE, rviz_visual_tools::LARGE);
+  visualTools->publishAxis(allegroMidPointPregraspPose, rviz_visual_tools::MEDIUM);
+  visualTools->trigger();
+
+  // Postgrasp pose, a litle bit upwards
+  Eigen::Vector3d midPointCenteredPostgrasp(-allegroMiddle[0], -allegroMiddle[1] - 0.15, -allegroMiddle[2]);
+
+  tf::vectorEigenToTF(midPointCenteredPostgrasp, midPointTF);
+  midPointTFed = midPointTransform(midPointTF);
+  tf::vectorTFToEigen(midPointTFed, midPointCenteredPostgrasp);
+
+  Eigen::Affine3d allegroMidPointPostgraspPose = midPointPose;
+  allegroMidPointPostgraspPose.translation() = midPointCenteredPostgrasp;
+
+  visualTools->publishSphere(midPointCenteredPostgrasp, rviz_visual_tools::WHITE, rviz_visual_tools::LARGE);
+  visualTools->publishAxis(allegroMidPointPostgraspPose, rviz_visual_tools::MEDIUM);
+  visualTools->trigger();
+
   moveAllegroPregrasp();
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
@@ -529,7 +576,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   moveit::planning_interface::MoveGroupInterface::Plan allegroPalmPlan;
   bool successAllegroPalmPlan = false;
 
-  allegroPalmMoveGroup.setPoseTarget(allegroMidPointPose, PALM_END_EFFECTOR_LINK);
+  allegroPalmMoveGroup.setPoseTarget(allegroMidPointPregraspPose, PALM_END_EFFECTOR_LINK);
   allegroPalmMoveGroup.setPlannerId("TRRTkConfigDefault");
   allegroPalmMoveGroup.setPlanningTime(5.0);
   allegroPalmMoveGroup.setNumPlanningAttempts(10);
@@ -538,26 +585,51 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
 
-  ROS_INFO("Palm plan %s", successAllegroPalmPlan ? "SUCCEED" : "FAILED");
+  ROS_INFO("Palm pregrasp plan %s", successAllegroPalmPlan ? "SUCCEED" : "FAILED");
 
-  if (successAllegroPalmPlan) {
-    std::cout << "PRESS ENTER TO MOVE PA10\n";
+  if (successAllegroPalmPlan) { // Successful plan for the pre grasping arm position
+    std::cout << "PRESS ENTER TO MOVE PA10 TO PREGRASPING POSE\n";
     std::getchar();
 
     allegroPalmMoveGroup.move();
-    ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN GRASPING POSE");
-    
-    std::cout << "PRESS ENTER TO GRASP\n";
-    std::getchar();
+    ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN PREGRASPING POSE");
 
-    std::vector<std::string> objectId;
-    objectId.push_back(COLLISION_OBJECT_ID);
-    planningSceneInterface.removeCollisionObjects(objectId);
+    allegroPalmMoveGroup.setPoseTarget(allegroMidPointPose, PALM_END_EFFECTOR_LINK);
+    successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
 
-    if (!moveFingersGrasp(pointsDistance)) 
-      std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";
+    ROS_INFO("Palm grasp plan %s", successAllegroPalmPlan ? "SUCCEED" : "FAILED");
 
-    ROS_INFO("[AUROBOT] GRASP COMPLETED");
+    if (successAllegroPalmPlan) { // Successful plan for the grasping arm position
+      std::cout << "PRESS ENTER TO MOVE PA10 TO GRASPING POSE\n";
+      std::getchar();
+
+      allegroPalmMoveGroup.move();
+      ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN GRASPING POSE");
+      
+      std::cout << "PRESS ENTER TO GRASP\n";
+      std::getchar();
+
+      std::vector<std::string> objectId;
+      objectId.push_back(COLLISION_OBJECT_ID);
+      planningSceneInterface.removeCollisionObjects(objectId);
+
+      if (!moveFingersGrasp(pointsDistance)) 
+        std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";
+
+      ROS_INFO("[AUROBOT] GRASP COMPLETED");
+
+      allegroPalmMoveGroup.setPoseTarget(allegroMidPointPostgraspPose, PALM_END_EFFECTOR_LINK);
+      successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
+
+      ROS_INFO("Palm grasp plan %s", successAllegroPalmPlan ? "SUCCEED" : "FAILED");
+
+      if (successAllegroPalmPlan) { // Successful plan for the post grasping arm position
+        std::cout << "PRESS ENTER TO MOVE PA10 TO PREGRASPING POSE\n";
+        std::getchar();
+
+        allegroPalmMoveGroup.move();
+      }
+    }
   }
 
   ros::shutdown();
