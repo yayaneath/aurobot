@@ -480,26 +480,26 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   axeX = axeZ.cross(-objAxisVector);
   axeY = axeZ.cross(axeX);
 
-  if (graspCos < threshold && -axeY[0] >= 0) {
-    std::cout << "Change 1 to Axe X and Y\n";
+  axeY = -axeY;
+  axeZ = -axeZ;
 
-    Eigen::Vector3d aux;
+  if (axeX[2] > 0) { // In case the axe is pointing up
+    std::cout << "Change to Axe Z and X (palm pointing up)\n";
 
-    aux = axeX;
-    axeX = -axeY;
-    axeY = aux;
-  }
-
-  axeY = -axeY; axeZ = -axeZ;
-
-  if (axeY[2] > 0) { // In case the axe is pointing up
-    std::cout << "Change 2 to Axe Y and X\n";
-
-    axeY = -axeY;
+    axeZ = -axeZ;
     axeX = -axeX;
   }
 
-  axeY.normalize();  axeZ.normalize();  axeX.normalize();
+  if (graspCos < threshold && axeZ[0] <= 0) {
+    std::cout << "Change to Axe Y and Z (reverse fingers)\n";
+    
+    axeY = -axeY;
+    axeZ = -axeZ;
+  }
+  
+  axeX.normalize();
+  axeY.normalize();
+  axeZ.normalize();    
 
   Eigen::Affine3d midPointPose;
   Eigen::Matrix3d midPointRotation;
@@ -522,7 +522,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   allegroMiddle = transformPoint(allegroMiddleIn, "/world", "/l_allegro_base_link");
 
   // Moving the pose backwards to set the palm position 
-  Eigen::Vector3d midPointCentered(-allegroMiddle[0] + 0.02, -allegroMiddle[1], -allegroMiddle[2]);
+  Eigen::Vector3d midPointCentered(-allegroMiddle[0] + 0.015, -allegroMiddle[1], -allegroMiddle[2]);
   tf::Transform midPointTransform;
   tf::Vector3 midPointTF, midPointTFed;
 
@@ -555,11 +555,8 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   visualTools->trigger();
 
   // Postgrasp pose, a litle bit upwards
-  Eigen::Vector3d midPointCenteredPostgrasp(-allegroMiddle[0], -allegroMiddle[1] - 0.15, -allegroMiddle[2]);
-
-  tf::vectorEigenToTF(midPointCenteredPostgrasp, midPointTF);
-  midPointTFed = midPointTransform(midPointTF);
-  tf::vectorTFToEigen(midPointTFed, midPointCenteredPostgrasp);
+  // TODO: ESTE PODRÍA SER SUMARLE (0, 0, 0.15) AL VECTOR EN EL MUNDO
+  Eigen::Vector3d midPointCenteredPostgrasp = midPointCentered + Eigen::Vector3d(0, 0, 0.15);
 
   Eigen::Affine3d allegroMidPointPostgraspPose = midPointPose;
   allegroMidPointPostgraspPose.translation() = midPointCenteredPostgrasp;
