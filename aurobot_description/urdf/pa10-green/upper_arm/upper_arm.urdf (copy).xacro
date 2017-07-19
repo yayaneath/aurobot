@@ -18,17 +18,19 @@
     <!-- E1: Elbow flex -->
     <link name="pa10_green_elbow_flex_link">
       <inertial>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 0.47" rpy="0 0 0"/>
         <mass value="3.51"/>
         <inertia ixx="0.032979"  ixy="0.000005"  ixz="0.000002" iyy="0.017031" iyz="0.000027" izz="0.022417"/>
       </inertial>
       <visual>
+        <origin xyz="0 0 0.125" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://aurobot_description/meshes/pa10-green/upper_arm/E1.dae"/>
         </geometry>
         <material name="green"/>
       </visual>
       <collision>
+        <origin xyz="0 0 0.125" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://aurobot_description/meshes/pa10-green/upper_arm/E1.stl"/>
         </geometry>
@@ -37,9 +39,9 @@
     <joint name="pa10_green_elbow_flex_joint" type="revolute">
       <parent link="pa10_green_elbow_flex_link"/>
       <child link="pa10_green_forearm_roll_link"/>
-      <origin xyz="0 0 0.264" rpy="0 0 0"/>
+      <origin xyz="0 0 0.125" rpy="0 0 0"/>
       <axis xyz="0 1 0"/>
-      <limit effort="1000.0" lower="-2.3911010752" upper="2.3911010752" velocity="0.2"/>
+      <limit effort="1000.0" lower="-2.39" upper="2.39" velocity="0.2"/>
       <cfm>0.7</cfm>
       <damping>10.0</damping>
     </joint>
@@ -47,7 +49,7 @@
     <!-- E2: Forearm_roll -->
     <link name="pa10_green_forearm_roll_link">
       <inertial>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 -0.046 0" rpy="0 0 0"/>
         <mass value="4.31"/>
         <inertia ixx="0.051762"  ixy="-0.000577"  ixz="0.000005" iyy="0.006329" iyz="0.000005" izz="0.051407"/>
       </inertial>
@@ -67,9 +69,8 @@
       <parent link="pa10_green_forearm_roll_link"/>
       <child link="${child}"/>
       <axis xyz="0 0 1"/>
-      <origin xyz="0 0 0.261" rpy="0 0 0"/>
-      <!-- BRAYAN (13/07/2017): gran cambio en lower y upper, casi el doble hemos puesto -->
-      <limit effort="1000.0" lower="-4.4505895926" upper="4.4505895926" velocity="0.628"/>
+      <origin xyz="0 0 0.450" rpy="0 0 0"/>
+      <limit effort="1000.0" lower="-2.0" upper="2.0" velocity="0.628"/>
     </joint>
     
     <!-- extensions-->

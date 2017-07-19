@@ -41,13 +41,19 @@
     <joint name="trunk_head_joint" type="fixed">
       <parent link="trunk_link"/>
       <child link="${head_child}"/>
-      <!-- BRAYAN (16-05-2017): Temporalmente puesto como una cabeza adelantada orientada hacia adelante -->
+      <!-- BRAYAN (16/05/2017): Temporalmente puesto como una cabeza adelantada orientada hacia adelante -->
       <!-- <origin xyz="0.045 -0.025 1.71" rpy="-2.2689280276 0 -1.570796327"/> -->
-      <!-- BRAYAN (14/07/2017): posicion a la izquierda.
+
+      <!-- BRAYAN (14/07/2017): posicion a la izquierda buena para agarres de frente.
         Tiene en Roll (X) 112.4 negativos.
         Tiene en Pitch (Y) 0.
-        Tiene en Yaw (Z) unos 175.7 grados de desviacion -->
-      <origin xyz="0.775 1.540 1.733" rpy="-1.9634954085 0 3.0665434958"/>
+        Tiene en Yaw (Z) unos 175.7 grados de desviacion
+      <origin xyz="0.775 1.545 1.738" rpy="-1.9634954085 0 3.0665434958"/> 
+        Nueva prueba (19/07/2017):
+        Tiene en Roll (X) 112 negativos.
+        Tiene en Yaw (Z) unos 176.2 grados de desviacion
+      -->
+      <origin xyz="0.775 1.542 1.735" rpy="-1.9547687622 0 3.075270142"/>
     </joint>
     <joint name="trunk_right_joint" type="fixed">
       <parent link="trunk_link"/>

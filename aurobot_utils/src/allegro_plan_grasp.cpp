@@ -362,6 +362,9 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   Eigen::Vector3d objAxisVector = transformVector(objAxisVectorIn, "/head_link", "/world");
 
+  if (objAxisVector[2] < 0) // We need it always pointing upwards
+    objAxisVector = -objAxisVector;
+
   visualTools->publishSphere(firstPoint, rviz_visual_tools::BLUE, rviz_visual_tools::LARGE);
   visualTools->publishSphere(secondPoint, rviz_visual_tools::RED, rviz_visual_tools::LARGE);
   visualTools->publishSphere(objAxisCenter, rviz_visual_tools::GREY, rviz_visual_tools::LARGE);
@@ -469,9 +472,9 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   visualTools->trigger();
 
   Eigen::Vector3d axeX, axeY, axeZ;
-  Eigen::Vector3d worldNormal(0, 0, 1);
-  float threshold = 0.9, graspCos = std::abs((worldNormal.dot(objAxisVector)) / 
-    (worldNormal.norm() * objAxisVector.norm()));
+  Eigen::Vector3d worldZ(0, 0, 1), worldY(0, 1, 0);
+  float standingThreshold = 0.9, xAxisThreshold = 0.5, 
+    graspCos = std::abs((worldZ.dot(objAxisVector)) / (worldZ.norm() * objAxisVector.norm()));
 
   std::cout << "Cosine grasp - world: " << graspCos << "\n";
   
@@ -483,18 +486,23 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   axeY = -axeY;
   axeZ = -axeZ;
 
-  if (axeX[2] > 0) { // In case the axe is pointing up
-    std::cout << "Change to Axe Z and X (palm pointing up)\n";
-
-    axeZ = -axeZ;
+  if (graspCos < standingThreshold && axeZ[0] <= 0) {
+    std::cout << "Change to Axe X and Z (reverse fingers)\n";
+    
     axeX = -axeX;
+    axeZ = -axeZ;
   }
 
-  if (graspCos < threshold && axeZ[0] <= 0) {
-    std::cout << "Change to Axe Y and Z (reverse fingers)\n";
-    
-    axeY = -axeY;
-    axeZ = -axeZ;
+  // In case the object is standing up and the axe is pointing up
+  if (graspCos >= standingThreshold &&
+    std::abs((worldY.dot(axeX)) / (worldY.norm() * axeX.norm())) <= xAxisThreshold) {
+    std::cout << "Change to Axe Y and X (palm pointing up)\n";
+
+    Eigen::Vector3d aux;
+
+    aux = axeX;
+    axeX = axeY;
+    axeY = -aux;
   }
   
   axeX.normalize();
@@ -522,7 +530,8 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   allegroMiddle = transformPoint(allegroMiddleIn, "/world", "/l_allegro_base_link");
 
   // Moving the pose backwards to set the palm position 
-  Eigen::Vector3d midPointCentered(-allegroMiddle[0] + 0.015, -allegroMiddle[1], -allegroMiddle[2]);
+  // TODO: DEPENDING ON THE OBJECT'S SIZE WE SHOULD ADD 0.005 OR 0.01...
+  Eigen::Vector3d midPointCentered(-allegroMiddle[0] + 0.005, -allegroMiddle[1], -allegroMiddle[2]);
   tf::Transform midPointTransform;
   tf::Vector3 midPointTF, midPointTFed;
 
@@ -555,7 +564,6 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   visualTools->trigger();
 
   // Postgrasp pose, a litle bit upwards
-  // TODO: ESTE PODRÍA SER SUMARLE (0, 0, 0.15) AL VECTOR EN EL MUNDO
   Eigen::Vector3d midPointCenteredPostgrasp = midPointCentered + Eigen::Vector3d(0, 0, 0.15);
 
   Eigen::Affine3d allegroMidPointPostgraspPose = midPointPose;
@@ -576,7 +584,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   allegroPalmMoveGroup.setPoseTarget(allegroMidPointPregraspPose, PALM_END_EFFECTOR_LINK);
   allegroPalmMoveGroup.setPlannerId("TRRTkConfigDefault");
   allegroPalmMoveGroup.setPlanningTime(5.0);
-  allegroPalmMoveGroup.setNumPlanningAttempts(10);
+  allegroPalmMoveGroup.setNumPlanningAttempts(20);
   allegroPalmMoveGroup.setMaxVelocityScalingFactor(0.50);
   allegroPalmMoveGroup.setMaxAccelerationScalingFactor(0.50);
 
@@ -590,6 +598,10 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
     allegroPalmMoveGroup.move();
     ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN PREGRASPING POSE");
+
+    std::vector<std::string> objectId;
+    objectId.push_back(COLLISION_OBJECT_ID);
+    planningSceneInterface.removeCollisionObjects(objectId);
 
     allegroPalmMoveGroup.setPoseTarget(allegroMidPointPose, PALM_END_EFFECTOR_LINK);
     successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
@@ -606,11 +618,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
       std::cout << "PRESS ENTER TO GRASP\n";
       std::getchar();
 
-      std::vector<std::string> objectId;
-      objectId.push_back(COLLISION_OBJECT_ID);
-      planningSceneInterface.removeCollisionObjects(objectId);
-
-      if (!moveFingersGrasp(pointsDistance)) 
+      if (!moveFingersGrasp(pointsDistance * 0.85)) 
         std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";
 
       ROS_INFO("[AUROBOT] GRASP COMPLETED");

@@ -44,7 +44,7 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
   pcl::PassThrough<pcl::PointXYZRGB> ptFilter;
   ptFilter.setInputCloud(cloud);
   ptFilter.setFilterFieldName("z");
-  ptFilter.setFilterLimits(0.0, 1.5);
+  ptFilter.setFilterLimits(0.0, 1.3);
   ptFilter.filter(*cloud);
 
   // Create the segmentation object for the planar model and set all the parameters
@@ -80,7 +80,7 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
   std::vector<pcl::PointIndices> clusterIndices;
   pcl::EuclideanClusterExtraction<pcl::PointXYZRGB> ecExtractor;
   ecExtractor.setClusterTolerance(0.01);
-  ecExtractor.setMinClusterSize(1000);
+  ecExtractor.setMinClusterSize(750);
   //ecExtractor.setMaxClusterSize(25000);
   ecExtractor.setSearchMethod(tree);
   ecExtractor.setInputCloud(cloud);
@@ -147,9 +147,9 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       std::cout << "Obj axis: " << objAxisCoeff << "\n";
 
       viewer->addPointCloud<pcl::PointXYZRGB>(objectCloud, rgb, objectLabel + "Object");
-      viewer->addSphere(bestGrasp.firstPoint, 0.01, 0, 255, 255,
+      viewer->addSphere(bestGrasp.firstPoint, 0.01, 0, 0, 255,
         objectLabel + "First best grasp point");
-      viewer->addSphere(bestGrasp.secondPoint, 0.01, 0, 255, 255,
+      viewer->addSphere(bestGrasp.secondPoint, 0.01, 255, 0, 0,
         objectLabel + "Second best grasp point");
       
       viewer->addLine(bestGrasp.firstPoint, bestGrasp.secondPoint, 0, 255, 0, 

@@ -18,17 +18,19 @@
     <!-- W1: Wrist flex -->
     <link name="pa10_green_wrist_flex_link">
       <inertial>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 -0.0432 0.03" rpy="0 0 0"/>
         <mass value="3.45"/>
         <inertia ixx="0.076687"  ixy="0.000005"  ixz="0.000960" iyy="0.077392" iyz="0.000005" izz="0.006233"/>
       </inertial>
       <visual>
+        <origin xyz="0 0 0.03" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://aurobot_description/meshes/pa10-green/forearm/W1.dae"/>
         </geometry>
         <material name="green"/>
       </visual>
       <collision>
+        <origin xyz="0 0 0.03" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://aurobot_description/meshes/pa10-green/forearm/W1.stl"/>
         </geometry>
@@ -37,26 +39,28 @@
     <joint name="pa10_green_wrist_flex_joint" type="revolute">
       <parent link="pa10_green_wrist_flex_link"/>
       <child link="pa10_green_wrist_roll_link"/>
-      <origin xyz="0 0 0.239" rpy="0 0 0"/>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
       <axis xyz="0 1 0"/>
-      <limit effort="1000.0" lower="-2.8797932658" upper="2.8797932658" velocity="0.628"/>
+      <limit effort="1000.0" lower="-2.88" upper="2.88" velocity="0.628"/>
       <cfm>0.7</cfm>
     </joint>
     
     <!-- W2: Wrist roll -->
     <link name="pa10_green_wrist_roll_link">
       <inertial>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0.003 -0.0175" rpy="0 0 0"/>
         <mass value="1.46"/>
         <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500"/>
       </inertial>
       <visual>
+        <origin xyz="0 0.0 -0.0175" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://aurobot_description/meshes/pa10-green/forearm/W2.dae"/>
         </geometry>
         <material name="blue"/>
       </visual>
       <collision>
+        <origin xyz="0 0.0 -0.0175" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://aurobot_description/meshes/pa10-green/forearm/W2.stl"/>
         </geometry>
@@ -68,8 +72,7 @@
       <!-- BRAYAN (12/07/2017): Segun el manual nos falta 0.03 <origin xyz="0 0 0.050" rpy="0 0 0"/> -->
       <origin xyz="0 0 0.080" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
-      <!-- BRAYAN (13/07/2017): gran cambio en lower y upper, casi el doble hemos puesto -->
-      <limit effort="1000.0" lower="-6.2831853072" upper="6.2831853072" velocity="0.628"/>
+      <limit effort="1000.0" lower="-2.0" upper="2.28" velocity="0.628"/>
       <cfm>0.7</cfm>
     </joint>
 
