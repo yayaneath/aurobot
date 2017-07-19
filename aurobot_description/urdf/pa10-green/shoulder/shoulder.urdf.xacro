@@ -38,7 +38,7 @@
       <parent link="pa10_green_shoulder_roll_link"/>
       <child link="pa10_green_shoulder_lift_link"/>
       <!-- BRAYAN (12/07/2017): Segun el manual nos sobra 0.001 <origin xyz="0 0 0.201" rpy="0 0 0"/> -->
-      <origin xyz="0 0 0.199" rpy="0 0 0"/>
+      <origin xyz="0 0 0.20" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
       <limit effort="1000.0" lower="-3.089232776" upper="3.089232776" velocity="0.1"/> 
       <cfm>0.7</cfm>
@@ -49,16 +49,18 @@
     <link name="pa10_green_shoulder_lift_link">
       <inertial>
         <mass value="9.78"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 0.115" rpy="0 0 0"/>
         <inertia ixx="0.110697"  ixy="0.000005"  ixz="0.000345" iyy="0.084268" iyz="0.000518" izz="0.054080"/>
       </inertial>
       <visual>
+        <origin xyz="0 0 0.115" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://aurobot_description/meshes/pa10-green/shoulder/S2.dae"/> 
         </geometry>
         <material name="green"/>
       </visual>
       <collision>
+        <origin xyz="0 0 0.115" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://aurobot_description/meshes/pa10-green/shoulder/S2.stl" />
         </geometry>
@@ -67,7 +69,7 @@
     <joint name="pa10_green_shoulder_lift_joint" type="revolute">
       <parent link="pa10_green_shoulder_lift_link"/>
       <child link="pa10_green_upper_arm_roll_link"/>
-      <origin xyz="0 0 0.116" rpy="0 0 0"/>
+      <origin xyz="0 0 0.115" rpy="0 0 0"/>
       <axis xyz="0 1 0"/>
       <limit effort="1000.0" lower="-1.5882496193" upper="1.5882496193" velocity="0.1"/>
       <cfm>0.7</cfm>
@@ -78,7 +80,7 @@
     <link name="pa10_green_upper_arm_roll_link">
       <inertial>
         <mass value="8.41"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 -0.0632 0" rpy="0 0 0"/>
         <inertia ixx="0.177079"  ixy="0.000257"  ixz="0.000005" iyy="0.018440" iyz="0.000005" izz="0.173903"/>
       </inertial>
       <visual>
@@ -97,7 +99,7 @@
       <parent link="pa10_green_upper_arm_roll_link"/>
       <child link="${child}"/>
       <axis xyz="0 0 1"/>
-      <origin xyz="0 0 0.186" rpy="0 0 0"/>
+      <origin xyz="0 0 0.325" rpy="0 0 0"/>
       <limit effort="1000.0" lower="-3.0368728985" upper="3.0368728985" velocity="0.2"/>
       <cfm>0.7</cfm>
       <damping>10.0</damping>

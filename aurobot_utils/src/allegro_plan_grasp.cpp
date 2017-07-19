@@ -599,10 +599,6 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
     allegroPalmMoveGroup.move();
     ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN PREGRASPING POSE");
 
-    std::vector<std::string> objectId;
-    objectId.push_back(COLLISION_OBJECT_ID);
-    planningSceneInterface.removeCollisionObjects(objectId);
-
     allegroPalmMoveGroup.setPoseTarget(allegroMidPointPose, PALM_END_EFFECTOR_LINK);
     successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
 
@@ -617,6 +613,10 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
       
       std::cout << "PRESS ENTER TO GRASP\n";
       std::getchar();
+      
+      std::vector<std::string> objectId;
+      objectId.push_back(COLLISION_OBJECT_ID);
+      planningSceneInterface.removeCollisionObjects(objectId);
 
       if (!moveFingersGrasp(pointsDistance * 0.85)) 
         std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";
