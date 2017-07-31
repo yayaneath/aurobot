@@ -56,7 +56,7 @@ void jointsCallback(const sensor_msgs::JointStateConstPtr & inputJointsMsg) {
 
   std::cout << "Moving to...\n" << angulars << "\n";
   
-  pa10.setVel(0.1); // TODO: Read a ROS PARAM that is set by allegro_plan_grasp
+  pa10.setVel(0.15); // TODO: Read a ROS PARAM that is set by allegro_plan_grasp
   pa10.goTo(angulars);
 
   std::cout << "Moved!\n";

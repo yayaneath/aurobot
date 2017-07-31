@@ -29,6 +29,8 @@
 
 const std::string REAL_CAMERA_TOPIC = "/camera/depth_registered/points";
 const std::string PCD_CAMERA_TOPIC = "/cloud_pcd";
+const int ALLEGRO_GRIP_TIP = 28;
+const int ALLEGRO_MAX_AMP = 200;
 
 
 // Global variables needed for the callback function
@@ -80,7 +82,7 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
   std::vector<pcl::PointIndices> clusterIndices;
   pcl::EuclideanClusterExtraction<pcl::PointXYZRGB> ecExtractor;
   ecExtractor.setClusterTolerance(0.01);
-  ecExtractor.setMinClusterSize(750);
+  ecExtractor.setMinClusterSize(500);
   //ecExtractor.setMaxClusterSize(25000);
   ecExtractor.setSearchMethod(tree);
   ecExtractor.setInputCloud(cloud);
@@ -121,6 +123,8 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       GraspPoints graspPoints;
       graspPoints.setBackgroundCloud(cloudPlane);
       graspPoints.setObjectCloud(objectCloud);
+      graspPoints.setGripTipSize(ALLEGRO_GRIP_TIP);
+      graspPoints.setGripMaxAmplitude(ALLEGRO_MAX_AMP);
       graspPoints.compute();
 
       GraspConfiguration bestGrasp = graspPoints.getBestGrasp();
