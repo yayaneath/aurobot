@@ -39,6 +39,9 @@
       <origin xyz="0 0.13790 1.22809" rpy="0 1.0471975512 1.5707963268"/>
     </joint>
 
+
+
+
     <joint name="trunk_cone_joint" type="fixed">
       <parent link="trunk_link"/>
       <child link="cone_trunk_link"/>
@@ -64,8 +67,11 @@
       <!-- BRAYAN (17/11/2017): posicion por calibracion de Matlab del RGB. Original:
       <origin xyz="0.849607606 1.452407489 1.611743891" rpy="-1.9778528 -0.0034288 -3.1153181"/>
        -->
-      <origin xyz="0.825607606 1.532407489 1.751743891" rpy="-1.9778528 -0.0034288 -3.1153181"/>
+      <origin xyz="0.825607606 1.55407489 1.751743891" rpy="-1.9778528 -0.0034288 -3.1153181"/>
     </joint>
+
+
+
 
     <joint name="trunk_right_joint" type="fixed">
       <parent link="trunk_link"/>

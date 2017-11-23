@@ -136,8 +136,8 @@
   <!-- JR3 left -->
   <link name="l_jr3_link">
     <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="0.40"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500"/>
     </inertial>
     <visual>
@@ -156,12 +156,42 @@
 
   <joint name="l_jr3_joint" type="fixed">
     <parent link="l_jr3_link"/>
-    <child link="l_allegro_base_link"/>
+    <child link="l_jr3_end_link"/>
       <!-- BRAYAN (12/07/2017): Medimos y no tiene 10cm, son 4.7cm placa + jr3 + placa
        <origin xyz="0 0 0.1" rpy="0 0 3.1415926536"/> -->
       <!-- BRAYAN (22/11/2017): Realmente son 4cm, porque 0.7cm primeros son de PA10
        <origin xyz="0 0 0.047" rpy="0 0 3.1415926536"/> -->
     <origin xyz="0 0 0.04042" rpy="0 0 3.1415926536"/>
+  </joint>
+
+  <link name="l_jr3_end_link">
+    <inertial>
+      <mass value="0.40"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <!-- BRAYAN (22/11/2017): Escalamos esta pieza que en el STL mide menos de la realidad -->
+        <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="l_jr3_end_joint" type="fixed">
+    <parent link="l_jr3_end_link"/>
+    <child link="l_allegro_base_link"/>
+      <!-- BRAYAN (12/07/2017): Medimos y no tiene 10cm, son 4.7cm placa + jr3 + placa
+       <origin xyz="0 0 0.1" rpy="0 0 3.1415926536"/> -->
+      <!-- BRAYAN (22/11/2017): Realmente son 4cm, porque 0.7cm primeros son de PA10
+       <origin xyz="0 0 0.047" rpy="0 0 3.1415926536"/> -->
+    <origin xyz="0 0 0.1001" rpy="0 0 0"/>
   </joint>
 
   <!-- Allegro left hand -->
