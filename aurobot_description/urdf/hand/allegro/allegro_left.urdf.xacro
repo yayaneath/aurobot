@@ -418,7 +418,8 @@
 
     <!-- BASE -->
     <link name="l_allegro_base_link">
-      <inertial> <!-- BRAYAN (03/07/2017): Changed to be equal to those on the allegro ros package-->
+      <inertial> <!-- BRAYAN (03/07/2017): Changed to be equal to those on the allegro ros package -->
+          <!-- BRAYAN (22/11/2017): quitamos este desplazamiento del origin <origin xyz="0 0 ${base_link_z/2}" rpy="0 0 0"/>-->
           <origin xyz="0 0 ${base_link_z/2}" rpy="0 0 0"/>
           <mass value="0.4154"/>
           <inertia

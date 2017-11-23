@@ -49,6 +49,60 @@
   <xacro:trunk left_child="pa10_green_shoulder_roll_link" 
     head_child="head_link" right_child="pa10_blue_shoulder_roll_link"/>
 
+  <!-- Cono Pecho -->
+  <link name="cone_trunk_link">
+    <inertial>
+      <origin xyz="0.27501 0.0 1.328" rpy="0 ${pi/2} 0 "/>
+      <mass value="1"/>
+      <inertia
+        ixx="1.0" ixy="0.0" ixz="0.0"
+        iyy="1.0" iyz="0.0"
+        izz="1.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.27501 0.0 1.328" rpy="0 ${pi/2} 0"/>
+      <geometry>
+        <cylinder radius="0.045" length="0.25"/>
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 1.0 1.0 0.5"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.27501 0.0 1.328" rpy="0 ${pi/2} 0"/>
+      <geometry>
+        <cylinder radius="0.045" length="0.25"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Cono2 Pecho -->
+  <link name="cone2_trunk_link">
+    <inertial>
+      <origin xyz="0.550 0.105 1.3225" rpy="0 0 0 "/>
+      <mass value="1"/>
+      <inertia
+        ixx="1.0" ixy="0.0" ixz="0.0"
+        iyy="1.0" iyz="0.0"
+        izz="1.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.550 0.105 1.3225" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.045" length="0.25"/>
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 1.0 1.0 0.3"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.550 0.105 1.3225" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.045" length="0.25"/>
+      </geometry>
+    </collision>
+  </link>
+
   <!-- Head -->
   <link name="head_link">
     <inertial>
@@ -62,14 +116,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <box size="0.05 0.05 0.05"/>
+        <box size="0.025 0.025 0.025"/>
       </geometry>
       <material name="black"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <box size="0.05 0.05 0.05"/>
+        <box size="0.025 0.025 0.025"/>
       </geometry>
     </collision>
   </link>
@@ -88,13 +142,14 @@
     </inertial>
     <visual>
       <geometry>
-      <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
+        <!-- BRAYAN (22/11/2017): Escalamos esta pieza que en el STL mide menos de la realidad -->
+        <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl" scale="1 1 8"/>
       </geometry>
-      <material name="black"/>
+      <material name="grey"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
+        <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl" scale="1 1 8"/>
       </geometry>
     </collision>
   </link>
@@ -102,9 +157,11 @@
   <joint name="l_jr3_joint" type="fixed">
     <parent link="l_jr3_link"/>
     <child link="l_allegro_base_link"/>
-      <!-- BRAYAN (12/07/2017): Medimos y no tiene 10cm, son 4.7cm goma + jr3 + placa
+      <!-- BRAYAN (12/07/2017): Medimos y no tiene 10cm, son 4.7cm placa + jr3 + placa
        <origin xyz="0 0 0.1" rpy="0 0 3.1415926536"/> -->
-    <origin xyz="0 0 0.047" rpy="0 0 3.1415926536"/>
+      <!-- BRAYAN (22/11/2017): Realmente son 4cm, porque 0.7cm primeros son de PA10
+       <origin xyz="0 0 0.047" rpy="0 0 3.1415926536"/> -->
+    <origin xyz="0 0 0.04042" rpy="0 0 3.1415926536"/>
   </joint>
 
   <!-- Allegro left hand -->
@@ -126,7 +183,7 @@
       <geometry>
       <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
       </geometry>
-      <material name="black"/>
+      <material name="grey"/>
     </visual>
     <collision>
       <geometry>

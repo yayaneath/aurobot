@@ -38,6 +38,17 @@
       <child link="${left_child}"/>
       <origin xyz="0 0.13790 1.22809" rpy="0 1.0471975512 1.5707963268"/>
     </joint>
+
+    <joint name="trunk_cone_joint" type="fixed">
+      <parent link="trunk_link"/>
+      <child link="cone_trunk_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+    <joint name="trunk_cone2_joint" type="fixed">
+      <parent link="trunk_link"/>
+      <child link="cone2_trunk_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
     <joint name="trunk_head_joint" type="fixed">
       <parent link="trunk_link"/>
       <child link="${head_child}"/>
@@ -47,14 +58,15 @@
       <!-- BRAYAN (14/07/2017): posicion a la izquierda buena para agarres de frente.
         Tiene en Roll (X) 112.4 negativos.
         Tiene en Pitch (Y) 0.
-        Tiene en Yaw (Z) unos 175.7 grados de desviacion -->
-      <origin xyz="0.778 1.548 1.742" rpy="-1.9634954085 0 3.0665434958"/>
-      <!--
-        Nueva prueba (19/07/2017):
-        Tiene en Roll (X) 112 negativos.
-        Tiene en Yaw (Z) unos 176.2 grados de desviacion -->
-      <!-- <origin xyz="0.775 1.537 1.735" rpy="-1.9547687622 0 3.075270142"/> -->
+        Tiene en Yaw (Z) unos 175.7 grados de desviacion
+      <origin xyz="0.778 1.548 1.742" rpy="-1.9634954085 0 3.0665434958"/>-->
+
+      <!-- BRAYAN (17/11/2017): posicion por calibracion de Matlab del RGB. Original:
+      <origin xyz="0.849607606 1.452407489 1.611743891" rpy="-1.9778528 -0.0034288 -3.1153181"/>
+       -->
+      <origin xyz="0.825607606 1.532407489 1.751743891" rpy="-1.9778528 -0.0034288 -3.1153181"/>
     </joint>
+
     <joint name="trunk_right_joint" type="fixed">
       <parent link="trunk_link"/>
       <child link="${right_child}"/>

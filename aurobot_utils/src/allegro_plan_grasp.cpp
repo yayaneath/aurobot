@@ -629,7 +629,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
       ROS_INFO("Palm grasp plan %s", successAllegroPalmPlan ? "SUCCEED" : "FAILED");
 
       if (successAllegroPalmPlan) { // Successful plan for the post grasping arm position
-        std::cout << "PRESS ENTER TO MOVE PA10 TO PREGRASPING POSE\n";
+        std::cout << "PRESS ENTER TO MOVE PA10 TO POSTGRASPING POSE\n";
         std::getchar();
 
         allegroPalmMoveGroup.move();
