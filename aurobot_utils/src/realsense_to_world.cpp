@@ -6,7 +6,7 @@
 #include <tf/transform_listener.h>
 #include <pcl_ros/transforms.h>
 
-const std::string REAL_CAMERA_TOPIC = "/camera/depth_registered/points";
+const std::string REAL_CAMERA_TOPIC = "/my_sr300_points";//"/camera/depth_registered/points";
 const std::string PCD_CAMERA_TOPIC = "/cloud_pcd";
 
 ros::Publisher pub;
