@@ -26,9 +26,6 @@
 #include <grasping_clouds/GraspPoints.h> // Grasping points calculator
 #include <aurobot_utils/GraspConfiguration.h> // Custom message for publishing grasps
 
-
-const std::string REAL_CAMERA_TOPIC = "/camera/depth_registered/points";
-const std::string PCD_CAMERA_TOPIC = "/cloud_pcd";
 const int ALLEGRO_GRIP_TIP = 28;
 const int ALLEGRO_MAX_AMP = 200;
 
@@ -194,9 +191,12 @@ int main(int argc, char **argv) {
   viewer->initCameraParameters();
   viewer->addCoordinateSystem(0.1);
 
-  ros::NodeHandle nh;
-  ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2>(REAL_CAMERA_TOPIC,
-    1, cloudCallback);
+  ros::NodeHandle nh("~");
+  std::string cloudTopic;
+  
+  nh.getParam("topic", cloudTopic);
+
+  ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2>(cloudTopic, 1, cloudCallback);
   pub = nh.advertise<aurobot_utils::GraspConfiguration>("/aurobot_utils/grasp_configuration", 1);
 
   ros::spin();
