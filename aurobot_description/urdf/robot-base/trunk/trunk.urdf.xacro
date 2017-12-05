@@ -40,16 +40,23 @@
     </joint>
 
 
+
+
     <joint name="trunk_head_joint" type="fixed">
       <parent link="trunk_link"/>
       <child link="${head_child}"/>
       <!-- BRAYAN (16/05/2017): Temporalmente puesto como una cabeza adelantada orientada hacia adelante -->
       <!-- <origin xyz="0.045 -0.025 1.71" rpy="-2.2689280276 0 -1.570796327"/> -->
 
-      <!-- BRAYAN (17/11/2017): posicion por calibracion de Matlab del RGB. Original:
+      <!-- BRAYAN (17/11/2017): posicion por calibracion de Matlab del RGB. 
+      Original:
       <origin xyz="0.849607606 1.452407489 1.611743891" rpy="-1.9778528 -0.0034288 -3.1153181"/>
-       x -0.015 y - 0.01-->
+      Bueno (sin la mesa):
       <origin xyz="0.810607606 1.54407489 1.751743891" rpy="-1.9778528 -0.0034288 -3.1153181"/>
+      Bueno (con mesa):
+      <origin xyz="0.830607606 1.53007489 1.751743891" rpy="-1.9778528 -0.0034288 -3.1353181"/>
+      -->
+      <origin xyz="0.830607606 1.53007489 1.765743891" rpy="-1.9908528 0.0044288 -3.1353181"/>
     </joint>
 
 

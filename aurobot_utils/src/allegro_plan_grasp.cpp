@@ -478,6 +478,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   std::cout << "Cosine grasp - world: " << graspCos << "\n";
   
+  // TODO: LAYING OBJECTS IN THE CAMERA X AXIS
   //Re-arrenged for the allegro pose
   axeZ = secondPoint - firstPoint;
   axeX = axeZ.cross(-objAxisVector);
@@ -587,6 +588,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   allegroPalmMoveGroup.setNumPlanningAttempts(20);
   allegroPalmMoveGroup.setMaxVelocityScalingFactor(0.50);
   allegroPalmMoveGroup.setMaxAccelerationScalingFactor(0.50);
+  // TODO: DO NOT ALLOW REPLANNING
 
   successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
 
@@ -598,6 +600,10 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
     allegroPalmMoveGroup.move();
     ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN PREGRASPING POSE");
+  
+    std::vector<std::string> objectId;
+    objectId.push_back(COLLISION_OBJECT_ID);
+    planningSceneInterface.removeCollisionObjects(objectId);
 
     allegroPalmMoveGroup.setPoseTarget(allegroMidPointPose, PALM_END_EFFECTOR_LINK);
     successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
@@ -613,12 +619,8 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
       
       std::cout << "PRESS ENTER TO GRASP\n";
       std::getchar();
-      
-      std::vector<std::string> objectId;
-      objectId.push_back(COLLISION_OBJECT_ID);
-      planningSceneInterface.removeCollisionObjects(objectId);
 
-      if (!moveFingersGrasp(pointsDistance * 0.85)) 
+      if (!moveFingersGrasp(pointsDistance * 0.85)) // TODO: CLOSE TIGHTER?
         std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";
 
       ROS_INFO("[AUROBOT] GRASP COMPLETED");

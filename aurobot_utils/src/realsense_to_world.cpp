@@ -13,7 +13,7 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
   tf::TransformListener tfListener;
   tf::StampedTransform transform;
 
-  tfListener.waitForTransform("/world", "/head_link", ros::Time(0), ros::Duration(0.5));
+  tfListener.waitForTransform("/world", "/head_link", ros::Time(0), ros::Duration(3.0));
   tfListener.lookupTransform("/world", "/head_link", ros::Time(0), transform);
 
   pcl_ros::transformPointCloud("/world", transform, *inputCloudMsg, outputCloudMsg);
