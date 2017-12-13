@@ -156,7 +156,9 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       viewer->addLine(bestGrasp.firstPoint, bestGrasp.secondPoint, 0, 255, 0, 
         objectLabel + "Grasping line");
 
-      // The greatest object usually has the best ranked grasp, so publish that one:
+      // The greatest object usually has the best ranked grasp, so publish that one.
+      // TODO: THE GRASPABLE OBJECT SHOULD BE THE CLOSER ONE
+      // TODO: EVERY OTHER OBJECT SHOULD BE PUBLISHED AS A COLLISION
       if (it == clusterIndices.begin()){
         aurobot_utils::GraspConfiguration msg;
         msg.first_point_x = bestGrasp.firstPoint.x;

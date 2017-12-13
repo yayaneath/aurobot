@@ -55,14 +55,13 @@
       </inertial>
       <visual>
         <geometry>
-          <!-- BRAYAN (22/11/2017): Escalamos esta pieza que en el STL mide 289.6 y en la realidad ronda 293.02 -->
-          <mesh filename="package://aurobot_description/meshes/pa10-green/upper_arm/pa10_04.stl" scale="1 1 1.1"/>
+          <mesh filename="package://aurobot_description/meshes/pa10-green/upper_arm/pa10_04.stl"/>
         </geometry>
         <material name="blue"/>
       </visual>
       <collision>
         <geometry>
-          <mesh filename="package://aurobot_description/meshes/pa10-green/upper_arm/pa10_04.stl" scale="1 1 1.1"/>
+          <mesh filename="package://aurobot_description/meshes/pa10-green/upper_arm/pa10_04.stl"/>
         </geometry>
       </collision>
     </link>

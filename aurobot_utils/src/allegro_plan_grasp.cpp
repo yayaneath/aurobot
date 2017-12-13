@@ -583,12 +583,12 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   bool successAllegroPalmPlan = false;
 
   allegroPalmMoveGroup.setPoseTarget(allegroMidPointPregraspPose, PALM_END_EFFECTOR_LINK);
-  allegroPalmMoveGroup.setPlannerId("TRRTkConfigDefault");
+  //TRRTkConfigDefault //RRTConnectkConfigDefault // Lento! PRMstarkConfigDefault
+  allegroPalmMoveGroup.setPlannerId("RRTConnectkConfigDefault");
   allegroPalmMoveGroup.setPlanningTime(5.0);
   allegroPalmMoveGroup.setNumPlanningAttempts(20);
   allegroPalmMoveGroup.setMaxVelocityScalingFactor(0.50);
   allegroPalmMoveGroup.setMaxAccelerationScalingFactor(0.50);
-  // TODO: DO NOT ALLOW REPLANNING
 
   successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
 
