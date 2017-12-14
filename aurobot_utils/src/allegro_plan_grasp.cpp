@@ -362,9 +362,6 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   Eigen::Vector3d objAxisVector = transformVector(objAxisVectorIn, "/head_link", "/world");
 
-  if (objAxisVector[2] < 0) // We need it always pointing upwards
-    objAxisVector = -objAxisVector;
-
   visualTools->publishSphere(firstPoint, rviz_visual_tools::BLUE, rviz_visual_tools::LARGE);
   visualTools->publishSphere(secondPoint, rviz_visual_tools::RED, rviz_visual_tools::LARGE);
   visualTools->publishSphere(objAxisCenter, rviz_visual_tools::GREY, rviz_visual_tools::LARGE);
@@ -429,9 +426,9 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
   primitive.type = primitive.BOX;
   primitive.dimensions.resize(3);
   // Scaled a little bit down so the bounding box does not exceed the real object boundaries
-  primitive.dimensions[0] = 0.8 * std::abs(minBoundingPoint[0] - maxBoundingPoint[0]);
-  primitive.dimensions[1] = 0.8 * std::abs(minBoundingPoint[1] - maxBoundingPoint[1]);
-  primitive.dimensions[2] = 0.8 * std::abs(minBoundingPoint[2] - maxBoundingPoint[2]);
+  primitive.dimensions[0] = 0.7 * std::abs(minBoundingPoint[0] - maxBoundingPoint[0]);
+  primitive.dimensions[1] = 0.7 * std::abs(minBoundingPoint[1] - maxBoundingPoint[1]);
+  primitive.dimensions[2] = 0.7 * std::abs(minBoundingPoint[2] - maxBoundingPoint[2]);
 
   //Define a pose for the box (specified relative to frame_id)
   geometry_msgs::Pose boxPose;
@@ -478,16 +475,30 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
 
   std::cout << "Cosine grasp - world: " << graspCos << "\n";
   
-  // TODO: LAYING OBJECTS IN THE CAMERA X AXIS
   //Re-arrenged for the allegro pose
-  axeZ = secondPoint - firstPoint;
-  axeX = axeZ.cross(-objAxisVector);
+  axeZ = firstPoint - secondPoint;
+  axeX = axeZ.cross(objAxisVector);
   axeY = axeZ.cross(axeX);
 
-  axeY = -axeY;
-  axeZ = -axeZ;
+  float axeXdotWorldY = axeX.dot(worldY);
+  float axeYdotObjAxis = axeY.dot(objAxisVector);
 
-  if (graspCos < standingThreshold && axeZ[0] <= 0) {
+  std::cout << "Dot entre axeY y ObjAxis:" << axeYdotObjAxis << "\n";
+  std::cout << "Dot entre axeX y worldY:" << axeXdotWorldY << "\n";
+
+  std::cout << "Axe X:" << axeX << "\n";
+  std::cout << "Axe Y:" << axeY << "\n";
+  std::cout << "Axe Z:" << axeZ << "\n";
+
+  // Hand pointing towards the camera
+  if (axeXdotWorldY > 0 && axeYdotObjAxis < 0) {
+    std::cout << "Change to Axe X and Z (reverse fingers)\n";
+    
+    axeX = -axeX;
+    axeZ = -axeZ;
+  }
+
+  /*if (graspCos < standingThreshold && axeZ[0] <= 0) {
     std::cout << "Change to Axe X and Z (reverse fingers)\n";
     
     axeX = -axeX;
@@ -504,7 +515,7 @@ void planGrasp(const aurobot_utils::GraspConfigurationConstPtr & inputGrasp) {
     aux = axeX;
     axeX = axeY;
     axeY = -aux;
-  }
+  }*/
   
   axeX.normalize();
   axeY.normalize();
