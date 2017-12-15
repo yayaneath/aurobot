@@ -1,0 +1,1 @@
+GraspConfiguration[] objects

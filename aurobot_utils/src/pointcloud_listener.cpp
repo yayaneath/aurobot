@@ -25,6 +25,7 @@
 // Our libraries
 #include <grasping_clouds/GraspPoints.h> // Grasping points calculator
 #include <aurobot_utils/GraspConfiguration.h> // Custom message for publishing grasps
+#include <aurobot_utils/SceneObjects.h> // Custom message for publishing a vector of grasps
 
 const int ALLEGRO_GRIP_TIP = 28;
 const int ALLEGRO_MAX_AMP = 200;
@@ -100,6 +101,7 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
     viewer->spinOnce();
   }
   else {
+    aurobot_utils::SceneObjects scene_msg;
     std::vector<pcl::PointIndices>::const_iterator it = clusterIndices.begin();
     int objectNumber = 0;
 
@@ -156,32 +158,30 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       viewer->addLine(bestGrasp.firstPoint, bestGrasp.secondPoint, 0, 255, 0, 
         objectLabel + "Grasping line");
 
-      // The greatest object usually has the best ranked grasp, so publish that one.
-      // TODO: THE GRASPABLE OBJECT SHOULD BE THE CLOSER ONE
-      // TODO: EVERY OTHER OBJECT SHOULD BE PUBLISHED AS A COLLISION
-      if (it == clusterIndices.begin()){
-        aurobot_utils::GraspConfiguration msg;
-        msg.first_point_x = bestGrasp.firstPoint.x;
-        msg.first_point_y = bestGrasp.firstPoint.y;
-        msg.first_point_z = bestGrasp.firstPoint.z;
-        msg.second_point_x = bestGrasp.secondPoint.x;
-        msg.second_point_y = bestGrasp.secondPoint.y;
-        msg.second_point_z = bestGrasp.secondPoint.z;
-        msg.obj_axis_coeff_0 = objAxisCoeff.values[0];
-        msg.obj_axis_coeff_1 = objAxisCoeff.values[1];
-        msg.obj_axis_coeff_2 = objAxisCoeff.values[2];
-        msg.obj_axis_coeff_3 = objAxisCoeff.values[3];
-        msg.obj_axis_coeff_4 = objAxisCoeff.values[4];
-        msg.obj_axis_coeff_5 = objAxisCoeff.values[5];
-        pcl::toROSMsg<pcl::PointXYZRGB>(*objectCloud, msg.object_cloud);
+      // Add the new grasp configuration to the scene message
+      aurobot_utils::GraspConfiguration msg;
+      msg.first_point_x = bestGrasp.firstPoint.x;
+      msg.first_point_y = bestGrasp.firstPoint.y;
+      msg.first_point_z = bestGrasp.firstPoint.z;
+      msg.second_point_x = bestGrasp.secondPoint.x;
+      msg.second_point_y = bestGrasp.secondPoint.y;
+      msg.second_point_z = bestGrasp.secondPoint.z;
+      msg.obj_axis_coeff_0 = objAxisCoeff.values[0];
+      msg.obj_axis_coeff_1 = objAxisCoeff.values[1];
+      msg.obj_axis_coeff_2 = objAxisCoeff.values[2];
+      msg.obj_axis_coeff_3 = objAxisCoeff.values[3];
+      msg.obj_axis_coeff_4 = objAxisCoeff.values[4];
+      msg.obj_axis_coeff_5 = objAxisCoeff.values[5];
+      pcl::toROSMsg<pcl::PointXYZRGB>(*objectCloud, msg.object_cloud);
 
-        pub.publish(msg);
-      }
+      scene_msg.objects.push_back(msg);
 
       objectNumber++;
     }
 
-    //viewer->spinOnce();
+    // Publish the grasp configurations found in the scene
+    pub.publish(scene_msg);
+
     viewer->spin();
   }
 }
@@ -199,7 +199,7 @@ int main(int argc, char **argv) {
   nh.getParam("topic", cloudTopic);
 
   ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2>(cloudTopic, 1, cloudCallback);
-  pub = nh.advertise<aurobot_utils::GraspConfiguration>("/aurobot_utils/grasp_configuration", 1);
+  pub = nh.advertise<aurobot_utils::SceneObjects>("/aurobot_utils/scene_objects", 1);
 
   ros::spin();
 

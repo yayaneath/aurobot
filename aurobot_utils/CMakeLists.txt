@@ -36,6 +36,7 @@ include_directories(
 add_message_files (DIRECTORY msg
   FILES
   GraspConfiguration.msg
+  SceneObjects.msg
 )
 
 generate_messages(
