@@ -461,7 +461,7 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
 
   // Moving the pose backwards to set the palm position 
   // TODO: DEPENDING ON THE OBJECT'S SIZE WE SHOULD ADD 0.005 OR 0.01...
-  Eigen::Vector3d midPointCentered(-allegroMiddle[0] + 0.005, -allegroMiddle[1], -allegroMiddle[2]);
+  Eigen::Vector3d midPointCentered(-allegroMiddle[0] + 0.000, -allegroMiddle[1], -allegroMiddle[2]);
   tf::Transform midPointTransform;
   tf::Vector3 midPointTF, midPointTFed;
 
@@ -514,7 +514,7 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
 
   allegroPalmMoveGroup.setPoseTarget(allegroMidPointPregraspPose, PALM_END_EFFECTOR_LINK);
   //TRRTkConfigDefault //RRTConnectkConfigDefault // Lento! PRMstarkConfigDefault
-  allegroPalmMoveGroup.setPlannerId("RRTConnectkConfigDefault");
+  allegroPalmMoveGroup.setPlannerId("PRMstarkConfigDefault");
   allegroPalmMoveGroup.setPlanningTime(5.0);
   allegroPalmMoveGroup.setNumPlanningAttempts(20);
   allegroPalmMoveGroup.setMaxVelocityScalingFactor(0.50);
@@ -550,7 +550,7 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
       std::cout << "PRESS ENTER TO GRASP\n";
       std::getchar();
 
-      if (!moveFingersGrasp(pointsDistance * 0.85)) // TODO: CLOSE TIGHTER?
+      if (!moveFingersGrasp(pointsDistance * 0.75))
         std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";
 
       ROS_INFO("[AUROBOT] GRASP COMPLETED");
@@ -576,9 +576,8 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
 
   std::cout << "Cleaning " << objectsNames.size() << " objects\n";
 
-  for(int i = 0; i < objectsNames.size(); ++i){
+  for(int i = 0; i < objectsNames.size(); ++i)
     std::cout << "Object " << i << ": '" << objectsNames[i] << "'\n";
-  }
   
   planningSceneInterface.removeCollisionObjects(objectsNames);
 

@@ -40,6 +40,9 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZRGB>());
   pcl::fromROSMsg(*inputCloudMsg, *cloud);
 
+  // Save to file
+  pcl::io::savePCDFileBinary("1-cloud.pcd", *cloud);
+
   // Remove background points
   pcl::PassThrough<pcl::PointXYZRGB> ptFilter;
   ptFilter.setInputCloud(cloud);

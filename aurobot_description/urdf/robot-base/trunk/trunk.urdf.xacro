@@ -48,15 +48,23 @@
       <!-- BRAYAN (16/05/2017): Temporalmente puesto como una cabeza adelantada orientada hacia adelante -->
       <!-- <origin xyz="0.045 -0.025 1.71" rpy="-2.2689280276 0 -1.570796327"/> -->
 
-      <!-- BRAYAN (17/11/2017): posicion por calibracion de Matlab del RGB. 
-      Original:
-      <origin xyz="0.849607606 1.452407489 1.611743891" rpy="-1.9778528 -0.0034288 -3.1153181"/>
-      Bueno (sin la mesa):
-      <origin xyz="0.810607606 1.54407489 1.751743891" rpy="-1.9778528 -0.0034288 -3.1153181"/>
+      <!-- BRAYAN (17/11/2017): posicion por calibracion de Matlab del RGB.
       Bueno (con mesa):
-      <origin xyz="0.830607606 1.53007489 1.751743891" rpy="-1.9778528 -0.0034288 -3.1353181"/>
-      -->
       <origin xyz="0.830607606 1.53007489 1.765743891" rpy="-1.9908528 0.0044288 -3.1353181"/>
+      
+      new-my-checkers: [ x: -2.743256, y: 0.0229434, z: -0.0118721 ]
+      <origin xyz="0.830607606 1.53007489 1.7083008379" rpy="-1.957857825 0.00229434 -3.1297206"/>
+
+      new-my-checkers-v2: [ x: -2.7073592, y: -0.0542398, z: -1.5664367 ]
+      <origin xyz="0.825607606 1.54007489 1.745743891" rpy="-1.985961037 0.00542398 -3.127233027"/>
+
+      new-my-checkers-v3: [ x: -2.693058, y: -0.0482789, z: -3.1355064 ]
+      <origin xyz="0.849 1.48349 1.71034" rpy="-2.693058 -0.0482789 -3.1355064"/>
+
+      Esta es buena para agarres frontales pero falla hacia abajo
+      <origin xyz="0.820 1.54049 1.73034" rpy="-1.9945 0.00562789 -3.1305064"/>
+      -->
+      <origin xyz="0.820 1.54049 1.73034" rpy="-1.9645 0.00562789 -3.1105064"/>
     </joint>
 
 

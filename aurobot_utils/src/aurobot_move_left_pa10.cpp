@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "aurobot_left_pa10_mover");
 
   ros::NodeHandle n;
-  ros::Rate r(1); // This rate works fine with 0.1 velocity in the PA10 and 0.50 in MoveIt (vel/acc)
+  ros::Rate r(0.5); // This rate works fine with 0.1 velocity in the PA10 and 0.50 in MoveIt (vel/acc)
 
   while(ros::ok()) {
     sensor_msgs::JointStateConstPtr receivedMessage = 
