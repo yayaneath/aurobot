@@ -70,13 +70,14 @@
     <!-- BRAYAN (19/12/2017): tras descalibrado de camara y mesa. 
     Anterior:
     <origin xyz="0.761 0.2285 1.183" rpy="0 0 0"/>
+
     Bien medido:
     <origin xyz="0.759 0.210 1.180" rpy="0 0 0"/>
 
-    Esta es buena para agarres frontales pero falla hacia abajo
-    <origin xyz="0.759 0.2485 1.147" rpy="0 0 0"/>
+    Esta es buena para agarres frontales pero falla hacia abajo:
+    <origin xyz="0.759 0.2385 1.149" rpy="0 0 0"/>
     -->
-    <origin xyz="0.759 0.210 1.180" rpy="0 0 0"/>
+    <origin xyz="0.759 0.2385 1.149" rpy="0 0 0"/>
   </joint>
 
   <!-- Add the base -->
