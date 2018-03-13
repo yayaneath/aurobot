@@ -22,6 +22,9 @@
 
 #include <pcl/filters/passthrough.h>
 
+// Time
+#include <boost/chrono/thread_clock.hpp>
+
 // Our libraries
 #include <grasping_clouds/GraspPoints.h> // Grasping points calculator
 #include <aurobot_utils/GraspConfiguration.h> // Custom message for publishing grasps
@@ -127,7 +130,13 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       graspPoints.setObjectCloud(objectCloud);
       graspPoints.setGripTipSize(ALLEGRO_GRIP_TIP);
       graspPoints.setGripMaxAmplitude(ALLEGRO_MAX_AMP);
+      
+      boost::chrono::thread_clock::time_point objStart = boost::chrono::thread_clock::now();
       graspPoints.compute();
+      boost::chrono::thread_clock::time_point objStop = boost::chrono::thread_clock::now();
+
+      std::cout << "Elapsed time: " 
+        << boost::chrono::duration_cast<boost::chrono::milliseconds>(objStop-objStart).count() << " ms\n";
 
       GraspConfiguration bestGrasp = graspPoints.getBestGrasp();
 
@@ -137,8 +146,7 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
 
       // Visualize the result
       pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGB> rgb(objectCloud);
-      pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZRGB> planeColor(cloudPlane, 
-        0, 255, 0);
+      pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGB> planeColor(cloudPlane);
 
       std::string objectLabel = "";
       std::ostringstream converter;
@@ -151,6 +159,8 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       viewer->addLine(objAxisCoeff, std::string(objectLabel + "Object axis vector"));
 
       std::cout << "Obj axis: " << objAxisCoeff << "\n";
+
+      //viewer->addPointCloud<pcl::PointXYZRGB>(cloudPlane, planeColor, "Plane");
 
       viewer->addPointCloud<pcl::PointXYZRGB>(objectCloud, rgb, objectLabel + "Object");
       viewer->addSphere(bestGrasp.firstPoint, 0.01, 0, 0, 255,

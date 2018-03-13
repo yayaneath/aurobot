@@ -23,9 +23,14 @@
 #include <aurobot_utils/SceneObjects.h> // Custom message for publishing a vector of grasps
 
 
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 //
 // CONST VARIABLES
 //
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+const std::string SCENE_TOPIC = "/aurobot_utils/scene_objects";
+const std::string HAND_CORRECTION_TOPIC = "/emgsensor/move";
 
 const std::string FIRST_PLANNING_GROUP = "l_first_finger";
 const std::string FIRST_END_EFFECTOR_LINK = "l_allegro_link_3_tip"; 
@@ -42,28 +47,11 @@ const std::string PALM_END_EFFECTOR_LINK = "l_allegro_base_link";
 const std::string COLLISION_OBJECT_ID = "grasping_object";
 
 
-/* PREGRASP PARA EL BRAZO
-name: ['pa10_green_shoulder_roll_joint', 'pa10_green_shoulder_lift_joint', 'pa10_green_upper_arm_roll_joint', 
-'pa10_green_elbow_flex_joint', 'pa10_green_forearm_roll_joint', 'pa10_green_wrist_flex_joint', 
-'pa10_green_wrist_roll_joint', 'l_allegro_joint_12', 'l_allegro_joint_13', 'l_allegro_joint_14', 
-'l_allegro_joint_15', 'l_allegro_joint_8', 'l_allegro_joint_9', 'l_allegro_joint_10', 'l_allegro_joint_11', 
-'l_allegro_joint_4', 'l_allegro_joint_5', 'l_allegro_joint_6', 'l_allegro_joint_7', 'l_allegro_joint_0', 
-'l_allegro_joint_1', 'l_allegro_joint_2', 'l_allegro_joint_3', 'pa10_blue_shoulder_roll_joint', 
-'pa10_blue_shoulder_lift_joint', 'pa10_blue_upper_arm_roll_joint', 'pa10_blue_elbow_flex_joint', 
-'pa10_blue_forearm_roll_joint', 'pa10_blue_wrist_flex_joint', 'pa10_blue_wrist_roll_joint', 'WRJ2', 'WRJ1', 'FFJ4', 
-'FFJ3', 'FFJ2', 'FFJ1', 'MFJ4', 'MFJ3', 'MFJ2', 'MFJ1', 'RFJ4', 'RFJ3', 'RFJ2', 'RFJ1', 'LFJ5', 'LFJ4', 'LFJ3', 
-'LFJ2', 'LFJ1', 'THJ5', 'THJ4', 'THJ3', 'THJ2', 'THJ1']
-position: [-0.39501526247481616, 0.783829417742977, 1.3926185444240184, -0.8339432724677648, 4.020341569198964, 
-0.6141949835704216, -3.5589956365624116, 0.3635738998060001, -2.956993915140629e-05, 3.2753014657646424e-05, 
-3.212741934694351e-05, 7.999491612426938e-05, -3.394329003058375e-05, 1.567064370028675e-05, 6.98618661146611e-05, 
-9.431893564760685e-05, 2.1826591156423093e-05, 3.579758736304939e-05, 6.723192846402526e-06, 5.145225096493961e-05, 
-4.858152368105948e-05, -1.3675045734271412e-05, 9.300455474294722e-05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
-0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-*/
-
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 // 
-// AUXLIIAR SCENE COLLISIONS PUBLISHER
-// 
+// Publishes the collision objects next to the robot: walls and wardrobe behind.
+//
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 void publishRoomCollisions() {
   moveit::planning_interface::PlanningSceneInterface planningSceneInterface;
@@ -96,7 +84,7 @@ void publishRoomCollisions() {
 
   geometry_msgs::Pose wardrobePose;
   wardrobePose.orientation.w = 1.0;
-  wardrobePose.position.x = -1.13;  wardrobePose.position.y = 1.60;  wardrobePose.position.z = 0.985;
+  wardrobePose.position.x = -1.13;  wardrobePose.position.y = 1.60;  wardrobePose.position.z = 0.98;
 
   collisionObject.primitives.push_back(leftWall);
   collisionObject.primitives.push_back(backWall);
@@ -109,12 +97,11 @@ void publishRoomCollisions() {
   planningSceneInterface.applyCollisionObject(collisionObject);
 }
 
-
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 //
-//  AUXILIAR POINTS TRANSFORMER FUNCTION
+//  Transforms a given point from a source frame to a target frame.
 //
-//  This function transform a given point from a source frame to a target frame.
-//
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 Eigen::Vector3d transformPoint(const tf::Stamped<tf::Point> & tfPointIn, 
     const std::string & sourceFrame, const std::string & targetFrame) {
@@ -129,6 +116,12 @@ Eigen::Vector3d transformPoint(const tf::Stamped<tf::Point> & tfPointIn,
   return outputPoint;
 }
 
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+//
+//  Transforms a given vector from a source frame to a target frame.
+//
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
 Eigen::Vector3d transformVector(const tf::Stamped<tf::Vector3> & tfVectorIn, 
     const std::string & sourceFrame, const std::string & targetFrame) {
   tf::TransformListener transformer;
@@ -142,30 +135,28 @@ Eigen::Vector3d transformVector(const tf::Stamped<tf::Vector3> & tfVectorIn,
   return outputVector;
 }
 
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+//
+//  Holds the relationship between a certain width between the finger tips and the joints
+//  values of the Allegro hand. Values were obtained through experiments.
+//
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-//
-//  AUXILIAR JOINTS POSITION FINDING FUNCTION
-//
-//  This function holds the relationship between a certain tips width and 
-//  the jx2 joints of the Barrett fingers.
-//
-
-double getThumbJointPosition(double width) {
+double getThumbJointValue(double width) {
   double a = -17.7363395438, b = 4.4662678438, c = -3.5024945072, d = 0.4839644326;
   return a * std::pow(width, 3) + b  * std::pow(width, 2) + c * width + d;
 }
 
-double getFingersJointPosition(double width) {
+double getFingersJointValue(double width) {
   double a = -40.5300629773, b = 10.205855059, c = -8.0039323331, d = 1.3418754138;
   return a * std::pow(width, 3) + b  * std::pow(width, 2) + c * width + d;
 }
 
-
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 //
-//  AUXILIAR GRASPING FUNCTION
+//  Moves the Allegro's fingers to its pregrasp position (open).
 //
-//  These functions positions the fingers regarding the object's width.
-//
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 bool moveAllegroPregrasp() {
   moveit::planning_interface::MoveGroupInterface fingersMoveGroup(ALLEGRO_HAND_PLANNING_GROUP);
@@ -211,9 +202,15 @@ bool moveAllegroPregrasp() {
   return true;
 }
 
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+//
+//  Moves the Allegro's fingers to its grasping position depending on the desired width.
+//
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
 bool moveFingersGrasp(double objectWidth) {
-  double fingersJointPosition = getFingersJointPosition(objectWidth);
-  double thumbJointPosition = getThumbJointPosition(objectWidth);
+  double fingersJointPosition = getFingersJointValue(objectWidth);
+  double thumbJointPosition = getThumbJointValue(objectWidth);
 
   moveit::planning_interface::MoveGroupInterface threeFingersMoveGroup(THREE_FINGER_PLANNING_GROUP);
   moveit::planning_interface::MoveGroupInterface::Plan fingersPlan;
@@ -253,36 +250,49 @@ bool moveFingersGrasp(double objectWidth) {
   return true;
 }
 
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+//
+//  Finds the point laying between the thumb's tip and the first/middle fingers tip.
+//
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-Eigen::Vector3d computeMiddlePoint() {
+Eigen::Vector3d computeFingersMiddlePoint() {
   // First finger
   moveit::planning_interface::MoveGroupInterface firstMoveGroup(FIRST_PLANNING_GROUP);
-  geometry_msgs::PoseStamped firstCurrentPose = firstMoveGroup.getCurrentPose(FIRST_END_EFFECTOR_LINK);
+  geometry_msgs::PoseStamped firstCurrentPose =
+    firstMoveGroup.getCurrentPose(FIRST_END_EFFECTOR_LINK);
   Eigen::Vector3d firstPoint(firstCurrentPose.pose.position.x, firstCurrentPose.pose.position.y,
     firstCurrentPose.pose.position.z);
 
   // Middle finger
   moveit::planning_interface::MoveGroupInterface middleMoveGroup(MIDDLE_PLANNING_GROUP);
-  geometry_msgs::PoseStamped middleCurrentPose = middleMoveGroup.getCurrentPose(MIDDLE_END_EFFECTOR_LINK);
+  geometry_msgs::PoseStamped middleCurrentPose =
+    middleMoveGroup.getCurrentPose(MIDDLE_END_EFFECTOR_LINK);
   Eigen::Vector3d middlePoint(middleCurrentPose.pose.position.x, middleCurrentPose.pose.position.y,
     middleCurrentPose.pose.position.z);
 
   // Thumb finger
   moveit::planning_interface::MoveGroupInterface thumbMoveGroup(THUMB_PLANNING_GROUP);
-  geometry_msgs::PoseStamped thumbCurrentPose = thumbMoveGroup.getCurrentPose(THUMB_END_EFFECTOR_LINK);
+  geometry_msgs::PoseStamped thumbCurrentPose =
+    thumbMoveGroup.getCurrentPose(THUMB_END_EFFECTOR_LINK);
   Eigen::Vector3d thumbPoint(thumbCurrentPose.pose.position.x, thumbCurrentPose.pose.position.y,
     thumbCurrentPose.pose.position.z);
 
   // Midpoint between first and second fingers
-  Eigen::Vector3d fingersMidPoint((firstPoint[0] + middlePoint[0]) / 2.0,
+  Eigen::Vector3d auxMiddlePoint((firstPoint[0] + middlePoint[0]) / 2.0,
     (firstPoint[1] + middlePoint[1]) / 2.0, (firstPoint[2] + middlePoint[2]) / 2.0);
 
-  Eigen::Vector3d graspMiddle((fingersMidPoint[0] + thumbPoint[0]) / 2.0,
-    (fingersMidPoint[1] + thumbPoint[1]) / 2.0, (fingersMidPoint[2] + thumbPoint[2]) / 2.0);
+  Eigen::Vector3d fingersMiddlePoint((auxMiddlePoint[0] + thumbPoint[0]) / 2.0,
+    (auxMiddlePoint[1] + thumbPoint[1]) / 2.0, (auxMiddlePoint[2] + thumbPoint[2]) / 2.0);
 
-  return graspMiddle;
+  return fingersMiddlePoint;
 }
 
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+//
+//  Draws in rviz the middle point as well as the palm's reference point.
+//
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 void drawReferencePoints(rviz_visual_tools::RvizVisualToolsPtr visualTools){ 
   // Thumb finger
@@ -298,38 +308,36 @@ void drawReferencePoints(rviz_visual_tools::RvizVisualToolsPtr visualTools){
     palmCurrentPose.pose.position.z);
 
   // Midpoint between first and second fingers
-  Eigen::Vector3d fingersMidPoint = computeMiddlePoint();
+  Eigen::Vector3d fingersMidPoint = computeFingersMiddlePoint();
 
-  Eigen::Vector3d graspMiddle((fingersMidPoint[0] + thumbPoint[0]) / 2.0,
-    (fingersMidPoint[1] + thumbPoint[1]) / 2.0, (fingersMidPoint[2] + thumbPoint[2]) / 2.0);  
-
-  visualTools->publishSphere(fingersMidPoint, rviz_visual_tools::BLUE, rviz_visual_tools::LARGE);
-  visualTools->publishSphere(thumbPoint, rviz_visual_tools::RED, rviz_visual_tools::LARGE);
-  visualTools->publishSphere(graspMiddle, rviz_visual_tools::YELLOW, rviz_visual_tools::LARGE);
+  visualTools->publishSphere(fingersMidPoint, rviz_visual_tools::YELLOW, rviz_visual_tools::LARGE);
   visualTools->publishSphere(palmPoint, rviz_visual_tools::BROWN, rviz_visual_tools::LARGE);
   visualTools->trigger();
 }
 
-
-
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 //
 //  GRASPER FUNCTION
 //
 //  This function executes the whole grasping process given a tuple of contact points.
 //  The process is the following:
-//  - Transform the contact points to the /world frame
-//  - Preprosition the robotic fingers to a pre grasping position
+//  - Transform the contact points to the '/world' frame
+//  - Place the robotic fingers in a pregrasping position
 //  - Calculate the palm pose regarding the object orientation and the contact points
 //  - Move the arm and the palm to such pose and close the fingers
 //
+//  Before closing, there is a control loop where the grasping position is corrected.
+//
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::string & collisionId) {
+void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, 
+    const std::string & collisionId) {
   rviz_visual_tools::RvizVisualToolsPtr visualTools;
   visualTools.reset(new rviz_visual_tools::RvizVisualTools("/world", "/rviz_visual_markers"));
   visualTools->trigger();
   moveit::planning_interface::MoveGroupInterface allegroPalmMoveGroup(PALM_PLANNING_GROUP);
 
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+  // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
   // Transform the coordinates from the camera frame to the world
 
   tf::Stamped<tf::Point> firstPointIn, secondPointIn, objAxisCenterIn;
@@ -365,7 +373,7 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
     rviz_visual_tools::MEDIUM);
   visualTools->trigger();
 
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+  // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
   // Read the object's cloud message, transform it and get the boundary coordinates
 
   sensor_msgs::PointCloud2 objectcloudsMsgIn = inputGrasp.object_cloud, objectCloudMsgOut;
@@ -381,7 +389,7 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
 
   std::cout << "Object's cloud size: " << objectCloud->width * objectCloud->height << "\n";
 
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+  // # # # # # # # # # # # # # # # # #
   // Place gripper joints for reaching
 
   double pointsDistance = std::sqrt(std::pow(firstPoint[0] - secondPoint[0], 2) + 
@@ -395,21 +403,16 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
   drawReferencePoints(visualTools);
   ROS_INFO("[AUROBOT] FINGERS POSITIONED IN PRE GRASPING POSE");
    
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+  // # # # # # # # # # # # # # # # # # # # # # # # #
   // Calculate grasper palm position and orientation
 
   Eigen::Vector3d midPoint((firstPoint[0] + secondPoint[0]) / 2.0,
     (firstPoint[1] + secondPoint[1]) / 2.0, (firstPoint[2] + secondPoint[2]) / 2.0);
 
-  /*visualTools->publishSphere(midPoint, rviz_visual_tools::GREEN, rviz_visual_tools::LARGE);
-  visualTools->trigger();*/
-
   Eigen::Vector3d axeX, axeY, axeZ;
   Eigen::Vector3d worldZ(0, 0, 1), worldY(0, 1, 0);
   float standingThreshold = 0.9, xAxisThreshold = 0.5, 
     graspCos = std::abs((worldZ.dot(objAxisVector)) / (worldZ.norm() * objAxisVector.norm()));
-
-  std::cout << "Cosine grasp - world: " << graspCos << "\n";
   
   //Re-arrenged for the allegro pose
   axeZ = firstPoint - secondPoint;
@@ -419,18 +422,8 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
   float axeXdotWorldY = axeX.dot(worldY);
   float axeYdotObjAxis = axeY.dot(objAxisVector);
 
-  std::cout << "Dot entre axeY y ObjAxis:" << axeYdotObjAxis << "\n";
-  std::cout << "Dot entre axeX y worldY:" << axeXdotWorldY << "\n";
-
-  std::cout << "Axe X:" << axeX << "\n";
-  std::cout << "Axe Y:" << axeY << "\n";
-  std::cout << "Axe Z:" << axeZ << "\n";
-
   // Hand pointing towards the camera
-  // TODO: CHECK ONLY AXEXDOTWORLDY?
   if (axeXdotWorldY > 0 && axeYdotObjAxis < 0) {
-    std::cout << "Change to Axe X and Z (reverse fingers)\n";
-    
     axeX = -axeX;
     axeZ = -axeZ;
   }
@@ -447,10 +440,7 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
   midPointPose.translation() = midPoint;
   midPointPose.linear() = midPointRotation;
 
-  /*visualTools->publishAxis(midPointPose, rviz_visual_tools::MEDIUM);
-  visualTools->trigger();*/
-
-  Eigen::Vector3d allegroMiddle = computeMiddlePoint();
+  Eigen::Vector3d allegroMiddle = computeFingersMiddlePoint();
   tf::Stamped<tf::Point> allegroMiddleIn;
   allegroMiddleIn.setX(allegroMiddle[0]);
   allegroMiddleIn.setY(allegroMiddle[1]);
@@ -460,8 +450,7 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
   allegroMiddle = transformPoint(allegroMiddleIn, "/world", "/l_allegro_base_link");
 
   // Moving the pose backwards to set the palm position 
-  // TODO: DEPENDING ON THE OBJECT'S SIZE WE SHOULD ADD 0.005 OR 0.01...
-  Eigen::Vector3d midPointCentered(-allegroMiddle[0] + 0.000, -allegroMiddle[1], -allegroMiddle[2]);
+  Eigen::Vector3d midPointCentered(-allegroMiddle[0], -allegroMiddle[1], -allegroMiddle[2]);
   tf::Transform midPointTransform;
   tf::Vector3 midPointTF, midPointTFed;
 
@@ -480,7 +469,8 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
   visualTools->trigger();
 
   // Pregrasp pose, a litle bit further
-  Eigen::Vector3d midPointCenteredPregrasp(-allegroMiddle[0] - 0.1, -allegroMiddle[1], -allegroMiddle[2]);
+  Eigen::Vector3d midPointCenteredPregrasp(-allegroMiddle[0] - 0.1, -allegroMiddle[1],
+    -allegroMiddle[2]);
 
   tf::vectorEigenToTF(midPointCenteredPregrasp, midPointTF);
   midPointTFed = midPointTransform(midPointTF);
@@ -489,7 +479,8 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
   Eigen::Affine3d allegroMidPointPregraspPose = midPointPose;
   allegroMidPointPregraspPose.translation() = midPointCenteredPregrasp;
 
-  visualTools->publishSphere(midPointCenteredPregrasp, rviz_visual_tools::ORANGE, rviz_visual_tools::LARGE);
+  visualTools->publishSphere(midPointCenteredPregrasp, rviz_visual_tools::ORANGE,
+    rviz_visual_tools::LARGE);
   visualTools->publishAxis(allegroMidPointPregraspPose, rviz_visual_tools::MEDIUM);
   visualTools->trigger();
 
@@ -499,13 +490,14 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
   Eigen::Affine3d allegroMidPointPostgraspPose = midPointPose;
   allegroMidPointPostgraspPose.translation() = midPointCenteredPostgrasp;
 
-  visualTools->publishSphere(midPointCenteredPostgrasp, rviz_visual_tools::WHITE, rviz_visual_tools::LARGE);
+  visualTools->publishSphere(midPointCenteredPostgrasp, rviz_visual_tools::WHITE,
+    rviz_visual_tools::LARGE);
   visualTools->publishAxis(allegroMidPointPostgraspPose, rviz_visual_tools::MEDIUM);
   visualTools->trigger();
 
   moveAllegroPregrasp();
 
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+  // # # # # # # # # # # # # # # # # #
   // Moving arm + palm and close grasp
 
   moveit::planning_interface::PlanningSceneInterface planningSceneInterface;
@@ -514,7 +506,7 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
 
   allegroPalmMoveGroup.setPoseTarget(allegroMidPointPregraspPose, PALM_END_EFFECTOR_LINK);
   //TRRTkConfigDefault //RRTConnectkConfigDefault // Lento! PRMstarkConfigDefault
-  allegroPalmMoveGroup.setPlannerId("PRMstarkConfigDefault");
+  allegroPalmMoveGroup.setPlannerId("TRRTkConfigDefault");
   allegroPalmMoveGroup.setPlanningTime(5.0);
   allegroPalmMoveGroup.setNumPlanningAttempts(20);
   allegroPalmMoveGroup.setMaxVelocityScalingFactor(0.50);
@@ -546,7 +538,41 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
 
       allegroPalmMoveGroup.move();
       ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN GRASPING POSE");
-      
+
+      while (true) { // HAND POSE CORRECTION
+        geometry_msgs::QuaternionConstPtr correctionMsg =
+          ros::topic::waitForMessage<geometry_msgs::Quaternion>(HAND_CORRECTION_TOPIC);
+
+        float correctionStep = 0.05;
+        float xCorrection = correctionMsg->x, yCorrection = correctionMsg->y, 
+          zCorrection = correctionMsg->z, closeHand = correctionMsg->w;
+
+        if (closeHand == 1.0)
+          break;
+
+        // Correct grasp pose
+        Eigen::Vector3d midPointCorrected(-allegroMiddle[0] + correctionStep * xCorrection,
+          -allegroMiddle[1] + correctionStep * yCorrection,
+          -allegroMiddle[2] + correctionStep * zCorrection);
+        tf::Vector3 midPointCorrectedTF, midPointCorrectedTFed;
+
+        tf::vectorEigenToTF(midPointCorrected, midPointCorrectedTF);
+        midPointCorrectedTFed = midPointTransform(midPointCorrectedTF);
+        tf::vectorTFToEigen(midPointCorrectedTFed, midPointCorrected);
+
+        Eigen::Affine3d midPointCorrectedPose = midPointPose;
+        midPointCorrectedPose.translation() = midPointCorrected;        
+
+        // Plan it and move it
+        allegroPalmMoveGroup.setPoseTarget(midPointCorrectedPose, PALM_END_EFFECTOR_LINK);
+        bool successCorrectionPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
+
+        ROS_INFO("Palm correction plan %s", successCorrectionPlan ? "SUCCEED" : "FAILED");
+
+        if (successCorrectionPlan)
+          allegroPalmMoveGroup.move();
+      }
+
       std::cout << "PRESS ENTER TO GRASP\n";
       std::getchar();
 
@@ -569,7 +595,7 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
     }
   }
 
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+  // # # # # # # # # # # # # # # # # # # #
   // Clear published objects and shutdown
 
   std::vector<std::string> objectsNames = planningSceneInterface.getKnownObjectNames();
@@ -584,12 +610,12 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
   ros::shutdown();
 }
 
-//
-//  SCENE PROCESSING FUNCTION
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 //
 //  This module is in charge of publishing collision objects by reading the scene input.
 //  It calls the grasper main function with the closest object.
 //
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 void readSceneObjectsMessage(const aurobot_utils::SceneObjectsConstPtr & inputScene) {
   moveit::planning_interface::MoveGroupInterface allegroPalmMoveGroup(PALM_PLANNING_GROUP);
@@ -603,7 +629,7 @@ void readSceneObjectsMessage(const aurobot_utils::SceneObjectsConstPtr & inputSc
 
     std::cout << "[" << objectNum << "]: Publishing collision object\n";
 
-    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+    // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
     // Read the object's cloud message, transform it and get the boundary coordinates
 
     sensor_msgs::PointCloud2 objectcloudsMsgIn = graspConfig.object_cloud, objectCloudMsgOut;
@@ -642,7 +668,7 @@ void readSceneObjectsMessage(const aurobot_utils::SceneObjectsConstPtr & inputSc
 
     Eigen::Vector3d minBoundingPoint(minX, minY, minZ), maxBoundingPoint(maxX, maxY, maxZ);
 
-    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+    // # # # # # # # # # # # # # # # # # # 
     // Add the cloud as a collision object
 
     moveit_msgs::CollisionObject collisionObject;
@@ -654,16 +680,16 @@ void readSceneObjectsMessage(const aurobot_utils::SceneObjectsConstPtr & inputSc
     collisionObject.id = sstm.str();
 
     // Define a box to add to the world.
+    float scale = 0.7;
     shape_msgs::SolidPrimitive primitive;
     primitive.type = primitive.BOX;
     primitive.dimensions.resize(3);
     // Scaled a little bit down so the bounding box does not exceed the real object boundaries
-    primitive.dimensions[0] = 0.7 * std::abs(minBoundingPoint[0] - maxBoundingPoint[0]);
-    primitive.dimensions[1] = 0.7 * std::abs(minBoundingPoint[1] - maxBoundingPoint[1]);
-    primitive.dimensions[2] = 0.7 * std::abs(minBoundingPoint[2] - maxBoundingPoint[2]);
+    primitive.dimensions[0] = scale * std::abs(minBoundingPoint[0] - maxBoundingPoint[0]);
+    primitive.dimensions[1] = scale * std::abs(minBoundingPoint[1] - maxBoundingPoint[1]);
+    primitive.dimensions[2] = scale * std::abs(minBoundingPoint[2] - maxBoundingPoint[2]);
 
     //Define a pose for the box (specified relative to frame_id)
-    // TODO: USE OBJECT'S AXIS?
     geometry_msgs::Pose boxPose;
     boxPose.orientation.w = 1.0;
     boxPose.position.x = (minBoundingPoint[0] + maxBoundingPoint[0]) / 2.0;
@@ -678,9 +704,14 @@ void readSceneObjectsMessage(const aurobot_utils::SceneObjectsConstPtr & inputSc
     ROS_INFO("[AUROBOT] Add collision object into the world");
     planningSceneInterface.applyCollisionObject(collisionObject);
 
-    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+    // # # # # # # # # # # # # # # # # # # 
     // Check if the object is the closests
     // obj_axis_coeff_2 is the z-component of the object's centroid
+
+    /*
+        TODO:
+        WE MUST SELECT HERE THE TARGET OBJECT USING THE EYE TRACKER
+    */
 
     if (graspConfig.obj_axis_coeff_2 < minCentroidZ) {
       minCentroidZ = graspConfig.obj_axis_coeff_2;
@@ -711,9 +742,9 @@ int main(int argc, char **argv) {
 
   publishRoomCollisions();
 
-  aurobot_utils::SceneObjectsConstPtr receivedMessage = 
-    ros::topic::waitForMessage<aurobot_utils::SceneObjects>("/aurobot_utils/scene_objects");
-  readSceneObjectsMessage(receivedMessage);
+  aurobot_utils::SceneObjectsConstPtr receivedMsg = 
+    ros::topic::waitForMessage<aurobot_utils::SceneObjects>(SCENE_TOPIC);
+  readSceneObjectsMessage(receivedMsg);
 
   std::cout << "Cerrando...\n";
 
