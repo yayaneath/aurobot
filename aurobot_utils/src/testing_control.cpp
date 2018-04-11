@@ -15,14 +15,14 @@ const std::string HAND_CORRECTION_TOPIC = "/emgsensor/move";
 int main(int argc, char **argv) {
   ros::init(argc, argv, "testing_control");
   ros::NodeHandle node_handle;
-  ros::AsyncSpinner spinner(1);
-  spinner.start();
+  //ros::AsyncSpinner spinner(1);
+  //spinner.start();
   
   std::cout << "Empezando...\n";
 
   while (true) { // HAND POSE CORRECTION
     geometry_msgs::QuaternionConstPtr correctionMsg =
-      ros::topic::waitForMessage<geometry_msgs::Quaternion>(HAND_CORRECTION_TOPIC);
+      ros::topic::waitForMessage<geometry_msgs::Quaternion>(HAND_CORRECTION_TOPIC, node_handle);
 
     float correctionStep = 0.02;
     float xCorrection = correctionMsg->x, yCorrection = correctionMsg->y, 

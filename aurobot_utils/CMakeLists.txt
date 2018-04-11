@@ -56,6 +56,7 @@ add_executable(aurobot_move_left_allegro src/aurobot_move_left_allegro.cpp)
 add_executable(allegro_control_grasp src/allegro_control_grasp.cpp)
 
 add_executable(testing_control src/testing_control.cpp)
+add_executable(testing_control_pub src/testing_control_pub.cpp)
 
 target_link_libraries(realsense_to_world ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(pointcloud_listener ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
@@ -65,3 +66,4 @@ target_link_libraries(aurobot_move_left_allegro ${Eigen_LIBRARIES} ${Boost_LIBRA
 target_link_libraries(allegro_control_grasp ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 
 target_link_libraries(testing_control ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(testing_control_pub ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
