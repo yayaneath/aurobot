@@ -10,8 +10,10 @@
 // Custom
 #include <pa10/pa10_wrapper.h>
 
-std::vector<float> LAST_STATE(7, 0.0);
-PA10Wrapper pa10(62005);
+const uint PA10_PORT = 62005;
+
+std::vector<float> lastState(7, 0.0);
+PA10Wrapper pa10Client(PA10_PORT);
 bool braked = false;
 
 void jointsCallback(const sensor_msgs::JointStateConstPtr & inputJointsMsg) {
@@ -23,13 +25,14 @@ void jointsCallback(const sensor_msgs::JointStateConstPtr & inputJointsMsg) {
   std::vector<float> state;
   bool sameState = true;
 
+  // Left PA10's joints are between index 0 and 7
   for (size_t i = 0; i < 7; ++i) {
     std::cout << "Joint " << i << " - " << inputJointsMsg->name[i] << ":\n";
     std::cout << "-> Position: " << inputJointsMsg->position[i] << "\n";
 
     state.push_back((float) inputJointsMsg->position[i]);
 
-    if ((float) inputJointsMsg->position[i] != LAST_STATE[i])
+    if ((float) inputJointsMsg->position[i] != lastState[i])
       sameState = false;
   }
 
@@ -37,7 +40,7 @@ void jointsCallback(const sensor_msgs::JointStateConstPtr & inputJointsMsg) {
     std::cout << "WE KEEP SAME POSITION\n";
 
     if (!braked) {
-      pa10.disarm();
+      pa10Client.disarm();
       braked = true;
     }
 
@@ -45,28 +48,30 @@ void jointsCallback(const sensor_msgs::JointStateConstPtr & inputJointsMsg) {
   }
 
   if (braked) {
-    pa10.arm();
+    pa10Client.arm();
     braked = false;
   }
 
-  LAST_STATE = state;
+  lastState = state;
+  
   Eigen::VectorXf angulars(7);
-  angulars << LAST_STATE[0], LAST_STATE[1], LAST_STATE[2], LAST_STATE[3],
-    LAST_STATE[4], LAST_STATE[5], LAST_STATE[6];
+  angulars << lastState[0], lastState[1], lastState[2], lastState[3],
+    lastState[4], lastState[5], lastState[6];
 
   std::cout << "Moving to...\n" << angulars << "\n";
   
-  pa10.setVel(0.15); // TODO: Read a ROS PARAM that is set by allegro_plan_grasp
-  pa10.goTo(angulars);
+  // TODO: Read a ROS PARAM that is set by allegro_plan_grasp
+  pa10Client.setVel(0.15);
+  pa10Client.goTo(angulars);
 
   std::cout << "Moved!\n";
 }
 
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "aurobot_left_pa10_mover");
+  ros::init(argc, argv, "aurobot_move_left_pa10");
 
-  ros::NodeHandle n;
-  ros::Rate r(0.5); // This rate works fine with 0.1 velocity in the PA10 and 0.50 in MoveIt (vel/acc)
+  ros::NodeHandle nh; // Required to run rate.
+  ros::Rate r(0.5); // This rate works fine with 0.5 velocity in MoveIt
 
   while(ros::ok()) {
     sensor_msgs::JointStateConstPtr receivedMessage = 

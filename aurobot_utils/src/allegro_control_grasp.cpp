@@ -543,7 +543,7 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp,
         geometry_msgs::QuaternionConstPtr correctionMsg =
           ros::topic::waitForMessage<geometry_msgs::Quaternion>(HAND_CORRECTION_TOPIC);
 
-        float correctionStep = 0.05;
+        float correctionStep = 0.02;
         float xCorrection = correctionMsg->x, yCorrection = correctionMsg->y, 
           zCorrection = correctionMsg->z, closeHand = correctionMsg->w;
 
@@ -565,6 +565,7 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp,
 
         // Plan it and move it
         allegroPalmMoveGroup.setPoseTarget(midPointCorrectedPose, PALM_END_EFFECTOR_LINK);
+        allegroPalmMoveGroup.setPlanningTime(1.0);
         bool successCorrectionPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
 
         ROS_INFO("Palm correction plan %s", successCorrectionPlan ? "SUCCEED" : "FAILED");
@@ -582,6 +583,7 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp,
       ROS_INFO("[AUROBOT] GRASP COMPLETED");
 
       allegroPalmMoveGroup.setPoseTarget(allegroMidPointPostgraspPose, PALM_END_EFFECTOR_LINK);
+      allegroPalmMoveGroup.setPlanningTime(5.0);
       successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
 
       ROS_INFO("Palm grasp plan %s", successAllegroPalmPlan ? "SUCCEED" : "FAILED");

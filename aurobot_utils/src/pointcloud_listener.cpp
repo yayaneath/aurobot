@@ -31,8 +31,6 @@
 #include <aurobot_utils/SceneObjects.h> // Custom message for publishing a vector of grasps
 
 const int ALLEGRO_GRIP_TIP = 28;
-const int ALLEGRO_MAX_AMP = 200;
-
 
 // Global variables needed for the callback function
 pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer("Cloud viewer"));
@@ -129,7 +127,6 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       graspPoints.setBackgroundCloud(cloudPlane);
       graspPoints.setObjectCloud(objectCloud);
       graspPoints.setGripTipSize(ALLEGRO_GRIP_TIP);
-      graspPoints.setGripMaxAmplitude(ALLEGRO_MAX_AMP);
       
       boost::chrono::thread_clock::time_point objStart = boost::chrono::thread_clock::now();
       graspPoints.compute();

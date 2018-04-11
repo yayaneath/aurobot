@@ -18,20 +18,19 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
 
   pcl_ros::transformPointCloud("/world", transform, *inputCloudMsg, outputCloudMsg);
 
-  pub.publish (outputCloudMsg);
+  pub.publish(outputCloudMsg);
 }
 
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "realsense_to_world_mapper");
+  ros::init(argc, argv, "realsense_to_world");
 
-  ros::NodeHandle n("~");
+  ros::NodeHandle nh("~");
   std::string cloudTopic;
   
-  n.getParam("topic", cloudTopic);
+  nh.getParam("topic", cloudTopic);
 
-  ros::Subscriber sub = n.subscribe<sensor_msgs::PointCloud2>(cloudTopic, 1, cloudCallback);
+  ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2>(cloudTopic, 1, cloudCallback);
 
-  ros::NodeHandle nh;
   pub = nh.advertise<sensor_msgs::PointCloud2>("/camera/depth_registered/points_tfed", 1);
 
   ros::spin();
