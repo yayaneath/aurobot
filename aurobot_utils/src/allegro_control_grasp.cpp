@@ -1,5 +1,6 @@
 // Standard
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <vector>
 #include <math.h>
@@ -503,6 +504,8 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp,
   moveit::planning_interface::PlanningSceneInterface planningSceneInterface;
   moveit::planning_interface::MoveGroupInterface::Plan allegroPalmPlan;
   bool successAllegroPalmPlan = false;
+  char REPEAT_PLAN = 'r';
+  char inputChar = REPEAT_PLAN;
 
   allegroPalmMoveGroup.setPoseTarget(allegroMidPointPregraspPose, PALM_END_EFFECTOR_LINK);
   //TRRTkConfigDefault //RRTConnectkConfigDefault // Lento! PRMstarkConfigDefault
@@ -512,15 +515,18 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp,
   allegroPalmMoveGroup.setMaxVelocityScalingFactor(0.50);
   allegroPalmMoveGroup.setMaxAccelerationScalingFactor(0.50);
 
-  successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
+  do {
+    ROS_INFO("[AUROBOT] PLANNING GRASP POSITION");
+
+    successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
+
+    std::cin >> inputChar;
+  } while(inputChar == REPEAT_PLAN);
 
   ROS_INFO("Palm pregrasp plan %s", successAllegroPalmPlan ? "SUCCEED" : "FAILED");
 
   if (successAllegroPalmPlan) { // Successful plan for the pre grasping arm position
-    std::cout << "PRESS ENTER TO MOVE PA10 TO PREGRASPING POSE\n";
-    std::getchar();
-
-    allegroPalmMoveGroup.move();
+    allegroPalmMoveGroup.execute(allegroPalmPlan);
     ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN PREGRASPING POSE");
   
     std::vector<std::string> objectId;
@@ -528,24 +534,40 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp,
     planningSceneInterface.removeCollisionObjects(objectId);
 
     allegroPalmMoveGroup.setPoseTarget(allegroMidPointPose, PALM_END_EFFECTOR_LINK);
-    successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
+
+    do {
+      ROS_INFO("[AUROBOT] PLANNING GRASP POSITION");
+
+      successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
+
+      std::cin >> inputChar;
+    } while(inputChar == REPEAT_PLAN);
 
     ROS_INFO("Palm grasp plan %s", successAllegroPalmPlan ? "SUCCEED" : "FAILED");
 
     if (successAllegroPalmPlan) { // Successful plan for the grasping arm position
-      std::cout << "PRESS ENTER TO MOVE PA10 TO GRASPING POSE\n";
-      std::getchar();
-
-      allegroPalmMoveGroup.move();
+      allegroPalmMoveGroup.execute(allegroPalmPlan);
       ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN GRASPING POSE");
 
+      int lastDirection = -1, numCorrections = 0;
+      std::string correctionsFile = "corrections.txt";
+
       while (true) { // HAND POSE CORRECTION
+        ROS_INFO("[AUROBOT] WAITING FOR CORRECTION MESSAGE");
+
         geometry_msgs::QuaternionConstPtr correctionMsg =
           ros::topic::waitForMessage<geometry_msgs::Quaternion>(HAND_CORRECTION_TOPIC);
+
+        numCorrections++;
 
         float correctionStep = 0.02;
         float xCorrection = correctionMsg->x, yCorrection = correctionMsg->y, 
           zCorrection = correctionMsg->z, closeHand = correctionMsg->w;
+
+        if (zCorrection != lastDirection) {
+          correctionStep *= 0.9;
+          lastDirection = zCorrection;
+        }
 
         if (closeHand == 1.0)
           break;
@@ -565,13 +587,36 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp,
 
         // Plan it and move it
         allegroPalmMoveGroup.setPoseTarget(midPointCorrectedPose, PALM_END_EFFECTOR_LINK);
-        allegroPalmMoveGroup.setPlanningTime(1.0);
-        bool successCorrectionPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
+        allegroPalmMoveGroup.setPlanningTime(3.0);
+
+        bool successCorrectionPlan = false;
+
+        do {
+          ROS_INFO("[AUROBOT] PLANNING CORRECTION");
+          
+          successCorrectionPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
+
+          std::cin >> inputChar;
+        } while(inputChar == REPEAT_PLAN);
 
         ROS_INFO("Palm correction plan %s", successCorrectionPlan ? "SUCCEED" : "FAILED");
 
-        if (successCorrectionPlan)
-          allegroPalmMoveGroup.move();
+        if (successCorrectionPlan) {
+          allegroPalmMoveGroup.execute(allegroPalmPlan);
+          geometry_msgs::PoseStamped currentPose = allegroPalmMoveGroup.getCurrentPose();
+
+          std::ofstream outFile;
+          outFile.open(correctionsFile, std::ios::out | std::ios::app);
+          outFile << numCorrections << "\n";
+          outFile << currentPose.pose.position.x << ","
+                  << currentPose.pose.position.y << ","
+                  << currentPose.pose.position.z << "\n";
+          outFile << currentPose.pose.orientation.x << ","
+                  << currentPose.pose.orientation.y << ","
+                  << currentPose.pose.orientation.z << ","
+                  << currentPose.pose.orientation.w << "\n";
+          outFile.close();
+        }
       }
 
       std::cout << "PRESS ENTER TO GRASP\n";
@@ -584,16 +629,19 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp,
 
       allegroPalmMoveGroup.setPoseTarget(allegroMidPointPostgraspPose, PALM_END_EFFECTOR_LINK);
       allegroPalmMoveGroup.setPlanningTime(5.0);
-      successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
+        
+      do {
+        ROS_INFO("[AUROBOT] PLANNING LIFT POSITION");
+
+        successAllegroPalmPlan = allegroPalmMoveGroup.plan(allegroPalmPlan);
+
+        std::cin >> inputChar;
+      } while(inputChar == REPEAT_PLAN);
 
       ROS_INFO("Palm grasp plan %s", successAllegroPalmPlan ? "SUCCEED" : "FAILED");
 
-      if (successAllegroPalmPlan) { // Successful plan for the post grasping arm position
-        std::cout << "PRESS ENTER TO MOVE PA10 TO POSTGRASPING POSE\n";
-        std::getchar();
-
-        allegroPalmMoveGroup.move();
-      }
+      if (successAllegroPalmPlan)// Successful plan for the post grasping arm position
+        allegroPalmMoveGroup.execute(allegroPalmPlan);
     }
   }
 

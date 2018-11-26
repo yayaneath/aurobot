@@ -61,7 +61,7 @@
       Esta es buena para agarres frontales pero falla hacia abajo
       <origin xyz="0.820 1.54549 1.72834" rpy="-1.9895 0.00500789 -3.1290064"/>
       -->
-      <origin xyz="0.820 1.54549 1.72834" rpy="-1.9895 0.00500789 -3.1290064"/>
+      <origin xyz="0.807 1.51849 1.74534" rpy="-2.0375 0.0150079 -3.12501"/>
     </joint>
 
 

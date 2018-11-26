@@ -182,13 +182,15 @@
   <!-- Allegro left hand -->
   <xacro:allegro_left_hand/>
 
+  <link name="pa10_blue_shoulder_roll_link" />
+
   <!-- Add the right PA10 -->
-  <xacro:pa10_blue_shoulder child="pa10_blue_elbow_flex_link"/>
+  <!-- <xacro:pa10_blue_shoulder child="pa10_blue_elbow_flex_link"/>
   <xacro:pa10_blue_upper_arm child="pa10_blue_wrist_flex_link"/>
-  <xacro:pa10_blue_forearm child="r_jr3_link"/>
+  <xacro:pa10_blue_forearm child="r_jr3_link"/> -->
 
   <!-- JR3 right -->
-  <link name="r_jr3_link">
+  <!-- <link name="r_jr3_link">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="0.40"/>
@@ -205,16 +207,16 @@
         <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
       </geometry>
     </collision>
-  </link>
+  </link> -->
 
   <!-- attach the hand to the arm -->
-  <joint name="r_jr3_joint" type="fixed">
+  <!-- <joint name="r_jr3_joint" type="fixed">
     <parent link="r_jr3_link" />
     <child link = "forearm" />
     <origin xyz="0 0 0" rpy="0 0 ${pi/2.0}"/>
-  </joint>
+  </joint> -->
   
   <!-- instantiate the hand -->
-  <xacro:shadowhand lf="true" muscletrans="false" muscle="false" bio="false" bt_sp="false" ubi="false" eli="false" reflect="1.0" prefix="" />
+  <!-- <xacro:shadowhand lf="true" muscletrans="false" muscle="false" bio="false" bt_sp="false" ubi="false" eli="false" reflect="1.0" prefix="" /> -->
     
 </robot>

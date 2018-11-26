@@ -21,6 +21,19 @@ int main(int argc, char **argv) {
   std::cout << "Empezando...\n";
 
   while (true) { // HAND POSE CORRECTION
+    std::cout << "Starting...\n";
+
+    char REPEAT_PLAN = 'r';
+    char inputChar = REPEAT_PLAN;
+
+    do {
+      ROS_INFO("[AUROBOT] PLANNING CORRECTION");
+      
+      std::cin >> inputChar;
+    } while(inputChar == REPEAT_PLAN);
+
+    std::cout << "Done!\n";
+
     geometry_msgs::QuaternionConstPtr correctionMsg =
       ros::topic::waitForMessage<geometry_msgs::Quaternion>(HAND_CORRECTION_TOPIC, node_handle);
 
