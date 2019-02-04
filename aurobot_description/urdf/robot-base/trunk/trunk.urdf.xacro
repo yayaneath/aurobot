@@ -39,9 +39,6 @@
       <origin xyz="0 0.13790 1.22809" rpy="0 1.0471975512 1.5707963268"/>
     </joint>
 
-
-
-
     <joint name="trunk_head_joint" type="fixed">
       <parent link="trunk_link"/>
       <child link="${head_child}"/>
@@ -63,9 +60,6 @@
       -->
       <origin xyz="0.807 1.51849 1.74534" rpy="-2.0375 0.0150079 -3.12501"/>
     </joint>
-
-
-
 
     <joint name="trunk_right_joint" type="fixed">
       <parent link="trunk_link"/>

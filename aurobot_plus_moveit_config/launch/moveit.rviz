@@ -5,6 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /MotionPlanning1
+        - /MotionPlanning1/Planning Request1
       Splitter Ratio: 0.742560029
     Tree Height: 330
   - Class: rviz/Help
@@ -84,11 +85,6 @@ Visualization Manager:
             Show Trail: false
             Value: true
           bearing_under_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          head_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -266,7 +262,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-        Loop Animation: true
+        Loop Animation: false
         Robot Alpha: 0.5
         Robot Color: 150; 50; 150
         Show Robot Collision: false
@@ -332,11 +328,6 @@ Visualization Manager:
             Show Trail: false
             Value: true
           bearing_under_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          head_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -542,11 +533,33 @@ Visualization Manager:
       Selectable: true
       Size (Pixels): 3
       Size (m): 0.00999999978
-      Style: Flat Squares
+      Style: Points
       Topic: /camera/depth_registered/points_tfed
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
+      Value: true
+    - Class: rviz/TF
+      Enabled: false
+      Frame Timeout: 15
+      Frames:
+        All Enabled: false
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        {}
+      Update Interval: 0
+      Value: false
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /rviz_visual_markers
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 100
       Value: true
   Enabled: true
   Global Options:
@@ -563,25 +576,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 3.85897899
+      Distance: 3.13264203
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.305371404
-        Y: 0.595144212
-        Z: 2.23518001e-07
+        X: 0.0793502331
+        Y: 0.610546172
+        Z: -1.0877842e-06
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.649797022
+      Pitch: 0.604796708
       Target Frame: world
       Value: XYOrbit (rviz)
-      Yaw: 0.236763194
+      Yaw: 0.206781879
     Saved: ~
 Window Geometry:
   Displays:

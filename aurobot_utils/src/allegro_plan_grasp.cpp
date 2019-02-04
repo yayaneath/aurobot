@@ -206,7 +206,7 @@ bool moveAllegroPregrasp() {
     return false;
   }
 
-  fingersMoveGroup.move();
+  fingersMoveGroup.execute(fingersPlan);
 
   return true;
 }
@@ -248,7 +248,7 @@ bool moveFingersGrasp(double objectWidth) {
     return false;
   }
 
-  threeFingersMoveGroup.move();
+  threeFingersMoveGroup.execute(fingersPlan);
 
   return true;
 }
@@ -528,7 +528,7 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
     std::cout << "PRESS ENTER TO MOVE PA10 TO PREGRASPING POSE\n";
     std::getchar();
 
-    allegroPalmMoveGroup.move();
+    allegroPalmMoveGroup.execute(allegroPalmPlan);
     ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN PREGRASPING POSE");
   
     std::vector<std::string> objectId;
@@ -544,7 +544,7 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
       std::cout << "PRESS ENTER TO MOVE PA10 TO GRASPING POSE\n";
       std::getchar();
 
-      allegroPalmMoveGroup.move();
+      allegroPalmMoveGroup.execute(allegroPalmPlan);
       ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN GRASPING POSE");
       
       std::cout << "PRESS ENTER TO GRASP\n";
@@ -564,7 +564,7 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp, const std::
         std::cout << "PRESS ENTER TO MOVE PA10 TO POSTGRASPING POSE\n";
         std::getchar();
 
-        allegroPalmMoveGroup.move();
+        allegroPalmMoveGroup.execute(allegroPalmPlan);
       }
     }
   }
