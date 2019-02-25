@@ -1,0 +1,10 @@
+controller_list:
+  - name: fake_r_arm_controller
+    joints:
+      - pa10_blue_shoulder_roll_joint
+      - pa10_blue_shoulder_lift_joint
+      - pa10_blue_upper_arm_roll_joint
+      - pa10_blue_elbow_flex_joint
+      - pa10_blue_forearm_roll_joint
+      - pa10_blue_wrist_flex_joint
+      - pa10_blue_wrist_roll_joint

@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+
+<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:xacro="http://ros.org/wiki/xacro"
+       name="aurobot" >
+
+  <!-- generic simulator_gazebo plugins for starting mechanism control, ros time, ros battery -->
+  <xacro:include filename="$(find aurobot_description)/gazebo/gazebo.urdf.xacro"/>
+  <!-- materials for visualization -->
+  <xacro:include filename="$(find aurobot_description)/urdf/materials.urdf.xacro"/>
+  <!-- The following included files set up definitions of parts of the robot body misc common stuff -->
+  <xacro:include filename="$(find aurobot_description)/urdf/common.xacro"/>
+  <!-- Robot base -->
+  <xacro:include filename="$(find aurobot_description)/urdf/robot-base/profiles/profiles.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/robot-base/base/base.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/robot-base/bearing/bearing.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/robot-base/trunk/trunk.urdf.xacro"/>
+  <!-- PA10 green left arm -->
+  <xacro:include filename="$(find aurobot_description)/urdf/pa10-green/shoulder/shoulder.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/pa10-green/upper_arm/upper_arm.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/pa10-green/forearm/forearm.urdf.xacro"/>
+  <!-- Allegro left hand -->
+  <xacro:include filename="$(find aurobot_description)/urdf/hand/allegro/allegro_left.urdf.xacro"/>
+  
+  <!-- Define properrties -->
+  <xacro:property name="pi" value="3.14159265" />
+  
+  <!-- Joint the robot to the world -->
+  <link name="world"/>
+  <joint name="world_joint" type="fixed">
+    <parent link="world"/>
+    <child link="profiles_link"/>
+  </joint>
+
+  <!-- 2 Tables -->
+  <link name="table_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia
+        ixx="1.0" ixy="0.0" ixz="0.0"
+        iyy="1.0" iyz="0.0"
+        izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.794 0.800 0.016"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.794 0.800 0.016"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="table_joint" type="fixed">
+    <parent link="world"/>
+    <child link="table_link"/>
+    <!-- BRAYAN (19/12/2017): tras descalibrado de camara y mesa. 
+    Anterior:
+    <origin xyz="0.761 0.2285 1.183" rpy="0 0 0"/>
+
+    Bien medido:
+    <origin xyz="0.759 0.210 1.180" rpy="0 0 0"/>
+
+    Esta es buena para agarres frontales pero falla hacia abajo:
+    <origin xyz="0.759 0.2385 1.149" rpy="0 0 0"/>
+    -->
+    <origin xyz="0.759 0.2385 1.149" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Add the base -->
+  <xacro:profiles child="base_down_link"/>
+  <xacro:base child="bearing_under_link"/>
+  <xacro:bearing child="trunk_link"/>
+  <xacro:trunk left_child="pa10_green_shoulder_roll_link" 
+    head_child="head_link" right_child="pa10_blue_shoulder_roll_link"/>
+
+  <!-- Head -->
+  <link name="head_link">
+    <inertial>
+      <origin xyz="0 0 1" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia
+        ixx="1.0" ixy="0.0" ixz="0.0"
+        iyy="1.0" iyz="0.0"
+        izz="1.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.025 0.025 0.025"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.025 0.025 0.025"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Add the left PA10 -->
+  <xacro:pa10_green_shoulder child="pa10_green_elbow_flex_link"/>
+  <xacro:pa10_green_upper_arm child="pa10_green_wrist_flex_link"/>
+  <xacro:pa10_green_forearm child="l_jr3_link"/>
+  
+  <!-- JR3 left -->
+  <link name="l_jr3_link">
+    <inertial>
+      <mass value="0.40"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <!-- BRAYAN (22/11/2017): Escalamos esta pieza que en el STL mide menos de la realidad -->
+        <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl" scale="1 1 8"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl" scale="1 1 8"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="l_jr3_joint" type="fixed">
+    <parent link="l_jr3_link"/>
+    <child link="l_jr3_end_link"/>
+      <!-- BRAYAN (12/07/2017): Medimos y no tiene 10cm, son 4.7cm placa + jr3 + placa
+       <origin xyz="0 0 0.1" rpy="0 0 3.1415926536"/> -->
+      <!-- BRAYAN (22/11/2017): Realmente son 4cm, porque 0.7cm primeros son de PA10
+       <origin xyz="0 0 0.047" rpy="0 0 3.1415926536"/> -->
+    <origin xyz="0 0 0.04042" rpy="0 0 3.1415926536"/>
+  </joint>
+
+  <!-- BRAYAN (23/11/2017): se anyade para desplazar el visual de la mano Allegro y hacerlo coincidir con el real  -->
+  <link name="l_jr3_end_link"> 
+    <inertial>
+      <mass value="0.40"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <!-- BRAYAN (22/11/2017): Escalamos esta pieza que en el STL mide menos de la realidad -->
+        <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="l_jr3_end_joint" type="fixed">
+    <parent link="l_jr3_end_link"/>
+    <child link="l_allegro_base_link"/>
+      <!-- BRAYAN (12/07/2017): Medimos y no tiene 10cm, son 4.7cm placa + jr3 + placa
+       <origin xyz="0 0 0.1" rpy="0 0 3.1415926536"/> -->
+      <!-- BRAYAN (22/11/2017): Realmente son 4cm, porque 0.7cm primeros son de PA10
+       <origin xyz="0 0 0.047" rpy="0 0 3.1415926536"/> -->
+    <origin xyz="0 0 0.1001" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Allegro left hand -->
+  <xacro:allegro_left_hand/>
+
+  <link name="pa10_blue_shoulder_roll_link" />
+
+</robot>
