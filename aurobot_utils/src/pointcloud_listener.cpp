@@ -48,7 +48,7 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
   pcl::PassThrough<pcl::PointXYZRGB> ptFilter;
   ptFilter.setInputCloud(cloud);
   ptFilter.setFilterFieldName("z");
-  ptFilter.setFilterLimits(0.0, 1.5);
+  ptFilter.setFilterLimits(0.0, 0.7);
   ptFilter.filter(*cloud);
 
   // Create the segmentation object for the planar model and set all the parameters
@@ -111,6 +111,9 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
 
     viewer->removeAllPointClouds();
     viewer->removeAllShapes();
+    
+    pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGB> planeColor(cloudPlane);
+    viewer->addPointCloud<pcl::PointXYZRGB>(cloudPlane, planeColor, "Plane");
 
     for (it = clusterIndices.begin(); it != clusterIndices.end(); ++it) {
       pcl::PointCloud<pcl::PointXYZRGB>::Ptr objectCloud(new pcl::PointCloud<pcl::PointXYZRGB>());
@@ -143,7 +146,6 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
 
       // Visualize the result
       pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGB> rgb(objectCloud);
-      pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGB> planeColor(cloudPlane);
 
       std::string objectLabel = "";
       std::ostringstream converter;
@@ -153,11 +155,8 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       objectLabel += "-";
 
       pcl::ModelCoefficients objAxisCoeff = graspPoints.getObjectAxisCoeff();
-      viewer->addLine(objAxisCoeff, std::string(objectLabel + "Object axis vector"));
-
-      std::cout << "Obj axis: " << objAxisCoeff << "\n";
-
-      //viewer->addPointCloud<pcl::PointXYZRGB>(cloudPlane, planeColor, "Plane");
+      //viewer->addLine(objAxisCoeff, std::string(objectLabel + "Object axis vector"));
+      //std::cout << "Obj axis: " << objAxisCoeff << "\n";
 
       viewer->addPointCloud<pcl::PointXYZRGB>(objectCloud, rgb, objectLabel + "Object");
       viewer->addSphere(bestGrasp.firstPoint, 0.01, 0, 0, 255,
@@ -192,7 +191,8 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
     // Publish the grasp configurations found in the scene
     pub.publish(scene_msg);
 
-    viewer->spin();
+    viewer->spinOnce();
+    //viewer->spin();
   }
 }
 
