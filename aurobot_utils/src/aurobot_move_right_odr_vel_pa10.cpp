@@ -46,7 +46,6 @@ ros::Time last_time;
 
 //
 ros::Publisher fakeControllerPub;
-moveit::planning_interface::MoveGroupInterface* fingersMoveGroup;
 
 void updatePA10LastAngulars(){
   pa10.getAngles(pa10_last_angulars);
@@ -232,25 +231,28 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "aurobot_right_odr_vel_pa10_mover");
 
   ros::NodeHandle n;
-  //ros::Rate r(rosRate); // This rate works fine with 0.1 velocity in the PA10 and 0.50 in MoveIt (vel/acc)
+
   zero_velocity << 0,0,0,0,0,0,0;
   error_total << 0,0,0,0,0,0,0;
   last_error << 0,0,0,0,0,0,0;
+  
   fakeControllerPub = n.advertise<sensor_msgs::JointState>("/move_group/fake_controller_joint_states", 1);
-
-  //fingersMoveGroup= new  moveit::planning_interface::MoveGroupInterface("l_arm");
 
   //Arm pa10 to get angulars positions and receive one /joint_states message to get initial information
   boost::thread *update_angulars_pa10;
+
   if(ros::ok()){
     armPA10();
+
     update_angulars_pa10 = new boost::thread{thread};
+
     sensor_msgs::JointStateConstPtr jointStateMessage = 
       ros::topic::waitForMessage<sensor_msgs::JointState>("/joint_states");
+      
     std::cout << "JOINT STATE MESSAGE RECEIVED" << std::endl;
+
     //updatePA10LastAngulars();
     updateCurrentStatePA10(jointStateMessage);
-    //fingersMoveGroup->setStartStateToCurrentState();
     
     //disarmPA10();
     pa10.stpArm();

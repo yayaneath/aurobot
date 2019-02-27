@@ -88,12 +88,13 @@ void thread() {
         pa10.modAxs();
         controlling = true;
       }
-        std::cout << "WE KEEP SAME POSITION\n";
-        std::cout << "Moving to...\n" << state << "\n";
+      
+      std::cout << "WE KEEP SAME POSITION\n";
+      std::cout << "Moving to...\n" << state << "\n";
 
-        pa10.odrAxs(state);
+      pa10.odrAxs(state);
 
-        std::cout << "Moved!\n";
+      std::cout << "Moved!\n";
     }
 
     wait(50);

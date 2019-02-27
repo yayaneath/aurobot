@@ -55,6 +55,7 @@ add_executable(aurobot_move_left_pa10 src/aurobot_move_left_pa10.cpp)
 add_executable(aurobot_move_left_odr_axs_pa10 src/aurobot_move_left_odr_axs_pa10.cpp)
 add_executable(aurobot_move_left_allegro src/aurobot_move_left_allegro.cpp)
 add_executable(allegro_control_grasp src/allegro_control_grasp.cpp)
+add_executable(aurobot_move_right_odr_vel_pa10 src/aurobot_move_right_odr_vel_pa10.cpp)
 
 add_executable(testing_control src/testing_control.cpp)
 add_executable(testing_control_pub src/testing_control_pub.cpp)
@@ -66,6 +67,7 @@ target_link_libraries(aurobot_move_left_pa10 ${Eigen_LIBRARIES} ${Boost_LIBRARIE
 target_link_libraries(aurobot_move_left_odr_axs_pa10 ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(aurobot_move_left_allegro ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(allegro_control_grasp ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(aurobot_move_right_odr_vel_pa10 ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 
 target_link_libraries(testing_control ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(testing_control_pub ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
