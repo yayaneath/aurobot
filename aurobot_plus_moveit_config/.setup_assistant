@@ -1,7 +1,7 @@
 moveit_setup_assistant_config:
   URDF:
     package: aurobot_description
-    relative_path: robots/aurobot_shadow.urdf.xacro
+    relative_path: robots/aurobot_left.urdf.xacro
   SRDF:
     relative_path: config/aurobot.srdf
   CONFIG:
