@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: aurobot_description
+    relative_path: robots/aurobot_right_shadow.urdf.xacro
+  SRDF:
+    relative_path: config/aurobot.srdf
+  CONFIG:
+    author_name: Aurova
+    author_email: brayan.impata@ua.es
+    generated_timestamp: 1554377406

@@ -1,0 +1,107 @@
+controller_list:
+  - name: fake_r_arm_controller
+    joints:
+      - pa10_blue_shoulder_roll_joint
+      - pa10_blue_shoulder_lift_joint
+      - pa10_blue_upper_arm_roll_joint
+      - pa10_blue_elbow_flex_joint
+      - pa10_blue_forearm_roll_joint
+      - pa10_blue_wrist_flex_joint
+      - pa10_blue_wrist_roll_joint
+  - name: fake_r_shadow_controller
+    joints:
+      - WRJ2
+      - WRJ1
+      - FFJ4
+      - FFJ3
+      - FFJ2
+      - FFJ1
+      - LFJ5
+      - LFJ4
+      - LFJ3
+      - LFJ2
+      - LFJ1
+      - MFJ4
+      - MFJ3
+      - MFJ2
+      - MFJ1
+      - RFJ4
+      - RFJ3
+      - RFJ2
+      - RFJ1
+      - THJ5
+      - THJ4
+      - THJ3
+      - THJ2
+      - THJ1
+  - name: fake_r_first_finger_controller
+    joints:
+      - FFJ4
+      - FFJ3
+      - FFJ2
+      - FFJ1
+  - name: fake_r_first_finger_ee_controller
+    joints:
+      []
+  - name: fake_r_middle_finger_controller
+    joints:
+      - MFJ4
+      - MFJ3
+      - MFJ2
+      - MFJ1
+  - name: fake_r_middle_finger_ee_controller
+    joints:
+      []
+  - name: fake_r_ring_finger_controller
+    joints:
+      - RFJ4
+      - RFJ3
+      - RFJ2
+      - RFJ1
+  - name: fake_r_ring_finger_ee_controller
+    joints:
+      []
+  - name: fake_r_little_finger_controller
+    joints:
+      - LFJ5
+      - LFJ4
+      - LFJ3
+      - LFJ2
+      - LFJ1
+  - name: fake_r_little_finger_ee_controller
+    joints:
+      []
+  - name: fake_r_thumb_controller
+    joints:
+      - THJ5
+      - THJ4
+      - THJ3
+      - THJ2
+      - THJ1
+  - name: fake_r_thumb_ee_controller
+    joints:
+      []
+  - name: fake_r_fingers_controller
+    joints:
+      - FFJ4
+      - FFJ3
+      - FFJ2
+      - FFJ1
+      - LFJ5
+      - LFJ4
+      - LFJ3
+      - LFJ2
+      - LFJ1
+      - MFJ4
+      - MFJ3
+      - MFJ2
+      - MFJ1
+      - RFJ4
+      - RFJ3
+      - RFJ2
+      - RFJ1
+      - THJ5
+      - THJ4
+      - THJ3
+      - THJ2
+      - THJ1

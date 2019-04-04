@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+
+<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:xacro="http://ros.org/wiki/xacro"
+       name="aurobot" >
+
+  <!-- generic simulator_gazebo plugins for starting mechanism control, ros time, ros battery -->
+  <xacro:include filename="$(find aurobot_description)/gazebo/gazebo.urdf.xacro"/>
+  <!-- materials for visualization -->
+  <xacro:include filename="$(find aurobot_description)/urdf/materials.urdf.xacro"/>
+  <!-- The following included files set up definitions of parts of the robot body misc common stuff -->
+  <xacro:include filename="$(find aurobot_description)/urdf/common.xacro"/>
+  <!-- Robot base -->
+  <xacro:include filename="$(find aurobot_description)/urdf/robot-base/profiles/profiles.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/robot-base/base/base.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/robot-base/bearing/bearing.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/robot-base/trunk/trunk.urdf.xacro"/>
+  <!-- PA10 blue right arm -->
+  <xacro:include filename="$(find aurobot_description)/urdf/pa10-blue/shoulder/shoulder.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/pa10-blue/upper_arm/upper_arm.urdf.xacro"/>
+  <xacro:include filename="$(find aurobot_description)/urdf/pa10-blue/forearm/forearm.urdf.xacro"/>
+  <!-- Shadow right hand arm -->
+  <!-- sr_description is in https://github.com/shadow-robot/sr_common.git -->
+  <xacro:include filename="$(find sr_description)/materials.urdf.xacro" />
+  <xacro:include filename="$(find sr_description)/hand/xacro/full_hand.urdf.xacro" />
+  
+  <!-- Define properrties -->
+  <xacro:property name="pi" value="3.14159265" />
+  
+  <!-- Joint the robot to the world -->
+  <link name="world"/>
+  <joint name="world_joint" type="fixed">
+    <parent link="world"/>
+    <child link="profiles_link"/>
+  </joint>
+
+  <!-- 2 Tables -->
+  <link name="table_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia
+        ixx="1.0" ixy="0.0" ixz="0.0"
+        iyy="1.0" iyz="0.0"
+        izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.794 0.800 0.016"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.794 0.800 0.016"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="table_joint" type="fixed">
+    <parent link="world"/>
+    <child link="table_link"/>
+    <origin xyz="0.759 0.2385 1.149" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Add the base -->
+  <xacro:profiles child="base_down_link"/>
+  <xacro:base child="bearing_under_link"/>
+  <xacro:bearing child="trunk_link"/>
+  <xacro:trunk left_child="pa10_green_shoulder_roll_link" 
+    head_child="head_link" right_child="pa10_blue_shoulder_roll_link"/>
+
+  <!-- Left link -->
+  <link name="pa10_green_shoulder_roll_link" />
+
+  <!-- Head -->
+  <link name="head_link">
+    <inertial>
+      <origin xyz="0 0 1" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia
+        ixx="1.0" ixy="0.0" ixz="0.0"
+        iyy="1.0" iyz="0.0"
+        izz="1.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.025 0.025 0.025"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.025 0.025 0.025"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Add the right PA10 -->
+  <xacro:pa10_blue_shoulder child="pa10_blue_elbow_flex_link"/>
+  <xacro:pa10_blue_upper_arm child="pa10_blue_wrist_flex_link"/>
+  <xacro:pa10_blue_forearm child="r_jr3_link"/>
+
+  <!-- JR3 right -->
+  <link name="r_jr3_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.40"/>
+      <inertia ixx="0.012500"  ixy="0.000005"  ixz="0.000005" iyy="0.011431" iyz="0.000005" izz="0.012500"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl" scale="1 1 8"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://aurobot_description/meshes/jr3/jr3.stl" scale="1 1 8"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="r_jr3_joint" type="fixed">
+    <parent link="r_jr3_link" />
+    <child link = "r_coupling_link" />
+    <origin xyz="0 0 0.043" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Steel Coupling -->
+  <link name="r_coupling_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia
+        ixx="1.0" ixy="0.0" ixz="0.0"
+        iyy="1.0" iyz="0.0"
+        izz="1.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.0685" length="0.005"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.0685" length="0.005"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="r_coupling_joint" type="fixed">
+    <parent link="r_coupling_link"/>
+    <child link="forearm"/>
+    <origin xyz="0 0 0.0025" rpy="0 0 ${pi/2.0}"/>
+  </joint>
+  
+  <!-- instantiate the hand -->
+  <xacro:shadowhand lf="true" muscletrans="false" muscle="false" bio="false" bt_sp="false" ubi="false" eli="false" reflect="1.0" prefix="" />
+    
+</robot>
