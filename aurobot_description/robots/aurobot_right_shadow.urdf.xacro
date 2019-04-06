@@ -157,11 +157,11 @@
 
   <joint name="r_coupling_joint" type="fixed">
     <parent link="r_coupling_link"/>
-    <child link="forearm"/>
+    <child link="rh_forearm"/>
     <origin xyz="0 0 0.0025" rpy="0 0 ${pi/2.0}"/>
   </joint>
   
   <!-- instantiate the hand -->
-  <xacro:shadowhand lf="true" muscletrans="false" muscle="false" bio="false" bt_sp="false" ubi="false" eli="false" reflect="1.0" prefix="" />
+  <xacro:shadowhand lf="true" muscletrans="false" muscle="false" bio="false" bt_sp="true" ubi="false" eli="false" reflect="1.0" prefix="rh_" />
     
 </robot>

@@ -147,7 +147,7 @@ r_arm:
     - SPARStwokConfigDefault
   projection_evaluator: joints(pa10_blue_shoulder_roll_joint,pa10_blue_shoulder_lift_joint)
   longest_valid_segment_fraction: 0.005
-r_shadow:
+right_hand:
   planner_configs:
     - SBLkConfigDefault
     - ESTkConfigDefault
@@ -172,9 +172,9 @@ r_shadow:
     - LazyPRMstarkConfigDefault
     - SPARSkConfigDefault
     - SPARStwokConfigDefault
-  projection_evaluator: joints(WRJ2,WRJ1)
+  projection_evaluator: joints(rh_WRJ2,rh_WRJ1)
   longest_valid_segment_fraction: 0.005
-r_first_finger:
+rh_first_finger:
   planner_configs:
     - SBLkConfigDefault
     - ESTkConfigDefault
@@ -199,9 +199,9 @@ r_first_finger:
     - LazyPRMstarkConfigDefault
     - SPARSkConfigDefault
     - SPARStwokConfigDefault
-  projection_evaluator: joints(FFJ4,FFJ3)
+  projection_evaluator: joints(rh_FFJ4,rh_FFJ3)
   longest_valid_segment_fraction: 0.005
-r_first_finger_ee:
+rh_first_finger_ee:
   planner_configs:
     - SBLkConfigDefault
     - ESTkConfigDefault
@@ -226,7 +226,7 @@ r_first_finger_ee:
     - LazyPRMstarkConfigDefault
     - SPARSkConfigDefault
     - SPARStwokConfigDefault
-r_middle_finger:
+rh_middle_finger:
   planner_configs:
     - SBLkConfigDefault
     - ESTkConfigDefault
@@ -251,9 +251,9 @@ r_middle_finger:
     - LazyPRMstarkConfigDefault
     - SPARSkConfigDefault
     - SPARStwokConfigDefault
-  projection_evaluator: joints(MFJ4,MFJ3)
+  projection_evaluator: joints(rh_MFJ4,rh_MFJ3)
   longest_valid_segment_fraction: 0.005
-r_middle_finger_ee:
+rh_middle_finger_ee:
   planner_configs:
     - SBLkConfigDefault
     - ESTkConfigDefault
@@ -278,7 +278,7 @@ r_middle_finger_ee:
     - LazyPRMstarkConfigDefault
     - SPARSkConfigDefault
     - SPARStwokConfigDefault
-r_ring_finger:
+rh_ring_finger:
   planner_configs:
     - SBLkConfigDefault
     - ESTkConfigDefault
@@ -303,9 +303,9 @@ r_ring_finger:
     - LazyPRMstarkConfigDefault
     - SPARSkConfigDefault
     - SPARStwokConfigDefault
-  projection_evaluator: joints(RFJ4,RFJ3)
+  projection_evaluator: joints(rh_RFJ4,rh_RFJ3)
   longest_valid_segment_fraction: 0.005
-r_ring_finger_ee:
+rh_ring_finger_ee:
   planner_configs:
     - SBLkConfigDefault
     - ESTkConfigDefault
@@ -330,7 +330,7 @@ r_ring_finger_ee:
     - LazyPRMstarkConfigDefault
     - SPARSkConfigDefault
     - SPARStwokConfigDefault
-r_little_finger:
+rh_little_finger:
   planner_configs:
     - SBLkConfigDefault
     - ESTkConfigDefault
@@ -355,9 +355,9 @@ r_little_finger:
     - LazyPRMstarkConfigDefault
     - SPARSkConfigDefault
     - SPARStwokConfigDefault
-  projection_evaluator: joints(LFJ5,LFJ4)
+  projection_evaluator: joints(rh_LFJ5,rh_LFJ4)
   longest_valid_segment_fraction: 0.005
-r_little_finger_ee:
+rh_little_finger_ee:
   planner_configs:
     - SBLkConfigDefault
     - ESTkConfigDefault
@@ -382,7 +382,7 @@ r_little_finger_ee:
     - LazyPRMstarkConfigDefault
     - SPARSkConfigDefault
     - SPARStwokConfigDefault
-r_thumb:
+rh_thumb:
   planner_configs:
     - SBLkConfigDefault
     - ESTkConfigDefault
@@ -407,9 +407,9 @@ r_thumb:
     - LazyPRMstarkConfigDefault
     - SPARSkConfigDefault
     - SPARStwokConfigDefault
-  projection_evaluator: joints(THJ5,THJ4)
+  projection_evaluator: joints(rh_THJ5,rh_THJ4)
   longest_valid_segment_fraction: 0.005
-r_thumb_ee:
+rh_thumb_ee:
   planner_configs:
     - SBLkConfigDefault
     - ESTkConfigDefault
@@ -434,7 +434,7 @@ r_thumb_ee:
     - LazyPRMstarkConfigDefault
     - SPARSkConfigDefault
     - SPARStwokConfigDefault
-r_fingers:
+rh_fingers:
   planner_configs:
     - SBLkConfigDefault
     - ESTkConfigDefault
@@ -459,5 +459,5 @@ r_fingers:
     - LazyPRMstarkConfigDefault
     - SPARSkConfigDefault
     - SPARStwokConfigDefault
-  projection_evaluator: joints(FFJ4,FFJ3)
+  projection_evaluator: joints(rh_FFJ4,rh_FFJ3)
   longest_valid_segment_fraction: 0.005
