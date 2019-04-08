@@ -71,10 +71,10 @@
   <xacro:bearing child="trunk_link"/>
   <xacro:trunk/>
 
-  <!-- Left camera -->
-  <link name="left_camera_link">
+  <!-- Top camera -->
+  <link name="top_camera_link">
     <inertial>
-      <origin xyz="0 0 1" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="1"/>
       <inertia
         ixx="1.0" ixy="0.0" ixz="0.0"
@@ -86,7 +86,7 @@
       <geometry>
         <box size="0.025 0.025 0.025"/>
       </geometry>
-      <material name="black"/>
+      <material name="orange"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -96,11 +96,11 @@
     </collision>
   </link>
 
-  <joint name="left_camera_joint" type="fixed">
-    <parent link="trunk_link"/>
-    <child link="left_camera_link"/>
-    <origin xyz="0.807 1.51849 1.74534" rpy="-2.0375 0.0150079 -3.12501"/>
-  </joint>
+  <joint name="top_camera_joint" type="fixed">
+    <parent link="world"/>
+    <child link="top_camera_link"/>
+    <origin xyz="0.62 -0.097 2.456" rpy="0.01 -3.18 -4.73"/>
+  </joint>-->
 
   <!-- Add the right PA10 -->
   <xacro:pa10_blue_shoulder child="pa10_blue_elbow_flex_link"/>
