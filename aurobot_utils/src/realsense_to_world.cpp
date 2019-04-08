@@ -6,6 +6,7 @@
 #include <tf/transform_listener.h>
 #include <pcl_ros/transforms.h>
 
+std::string kCameraFrame;
 ros::Publisher pub;
 
 void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
@@ -13,8 +14,8 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
   tf::TransformListener tfListener;
   tf::StampedTransform transform;
 
-  tfListener.waitForTransform("/world", "/head_link", ros::Time(0), ros::Duration(3.0));
-  tfListener.lookupTransform("/world", "/head_link", ros::Time(0), transform);
+  tfListener.waitForTransform("/world", kCameraFrame, ros::Time(0), ros::Duration(3.0));
+  tfListener.lookupTransform("/world", kCameraFrame, ros::Time(0), transform);
 
   pcl_ros::transformPointCloud("/world", transform, *inputCloudMsg, outputCloudMsg);
 
@@ -28,6 +29,7 @@ int main(int argc, char **argv) {
   std::string cloudTopic;
   
   nh.getParam("topic", cloudTopic);
+  nh.getParam("link", kCameraFrame);
 
   ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2>(cloudTopic, 1, cloudCallback);
 

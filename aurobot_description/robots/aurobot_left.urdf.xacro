@@ -56,6 +56,7 @@
       </geometry>
     </collision>
   </link>
+
   <joint name="table_joint" type="fixed">
     <parent link="world"/>
     <child link="table_link"/>
@@ -76,11 +77,10 @@
   <xacro:profiles child="base_down_link"/>
   <xacro:base child="bearing_under_link"/>
   <xacro:bearing child="trunk_link"/>
-  <xacro:trunk left_child="pa10_green_shoulder_roll_link" 
-    head_child="head_link" right_child="pa10_blue_shoulder_roll_link"/>
+  <xacro:trunk/>
 
-  <!-- Head -->
-  <link name="head_link">
+  <!-- Left camera -->
+  <link name="left_camera_link">
     <inertial>
       <origin xyz="0 0 1" rpy="0 0 0"/>
       <mass value="1"/>
@@ -104,10 +104,38 @@
     </collision>
   </link>
 
+  <joint name="left_camera_joint" type="fixed">
+    <parent link="trunk_link"/>
+    <child link="left_camera_link"/>
+    <!-- BRAYAN (16/05/2017): Temporalmente puesto como una cabeza adelantada orientada hacia adelante -->
+    <!-- <origin xyz="0.045 -0.025 1.71" rpy="-2.2689280276 0 -1.570796327"/> -->
+
+    <!-- BRAYAN (17/11/2017): posicion por calibracion de Matlab del RGB.
+    Bueno (con mesa):
+    <origin xyz="0.830607606 1.53007489 1.765743891" rpy="-1.9908528 0.0044288 -3.1353181"/>
+
+    new-my-checkers (3): [ x: -2.693058, y: -0.0482789, z: -3.1355064 ]
+
+    new-my-checkers-2: [ x: -2.7024739, y: 0.0619603, z: -3.1274342 ]
+    <origin xyz="0.830 1.530 1.765" rpy="-1.917075737 0.0619603 -3.1274342"/>
+
+    BRAYAN (10/01/2018):
+    Esta es buena para agarres frontales pero falla hacia abajo
+    <origin xyz="0.820 1.54549 1.72834" rpy="-1.9895 0.00500789 -3.1290064"/>
+    -->
+    <origin xyz="0.807 1.51849 1.74534" rpy="-2.0375 0.0150079 -3.12501"/>
+  </joint>
+
   <!-- Add the left PA10 -->
   <xacro:pa10_green_shoulder child="pa10_green_elbow_flex_link"/>
   <xacro:pa10_green_upper_arm child="pa10_green_wrist_flex_link"/>
   <xacro:pa10_green_forearm child="l_jr3_link"/>
+
+  <joint name="trunk_left_joint" type="fixed">
+    <parent link="trunk_link"/>
+    <child link="pa10_green_shoulder_roll_link"/>
+    <origin xyz="0 0.13790 1.22809" rpy="0 1.0471975512 1.5707963268"/>
+  </joint>
   
   <!-- JR3 left -->
   <link name="l_jr3_link">
@@ -173,7 +201,5 @@
 
   <!-- Allegro left hand -->
   <xacro:allegro_left_hand/>
-
-  <link name="pa10_blue_shoulder_roll_link" />
 
 </robot>

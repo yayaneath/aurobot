@@ -186,7 +186,6 @@
     <disable_collisions link1="base_down_link" link2="bearing_above_link" reason="Never" />
     <disable_collisions link1="base_down_link" link2="bearing_link" reason="Never" />
     <disable_collisions link1="base_down_link" link2="bearing_under_link" reason="Never" />
-    <disable_collisions link1="base_down_link" link2="head_link" reason="Never" />
     <disable_collisions link1="base_down_link" link2="l_allegro_base_link" reason="Never" />
     <disable_collisions link1="base_down_link" link2="l_allegro_link_0" reason="Never" />
     <disable_collisions link1="base_down_link" link2="l_allegro_link_1" reason="Never" />
@@ -210,7 +209,7 @@
     <disable_collisions link1="base_down_link" link2="l_allegro_link_9" reason="Never" />
     <disable_collisions link1="base_down_link" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="base_down_link" link2="l_jr3_link" reason="Never" />
-    <disable_collisions link1="base_down_link" link2="pa10_blue_shoulder_roll_link" reason="Never" />
+    <disable_collisions link1="base_down_link" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="base_down_link" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="base_down_link" link2="pa10_green_forearm_roll_link" reason="Never" />
     <disable_collisions link1="base_down_link" link2="pa10_green_shoulder_lift_link" reason="Never" />
@@ -219,43 +218,51 @@
     <disable_collisions link1="base_down_link" link2="pa10_green_wrist_flex_link" reason="Never" />
     <disable_collisions link1="base_down_link" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="base_down_link" link2="profiles_link" reason="Adjacent" />
+    <disable_collisions link1="base_down_link" link2="table_link" reason="Never" />
     <disable_collisions link1="base_down_link" link2="trunk_link" reason="Never" />
     <disable_collisions link1="base_up_link" link2="bearing_above_link" reason="Never" />
     <disable_collisions link1="base_up_link" link2="bearing_link" reason="Never" />
     <disable_collisions link1="base_up_link" link2="bearing_under_link" reason="Adjacent" />
-    <disable_collisions link1="base_up_link" link2="head_link" reason="Never" />
-    <disable_collisions link1="base_up_link" link2="pa10_blue_shoulder_roll_link" reason="Never" />
+    <disable_collisions link1="base_up_link" link2="l_allegro_link_11" reason="Never" />
+    <disable_collisions link1="base_up_link" link2="l_allegro_link_11_tip" reason="Never" />
+    <disable_collisions link1="base_up_link" link2="l_allegro_link_14" reason="Never" />
+    <disable_collisions link1="base_up_link" link2="l_allegro_link_4" reason="Never" />
+    <disable_collisions link1="base_up_link" link2="l_allegro_link_7_tip" reason="Never" />
+    <disable_collisions link1="base_up_link" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="base_up_link" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="base_up_link" link2="pa10_green_forearm_roll_link" reason="Never" />
     <disable_collisions link1="base_up_link" link2="pa10_green_shoulder_lift_link" reason="Never" />
     <disable_collisions link1="base_up_link" link2="pa10_green_shoulder_roll_link" reason="Never" />
     <disable_collisions link1="base_up_link" link2="pa10_green_upper_arm_roll_link" reason="Never" />
+    <disable_collisions link1="base_up_link" link2="pa10_green_wrist_flex_link" reason="Never" />
+    <disable_collisions link1="base_up_link" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="base_up_link" link2="profiles_link" reason="Never" />
+    <disable_collisions link1="base_up_link" link2="table_link" reason="Never" />
     <disable_collisions link1="base_up_link" link2="trunk_link" reason="Never" />
     <disable_collisions link1="bearing_above_link" link2="bearing_link" reason="Adjacent" />
     <disable_collisions link1="bearing_above_link" link2="bearing_under_link" reason="Never" />
-    <disable_collisions link1="bearing_above_link" link2="head_link" reason="Never" />
-    <disable_collisions link1="bearing_above_link" link2="l_allegro_link_7_tip" reason="Never" />
-    <disable_collisions link1="bearing_above_link" link2="pa10_blue_shoulder_roll_link" reason="Never" />
+    <disable_collisions link1="bearing_above_link" link2="l_allegro_link_8" reason="Never" />
+    <disable_collisions link1="bearing_above_link" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="bearing_above_link" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="bearing_above_link" link2="pa10_green_forearm_roll_link" reason="Never" />
     <disable_collisions link1="bearing_above_link" link2="pa10_green_shoulder_lift_link" reason="Never" />
     <disable_collisions link1="bearing_above_link" link2="pa10_green_shoulder_roll_link" reason="Never" />
     <disable_collisions link1="bearing_above_link" link2="pa10_green_upper_arm_roll_link" reason="Never" />
     <disable_collisions link1="bearing_above_link" link2="profiles_link" reason="Never" />
+    <disable_collisions link1="bearing_above_link" link2="table_link" reason="Never" />
     <disable_collisions link1="bearing_above_link" link2="trunk_link" reason="Adjacent" />
     <disable_collisions link1="bearing_link" link2="bearing_under_link" reason="Adjacent" />
-    <disable_collisions link1="bearing_link" link2="head_link" reason="Never" />
-    <disable_collisions link1="bearing_link" link2="pa10_blue_shoulder_roll_link" reason="Never" />
+    <disable_collisions link1="bearing_link" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="bearing_link" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="bearing_link" link2="pa10_green_forearm_roll_link" reason="Never" />
     <disable_collisions link1="bearing_link" link2="pa10_green_shoulder_lift_link" reason="Never" />
     <disable_collisions link1="bearing_link" link2="pa10_green_shoulder_roll_link" reason="Never" />
     <disable_collisions link1="bearing_link" link2="pa10_green_upper_arm_roll_link" reason="Never" />
     <disable_collisions link1="bearing_link" link2="profiles_link" reason="Never" />
+    <disable_collisions link1="bearing_link" link2="table_link" reason="Never" />
     <disable_collisions link1="bearing_link" link2="trunk_link" reason="Never" />
-    <disable_collisions link1="bearing_under_link" link2="head_link" reason="Never" />
-    <disable_collisions link1="bearing_under_link" link2="pa10_blue_shoulder_roll_link" reason="Never" />
+    <disable_collisions link1="bearing_under_link" link2="l_allegro_link_11_tip" reason="Never" />
+    <disable_collisions link1="bearing_under_link" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="bearing_under_link" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="bearing_under_link" link2="pa10_green_forearm_roll_link" reason="Never" />
     <disable_collisions link1="bearing_under_link" link2="pa10_green_shoulder_lift_link" reason="Never" />
@@ -263,40 +270,8 @@
     <disable_collisions link1="bearing_under_link" link2="pa10_green_upper_arm_roll_link" reason="Never" />
     <disable_collisions link1="bearing_under_link" link2="pa10_green_wrist_flex_link" reason="Never" />
     <disable_collisions link1="bearing_under_link" link2="profiles_link" reason="Never" />
+    <disable_collisions link1="bearing_under_link" link2="table_link" reason="Never" />
     <disable_collisions link1="bearing_under_link" link2="trunk_link" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_base_link" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_0" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_1" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_10" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_11" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_11_tip" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_12" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_13" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_14" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_15" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_15_tip" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_2" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_3" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_3_tip" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_4" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_5" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_6" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_7" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_7_tip" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_8" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_allegro_link_9" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_jr3_end_link" reason="Never" />
-    <disable_collisions link1="head_link" link2="l_jr3_link" reason="Never" />
-    <disable_collisions link1="head_link" link2="pa10_blue_shoulder_roll_link" reason="Never" />
-    <disable_collisions link1="head_link" link2="pa10_green_elbow_flex_link" reason="Never" />
-    <disable_collisions link1="head_link" link2="pa10_green_forearm_roll_link" reason="Never" />
-    <disable_collisions link1="head_link" link2="pa10_green_shoulder_lift_link" reason="Never" />
-    <disable_collisions link1="head_link" link2="pa10_green_shoulder_roll_link" reason="Never" />
-    <disable_collisions link1="head_link" link2="pa10_green_upper_arm_roll_link" reason="Never" />
-    <disable_collisions link1="head_link" link2="pa10_green_wrist_flex_link" reason="Never" />
-    <disable_collisions link1="head_link" link2="pa10_green_wrist_roll_link" reason="Never" />
-    <disable_collisions link1="head_link" link2="profiles_link" reason="Never" />
-    <disable_collisions link1="head_link" link2="trunk_link" reason="Adjacent" />
     <disable_collisions link1="l_allegro_base_link" link2="l_allegro_link_0" reason="Adjacent" />
     <disable_collisions link1="l_allegro_base_link" link2="l_allegro_link_1" reason="Never" />
     <disable_collisions link1="l_allegro_base_link" link2="l_allegro_link_10" reason="Never" />
@@ -313,9 +288,9 @@
     <disable_collisions link1="l_allegro_base_link" link2="l_allegro_link_9" reason="Never" />
     <disable_collisions link1="l_allegro_base_link" link2="l_jr3_end_link" reason="Adjacent" />
     <disable_collisions link1="l_allegro_base_link" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_base_link" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_base_link" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_base_link" link2="pa10_green_forearm_roll_link" reason="Never" />
-    <disable_collisions link1="l_allegro_base_link" link2="pa10_green_shoulder_lift_link" reason="Never" />
     <disable_collisions link1="l_allegro_base_link" link2="pa10_green_upper_arm_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_base_link" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_base_link" link2="profiles_link" reason="Never" />
@@ -338,9 +313,10 @@
     <disable_collisions link1="l_allegro_link_0" link2="l_allegro_link_9" reason="Never" />
     <disable_collisions link1="l_allegro_link_0" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_0" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_0" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_0" link2="pa10_green_elbow_flex_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_0" link2="pa10_green_forearm_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_0" link2="pa10_green_shoulder_lift_link" reason="Never" />
-    <disable_collisions link1="l_allegro_link_0" link2="pa10_green_shoulder_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_0" link2="pa10_green_upper_arm_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_0" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_0" link2="profiles_link" reason="Never" />
@@ -358,6 +334,7 @@
     <disable_collisions link1="l_allegro_link_1" link2="l_allegro_link_9" reason="Never" />
     <disable_collisions link1="l_allegro_link_1" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_1" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_1" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_1" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_1" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_1" link2="profiles_link" reason="Never" />
@@ -371,6 +348,7 @@
     <disable_collisions link1="l_allegro_link_10" link2="l_allegro_link_9" reason="Adjacent" />
     <disable_collisions link1="l_allegro_link_10" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_10" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_10" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_10" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_10" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_10" link2="profiles_link" reason="Never" />
@@ -382,6 +360,7 @@
     <disable_collisions link1="l_allegro_link_11" link2="l_allegro_link_9" reason="Never" />
     <disable_collisions link1="l_allegro_link_11" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_11" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_11" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_11" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_11" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_11" link2="profiles_link" reason="Never" />
@@ -392,12 +371,12 @@
     <disable_collisions link1="l_allegro_link_11_tip" link2="l_allegro_link_9" reason="Never" />
     <disable_collisions link1="l_allegro_link_11_tip" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_11_tip" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_11_tip" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_11_tip" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_11_tip" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_11_tip" link2="profiles_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_12" link2="l_allegro_link_13" reason="Adjacent" />
     <disable_collisions link1="l_allegro_link_12" link2="l_allegro_link_14" reason="Never" />
-    <disable_collisions link1="l_allegro_link_12" link2="l_allegro_link_15_tip" reason="Never" />
     <disable_collisions link1="l_allegro_link_12" link2="l_allegro_link_2" reason="Never" />
     <disable_collisions link1="l_allegro_link_12" link2="l_allegro_link_3" reason="Never" />
     <disable_collisions link1="l_allegro_link_12" link2="l_allegro_link_4" reason="Never" />
@@ -408,6 +387,7 @@
     <disable_collisions link1="l_allegro_link_12" link2="l_allegro_link_9" reason="Never" />
     <disable_collisions link1="l_allegro_link_12" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_12" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_12" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_12" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_12" link2="pa10_green_forearm_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_12" link2="pa10_green_shoulder_lift_link" reason="Never" />
@@ -429,10 +409,10 @@
     <disable_collisions link1="l_allegro_link_13" link2="l_allegro_link_9" reason="Never" />
     <disable_collisions link1="l_allegro_link_13" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_13" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_13" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_13" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_13" link2="pa10_green_forearm_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_13" link2="pa10_green_shoulder_lift_link" reason="Never" />
-    <disable_collisions link1="l_allegro_link_13" link2="pa10_green_shoulder_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_13" link2="pa10_green_upper_arm_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_13" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_13" link2="profiles_link" reason="Never" />
@@ -440,11 +420,11 @@
     <disable_collisions link1="l_allegro_link_14" link2="l_allegro_link_15_tip" reason="Never" />
     <disable_collisions link1="l_allegro_link_14" link2="l_allegro_link_4" reason="Never" />
     <disable_collisions link1="l_allegro_link_14" link2="l_allegro_link_5" reason="Never" />
-    <disable_collisions link1="l_allegro_link_14" link2="l_allegro_link_6" reason="Never" />
     <disable_collisions link1="l_allegro_link_14" link2="l_allegro_link_8" reason="Never" />
     <disable_collisions link1="l_allegro_link_14" link2="l_allegro_link_9" reason="Never" />
     <disable_collisions link1="l_allegro_link_14" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_14" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_14" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_14" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_14" link2="pa10_green_forearm_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_14" link2="pa10_green_shoulder_lift_link" reason="Never" />
@@ -456,13 +436,19 @@
     <disable_collisions link1="l_allegro_link_15" link2="l_allegro_link_9" reason="Never" />
     <disable_collisions link1="l_allegro_link_15" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_15" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_15" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_15" link2="pa10_green_elbow_flex_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_15" link2="pa10_green_forearm_roll_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_15" link2="pa10_green_shoulder_lift_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_15" link2="pa10_green_upper_arm_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_15" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_15" link2="profiles_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_15_tip" link2="l_allegro_link_8" reason="Never" />
     <disable_collisions link1="l_allegro_link_15_tip" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_15_tip" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_15_tip" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_15_tip" link2="pa10_green_elbow_flex_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_15_tip" link2="pa10_green_shoulder_lift_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_15_tip" link2="pa10_green_upper_arm_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_15_tip" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_15_tip" link2="profiles_link" reason="Never" />
@@ -473,6 +459,7 @@
     <disable_collisions link1="l_allegro_link_2" link2="l_allegro_link_9" reason="Never" />
     <disable_collisions link1="l_allegro_link_2" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_2" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_2" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_2" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_2" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_2" link2="profiles_link" reason="Never" />
@@ -482,6 +469,7 @@
     <disable_collisions link1="l_allegro_link_3" link2="l_allegro_link_9" reason="Never" />
     <disable_collisions link1="l_allegro_link_3" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_3" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_3" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_3" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_3" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_3" link2="profiles_link" reason="Never" />
@@ -490,6 +478,7 @@
     <disable_collisions link1="l_allegro_link_3_tip" link2="l_allegro_link_9" reason="Never" />
     <disable_collisions link1="l_allegro_link_3_tip" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_3_tip" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_3_tip" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_3_tip" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_3_tip" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_3_tip" link2="profiles_link" reason="Never" />
@@ -501,10 +490,10 @@
     <disable_collisions link1="l_allegro_link_4" link2="l_allegro_link_9" reason="Never" />
     <disable_collisions link1="l_allegro_link_4" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_4" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_4" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_4" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_4" link2="pa10_green_forearm_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_4" link2="pa10_green_shoulder_lift_link" reason="Never" />
-    <disable_collisions link1="l_allegro_link_4" link2="pa10_green_shoulder_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_4" link2="pa10_green_upper_arm_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_4" link2="pa10_green_wrist_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_4" link2="pa10_green_wrist_roll_link" reason="Never" />
@@ -515,6 +504,7 @@
     <disable_collisions link1="l_allegro_link_5" link2="l_allegro_link_8" reason="Never" />
     <disable_collisions link1="l_allegro_link_5" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_5" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_5" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_5" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_5" link2="pa10_green_upper_arm_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_5" link2="pa10_green_wrist_roll_link" reason="Never" />
@@ -524,6 +514,7 @@
     <disable_collisions link1="l_allegro_link_6" link2="l_allegro_link_8" reason="Never" />
     <disable_collisions link1="l_allegro_link_6" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_6" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_6" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_6" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_6" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_6" link2="profiles_link" reason="Never" />
@@ -531,29 +522,35 @@
     <disable_collisions link1="l_allegro_link_7" link2="l_allegro_link_8" reason="Never" />
     <disable_collisions link1="l_allegro_link_7" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_7" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_7" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_7" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_7" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_7" link2="profiles_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_7_tip" link2="l_allegro_link_8" reason="Never" />
     <disable_collisions link1="l_allegro_link_7_tip" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_7_tip" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_7_tip" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_7_tip" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_7_tip" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_7_tip" link2="profiles_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_8" link2="l_allegro_link_9" reason="Adjacent" />
     <disable_collisions link1="l_allegro_link_8" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_8" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_8" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_8" link2="pa10_green_elbow_flex_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_8" link2="pa10_green_forearm_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_8" link2="pa10_green_upper_arm_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_8" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_8" link2="profiles_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_9" link2="l_jr3_end_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_9" link2="l_jr3_link" reason="Never" />
+    <disable_collisions link1="l_allegro_link_9" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_9" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_9" link2="pa10_green_upper_arm_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_9" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_allegro_link_9" link2="profiles_link" reason="Never" />
     <disable_collisions link1="l_jr3_end_link" link2="l_jr3_link" reason="Adjacent" />
+    <disable_collisions link1="l_jr3_end_link" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_jr3_end_link" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_jr3_end_link" link2="pa10_green_forearm_roll_link" reason="Never" />
     <disable_collisions link1="l_jr3_end_link" link2="pa10_green_shoulder_lift_link" reason="Never" />
@@ -561,6 +558,7 @@
     <disable_collisions link1="l_jr3_end_link" link2="pa10_green_wrist_flex_link" reason="Never" />
     <disable_collisions link1="l_jr3_end_link" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="l_jr3_end_link" link2="profiles_link" reason="Never" />
+    <disable_collisions link1="l_jr3_link" link2="left_camera_link" reason="Never" />
     <disable_collisions link1="l_jr3_link" link2="pa10_green_elbow_flex_link" reason="Never" />
     <disable_collisions link1="l_jr3_link" link2="pa10_green_forearm_roll_link" reason="Never" />
     <disable_collisions link1="l_jr3_link" link2="pa10_green_shoulder_lift_link" reason="Never" />
@@ -568,14 +566,16 @@
     <disable_collisions link1="l_jr3_link" link2="pa10_green_wrist_flex_link" reason="Never" />
     <disable_collisions link1="l_jr3_link" link2="pa10_green_wrist_roll_link" reason="Adjacent" />
     <disable_collisions link1="l_jr3_link" link2="profiles_link" reason="Never" />
-    <disable_collisions link1="pa10_blue_shoulder_roll_link" link2="pa10_green_elbow_flex_link" reason="Never" />
-    <disable_collisions link1="pa10_blue_shoulder_roll_link" link2="pa10_green_forearm_roll_link" reason="Never" />
-    <disable_collisions link1="pa10_blue_shoulder_roll_link" link2="pa10_green_shoulder_lift_link" reason="Never" />
-    <disable_collisions link1="pa10_blue_shoulder_roll_link" link2="pa10_green_shoulder_roll_link" reason="Never" />
-    <disable_collisions link1="pa10_blue_shoulder_roll_link" link2="pa10_green_upper_arm_roll_link" reason="Never" />
-    <disable_collisions link1="pa10_blue_shoulder_roll_link" link2="pa10_green_wrist_roll_link" reason="Never" />
-    <disable_collisions link1="pa10_blue_shoulder_roll_link" link2="profiles_link" reason="Never" />
-    <disable_collisions link1="pa10_blue_shoulder_roll_link" link2="trunk_link" reason="Adjacent" />
+    <disable_collisions link1="left_camera_link" link2="pa10_green_elbow_flex_link" reason="Never" />
+    <disable_collisions link1="left_camera_link" link2="pa10_green_forearm_roll_link" reason="Never" />
+    <disable_collisions link1="left_camera_link" link2="pa10_green_shoulder_lift_link" reason="Never" />
+    <disable_collisions link1="left_camera_link" link2="pa10_green_shoulder_roll_link" reason="Never" />
+    <disable_collisions link1="left_camera_link" link2="pa10_green_upper_arm_roll_link" reason="Never" />
+    <disable_collisions link1="left_camera_link" link2="pa10_green_wrist_flex_link" reason="Never" />
+    <disable_collisions link1="left_camera_link" link2="pa10_green_wrist_roll_link" reason="Never" />
+    <disable_collisions link1="left_camera_link" link2="profiles_link" reason="Never" />
+    <disable_collisions link1="left_camera_link" link2="table_link" reason="Never" />
+    <disable_collisions link1="left_camera_link" link2="trunk_link" reason="Adjacent" />
     <disable_collisions link1="pa10_green_elbow_flex_link" link2="pa10_green_forearm_roll_link" reason="Adjacent" />
     <disable_collisions link1="pa10_green_elbow_flex_link" link2="pa10_green_shoulder_lift_link" reason="Never" />
     <disable_collisions link1="pa10_green_elbow_flex_link" link2="pa10_green_shoulder_roll_link" reason="Never" />
@@ -596,16 +596,21 @@
     <disable_collisions link1="pa10_green_shoulder_lift_link" link2="pa10_green_wrist_flex_link" reason="Never" />
     <disable_collisions link1="pa10_green_shoulder_lift_link" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="pa10_green_shoulder_lift_link" link2="profiles_link" reason="Never" />
+    <disable_collisions link1="pa10_green_shoulder_lift_link" link2="table_link" reason="Never" />
     <disable_collisions link1="pa10_green_shoulder_lift_link" link2="trunk_link" reason="Never" />
     <disable_collisions link1="pa10_green_shoulder_roll_link" link2="pa10_green_upper_arm_roll_link" reason="Never" />
     <disable_collisions link1="pa10_green_shoulder_roll_link" link2="profiles_link" reason="Never" />
+    <disable_collisions link1="pa10_green_shoulder_roll_link" link2="table_link" reason="Never" />
     <disable_collisions link1="pa10_green_shoulder_roll_link" link2="trunk_link" reason="Adjacent" />
     <disable_collisions link1="pa10_green_upper_arm_roll_link" link2="pa10_green_wrist_flex_link" reason="Never" />
     <disable_collisions link1="pa10_green_upper_arm_roll_link" link2="pa10_green_wrist_roll_link" reason="Never" />
     <disable_collisions link1="pa10_green_upper_arm_roll_link" link2="profiles_link" reason="Never" />
+    <disable_collisions link1="pa10_green_upper_arm_roll_link" link2="table_link" reason="Never" />
     <disable_collisions link1="pa10_green_upper_arm_roll_link" link2="trunk_link" reason="Never" />
     <disable_collisions link1="pa10_green_wrist_flex_link" link2="pa10_green_wrist_roll_link" reason="Adjacent" />
     <disable_collisions link1="pa10_green_wrist_flex_link" link2="profiles_link" reason="Never" />
     <disable_collisions link1="pa10_green_wrist_roll_link" link2="profiles_link" reason="Never" />
+    <disable_collisions link1="profiles_link" link2="table_link" reason="Adjacent" />
     <disable_collisions link1="profiles_link" link2="trunk_link" reason="Never" />
+    <disable_collisions link1="table_link" link2="trunk_link" reason="Never" />
 </robot>

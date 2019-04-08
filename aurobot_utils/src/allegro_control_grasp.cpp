@@ -30,6 +30,8 @@
 //
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
+const std::string CAMERA_FRAME = "/left_camera_link";
+
 const std::string SCENE_TOPIC = "/aurobot_utils/scene_objects";
 const std::string HAND_CORRECTION_TOPIC = "/emgsensor/move";
 
@@ -345,27 +347,27 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp,
   firstPointIn.setX(inputGrasp.first_point_x);
   firstPointIn.setY(inputGrasp.first_point_y);
   firstPointIn.setZ(inputGrasp.first_point_z);
-  firstPointIn.frame_id_ = "/head_link";
+  firstPointIn.frame_id_ = CAMERA_FRAME;
   secondPointIn.setX(inputGrasp.second_point_x);
   secondPointIn.setY(inputGrasp.second_point_y);
   secondPointIn.setZ(inputGrasp.second_point_z);
-  secondPointIn.frame_id_ = "/head_link";
+  secondPointIn.frame_id_ = CAMERA_FRAME;
   objAxisCenterIn.setX(inputGrasp.obj_axis_coeff_0);
   objAxisCenterIn.setY(inputGrasp.obj_axis_coeff_1);
   objAxisCenterIn.setZ(inputGrasp.obj_axis_coeff_2);
-  objAxisCenterIn.frame_id_ = "/head_link";
+  objAxisCenterIn.frame_id_ = CAMERA_FRAME;
 
-  Eigen::Vector3d firstPoint = transformPoint(firstPointIn, "/head_link", "/world");
-  Eigen::Vector3d secondPoint = transformPoint(secondPointIn, "/head_link", "/world");
-  Eigen::Vector3d objAxisCenter = transformPoint(objAxisCenterIn, "/head_link", "/world");
+  Eigen::Vector3d firstPoint = transformPoint(firstPointIn, CAMERA_FRAME, "/world");
+  Eigen::Vector3d secondPoint = transformPoint(secondPointIn, CAMERA_FRAME, "/world");
+  Eigen::Vector3d objAxisCenter = transformPoint(objAxisCenterIn, CAMERA_FRAME, "/world");
 
   tf::Stamped<tf::Vector3> objAxisVectorIn;
   objAxisVectorIn.setX(inputGrasp.obj_axis_coeff_3);
   objAxisVectorIn.setY(inputGrasp.obj_axis_coeff_4);
   objAxisVectorIn.setZ(inputGrasp.obj_axis_coeff_5);
-  objAxisVectorIn.frame_id_ = "/head_link";
+  objAxisVectorIn.frame_id_ = CAMERA_FRAME;
 
-  Eigen::Vector3d objAxisVector = transformVector(objAxisVectorIn, "/head_link", "/world");
+  Eigen::Vector3d objAxisVector = transformVector(objAxisVectorIn, CAMERA_FRAME, "/world");
 
   visualTools->publishSphere(firstPoint, rviz_visual_tools::BLUE, rviz_visual_tools::LARGE);
   visualTools->publishSphere(secondPoint, rviz_visual_tools::RED, rviz_visual_tools::LARGE);
@@ -381,8 +383,8 @@ void planGrasp(const aurobot_utils::GraspConfiguration & inputGrasp,
   tf::TransformListener tfListener;
   tf::StampedTransform transform;
 
-  tfListener.waitForTransform("/world", "/head_link", ros::Time(0), ros::Duration(3.0));
-  tfListener.lookupTransform("/world", "/head_link", ros::Time(0), transform);
+  tfListener.waitForTransform("/world", CAMERA_FRAME, ros::Time(0), ros::Duration(3.0));
+  tfListener.lookupTransform("/world", CAMERA_FRAME, ros::Time(0), transform);
   pcl_ros::transformPointCloud("/world", transform, objectcloudsMsgIn, objectCloudMsgOut);
 
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr objectCloud(new pcl::PointCloud<pcl::PointXYZRGB>());
@@ -686,8 +688,8 @@ void readSceneObjectsMessage(const aurobot_utils::SceneObjectsConstPtr & inputSc
     tf::TransformListener tfListener;
     tf::StampedTransform transform;
 
-    tfListener.waitForTransform("/world", "/head_link", ros::Time(0), ros::Duration(3.0));
-    tfListener.lookupTransform("/world", "/head_link", ros::Time(0), transform);
+    tfListener.waitForTransform("/world", CAMERA_FRAME, ros::Time(0), ros::Duration(3.0));
+    tfListener.lookupTransform("/world", CAMERA_FRAME, ros::Time(0), transform);
     pcl_ros::transformPointCloud("/world", transform, objectcloudsMsgIn, objectCloudMsgOut);
 
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr objectCloud(new pcl::PointCloud<pcl::PointXYZRGB>());

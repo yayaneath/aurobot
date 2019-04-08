@@ -58,6 +58,7 @@
       </geometry>
     </collision>
   </link>
+
   <joint name="table_joint" type="fixed">
     <parent link="world"/>
     <child link="table_link"/>
@@ -68,14 +69,10 @@
   <xacro:profiles child="base_down_link"/>
   <xacro:base child="bearing_under_link"/>
   <xacro:bearing child="trunk_link"/>
-  <xacro:trunk left_child="pa10_green_shoulder_roll_link" 
-    head_child="head_link" right_child="pa10_blue_shoulder_roll_link"/>
+  <xacro:trunk/>
 
-  <!-- Left link -->
-  <link name="pa10_green_shoulder_roll_link" />
-
-  <!-- Head -->
-  <link name="head_link">
+  <!-- Left camera -->
+  <link name="left_camera_link">
     <inertial>
       <origin xyz="0 0 1" rpy="0 0 0"/>
       <mass value="1"/>
@@ -99,10 +96,22 @@
     </collision>
   </link>
 
+  <joint name="left_camera_joint" type="fixed">
+    <parent link="trunk_link"/>
+    <child link="left_camera_link"/>
+    <origin xyz="0.807 1.51849 1.74534" rpy="-2.0375 0.0150079 -3.12501"/>
+  </joint>
+
   <!-- Add the right PA10 -->
   <xacro:pa10_blue_shoulder child="pa10_blue_elbow_flex_link"/>
   <xacro:pa10_blue_upper_arm child="pa10_blue_wrist_flex_link"/>
   <xacro:pa10_blue_forearm child="r_jr3_link"/>
+
+  <joint name="trunk_right_joint" type="fixed">
+    <parent link="trunk_link"/>
+    <child link="pa10_blue_shoulder_roll_link"/>
+    <origin xyz="0 -0.13790 1.22809" rpy="0 -1.0471975512 1.5707963268"/>
+  </joint>
 
   <!-- JR3 right -->
   <link name="r_jr3_link">

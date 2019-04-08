@@ -10,5 +10,4 @@ controller_list:
       - pa10_blue_wrist_roll_joint
   - name: fake_r_robotiq_controller
     joints:
-      - pa10_blue_wrist_roll_joint
       - r_gripper_finger1_joint

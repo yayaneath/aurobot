@@ -48,7 +48,7 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
   pcl::PassThrough<pcl::PointXYZRGB> ptFilter;
   ptFilter.setInputCloud(cloud);
   ptFilter.setFilterFieldName("z");
-  ptFilter.setFilterLimits(0.0, 0.7);
+  ptFilter.setFilterLimits(0.0, 1.5);
   ptFilter.filter(*cloud);
 
   // Create the segmentation object for the planar model and set all the parameters
