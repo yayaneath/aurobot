@@ -148,7 +148,7 @@ void jointsCallback(const sensor_msgs::JointStateConstPtr & inputJointsMsg) {
 }
 
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "aurobot_left_odr_axs_pa10_mover");
+  ros::init(argc, argv, "move_left_odr_axs_pa10");
 
   ros::NodeHandle n;
   

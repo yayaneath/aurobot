@@ -68,7 +68,7 @@ void jointsCallback(const sensor_msgs::JointStateConstPtr & inputJointsMsg) {
 }
 
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "aurobot_move_left_pa10");
+  ros::init(argc, argv, "move_left_pa10");
 
   ros::NodeHandle nh; // Required to run rate.
   ros::Rate r(0.5); // This rate works fine with 0.5 velocity in MoveIt

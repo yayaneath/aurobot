@@ -54,11 +54,14 @@ add_executable(pointcloud_listener src/pointcloud_listener.cpp)
 add_executable(allegro_plan_grasp src/allegro_plan_grasp.cpp)
 add_executable(allegro_control_grasp src/allegro_control_grasp.cpp)
 
-add_executable(aurobot_move_left_pa10 src/aurobot_move_left_pa10.cpp)
-add_executable(aurobot_move_left_odr_axs_pa10 src/aurobot_move_left_odr_axs_pa10.cpp)
-add_executable(aurobot_move_left_allegro src/aurobot_move_left_allegro.cpp)
+add_executable(move_left_pa10 src/move_left_pa10.cpp)
+add_executable(move_left_odr_axs_pa10 src/move_left_odr_axs_pa10.cpp)
 
-add_executable(aurobot_move_right_odr_vel_pa10 src/aurobot_move_right_odr_vel_pa10.cpp)
+add_executable(move_left_allegro src/move_left_allegro.cpp)
+
+add_executable(move_right_odr_vel_pa10 src/move_right_odr_vel_pa10.cpp)
+
+add_executable(move_right_shadow src/move_right_shadow.cpp)
 
 target_link_libraries(realsense_to_world ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(pointcloud_listener ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
@@ -66,8 +69,11 @@ target_link_libraries(pointcloud_listener ${Eigen_LIBRARIES} ${Boost_LIBRARIES} 
 target_link_libraries(allegro_plan_grasp ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(allegro_control_grasp ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 
-target_link_libraries(aurobot_move_left_pa10 ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
-target_link_libraries(aurobot_move_left_odr_axs_pa10 ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
-target_link_libraries(aurobot_move_left_allegro ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(move_left_pa10 ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(move_left_odr_axs_pa10 ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 
-target_link_libraries(aurobot_move_right_odr_vel_pa10 ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(move_left_allegro ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
+
+target_link_libraries(move_right_odr_vel_pa10 ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
+
+target_link_libraries(move_right_shadow ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
