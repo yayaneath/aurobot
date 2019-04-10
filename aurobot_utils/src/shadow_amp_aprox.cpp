@@ -28,12 +28,15 @@ int main(int argc, char **argv) {
   const std::string THUMB_PLANNING_GROUP = "rh_thumb";
   const std::string THUMB_END_EFFECTOR_LINK = "rh_thtip";
 
-  std::vector<double> fingersPositions, thumbPositions, amplitudes;
   int steps = 100;
   double currentMiddlePosition = 0.1466, middlePositionMax = 0.8199,
-    middlePositionStep = (middlePositionMax + std::abs(currentMiddlePosition)) / (double) steps;
+    middlePositionStep = (middlePositionMax - currentMiddlePosition) / (double) steps;
   double currentThumbPosition = 0.0, thumbPositionMax = 0.5983,
-    thumbPositionStep = (thumbPositionMax + std::abs(currentThumbPosition)) / (double) steps;
+    thumbPositionStep = (thumbPositionMax - currentThumbPosition) / (double) steps;
+
+  moveit::planning_interface::MoveGroupInterface middleMoveGroup(MIDDLE_PLANNING_GROUP);
+  moveit::planning_interface::MoveGroupInterface thumbMoveGroup(THUMB_PLANNING_GROUP);
+  std::vector<double> middlePositions, thumbPositions, amplitudes;
 
   for (size_t loop = 0; loop < steps; ++loop) {
     std::cout << "# # # LOOP " << loop << ": current middle -> " << currentMiddlePosition 
@@ -41,19 +44,17 @@ int main(int argc, char **argv) {
     std::cout << "# # # LOOP " << loop << ": current thumb -> " << currentThumbPosition 
       << "  step -> " << thumbPositionStep << " # # #\n";
 
-    fingersPositions.push_back(currentMiddlePosition);
+    middlePositions.push_back(currentMiddlePosition);
     thumbPositions.push_back(currentThumbPosition);
     
     // Middle finger
 
-    moveit::planning_interface::MoveGroupInterface middleMoveGroup(MIDDLE_PLANNING_GROUP);
     geometry_msgs::PoseStamped middleCurrentPose = middleMoveGroup.getCurrentPose(MIDDLE_END_EFFECTOR_LINK);
     Eigen::Vector3d middlePoint(middleCurrentPose.pose.position.x, middleCurrentPose.pose.position.y,
       middleCurrentPose.pose.position.z);
 
     // Thumb finger
 
-    moveit::planning_interface::MoveGroupInterface thumbMoveGroup(THUMB_PLANNING_GROUP);
     geometry_msgs::PoseStamped thumbCurrentPose = thumbMoveGroup.getCurrentPose(THUMB_END_EFFECTOR_LINK);
     Eigen::Vector3d thumbPoint(thumbCurrentPose.pose.position.x, thumbCurrentPose.pose.position.y,
       thumbCurrentPose.pose.position.z);
@@ -130,10 +131,8 @@ int main(int argc, char **argv) {
     thumbMoveGroup.execute(thumbPlan);
   }
 
-  return 0;
-
   for (size_t i = 0; i < amplitudes.size(); ++i) {
-    std::cout << "Fingers Position: " << fingersPositions[i] 
+    std::cout << "Middle Position: " << middlePositions[i] 
       << " | Thumb Position: " << thumbPositions[i]
       << " | Amplitude: " << amplitudes[i] << "\n";
   }
