@@ -119,7 +119,7 @@
     <group_state name="pack" group="right_hand">
         <joint name="rh_FFJ1" value="1.5707" />
         <joint name="rh_FFJ2" value="1.5707" />
-        <joint name="rh_FFJ3" value="1.5707" />
+        <joint name="rh_FFJ3" value="1.4" />
         <joint name="rh_FFJ4" value="0" />
         <joint name="rh_LFJ1" value="1.5707" />
         <joint name="rh_LFJ2" value="1.5707" />
@@ -128,17 +128,17 @@
         <joint name="rh_LFJ5" value="0" />
         <joint name="rh_MFJ1" value="1.5707" />
         <joint name="rh_MFJ2" value="1.5707" />
-        <joint name="rh_MFJ3" value="1.5707" />
+        <joint name="rh_MFJ3" value="1.4" />
         <joint name="rh_MFJ4" value="0" />
         <joint name="rh_RFJ1" value="1.5707" />
         <joint name="rh_RFJ2" value="1.5707" />
-        <joint name="rh_RFJ3" value="1.5707" />
+        <joint name="rh_RFJ3" value="1.4" />
         <joint name="rh_RFJ4" value="0" />
         <joint name="rh_THJ1" value="0.52" />
         <joint name="rh_THJ2" value="0.61" />
         <joint name="rh_THJ3" value="0" />
-        <joint name="rh_THJ4" value="1.2" />
-        <joint name="rh_THJ5" value="0" />
+        <joint name="rh_THJ4" value="1.2217" />
+        <joint name="rh_THJ5" value="0.1" />
         <joint name="rh_WRJ1" value="0" />
         <joint name="rh_WRJ2" value="0" />
     </group_state>
@@ -177,6 +177,32 @@
         <joint name="pa10_blue_upper_arm_roll_joint" value="0.8329" />
         <joint name="pa10_blue_wrist_flex_joint" value="0.7167" />
         <joint name="pa10_blue_wrist_roll_joint" value="0.2845" />
+    </group_state>
+    <group_state name="pregrasp-mf" group="right_hand">
+        <joint name="rh_FFJ1" value="0" />
+        <joint name="rh_FFJ2" value="0" />
+        <joint name="rh_FFJ3" value="0" />
+        <joint name="rh_FFJ4" value="0" />
+        <joint name="rh_LFJ1" value="0" />
+        <joint name="rh_LFJ2" value="0" />
+        <joint name="rh_LFJ3" value="0" />
+        <joint name="rh_LFJ4" value="0" />
+        <joint name="rh_LFJ5" value="0" />
+        <joint name="rh_MFJ1" value="0" />
+        <joint name="rh_MFJ2" value="1.0306" />
+        <joint name="rh_MFJ3" value="0.1466" />
+        <joint name="rh_MFJ4" value="0" />
+        <joint name="rh_RFJ1" value="0" />
+        <joint name="rh_RFJ2" value="0" />
+        <joint name="rh_RFJ3" value="0" />
+        <joint name="rh_RFJ4" value="0" />
+        <joint name="rh_THJ1" value="0" />
+        <joint name="rh_THJ2" value="0.1728" />
+        <joint name="rh_THJ3" value="0.1128" />
+        <joint name="rh_THJ4" value="1.2217" />
+        <joint name="rh_THJ5" value="0" />
+        <joint name="rh_WRJ1" value="0" />
+        <joint name="rh_WRJ2" value="0" />
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="rh_shadow_ee" parent_link="r_coupling_link" group="right_hand" parent_group="r_arm" />
