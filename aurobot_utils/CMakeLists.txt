@@ -6,7 +6,7 @@ add_compile_options(-std=c++11)
 find_package(catkin REQUIRED COMPONENTS
   std_msgs
   message_generation
-  grasping_clouds
+  geograsp #grasping_clouds
   pa10
   cmake_modules
   pcl_conversions
@@ -44,7 +44,7 @@ generate_messages(
 )
 
 catkin_package(
-  CATKIN_DEPENDS message_runtime grasping_clouds pa10 cmake_modules pcl_conversions pcl_ros roscpp tf sensor_msgs moveit_core moveit_ros_planning_interface moveit_msgs rviz_visual_tools eigen_stl_containers
+  CATKIN_DEPENDS message_runtime geograsp pa10 cmake_modules pcl_conversions pcl_ros roscpp tf sensor_msgs moveit_core moveit_ros_planning_interface moveit_msgs rviz_visual_tools eigen_stl_containers
   DEPENDS boost eigen
 )
 

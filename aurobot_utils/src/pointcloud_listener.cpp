@@ -26,7 +26,7 @@
 #include <boost/chrono/thread_clock.hpp>
 
 // Our libraries
-#include <grasping_clouds/GraspPoints.h> // Grasping points calculator
+#include <geograsp/GeoGrasp.h> // Grasping points calculator
 #include <aurobot_utils/GraspConfiguration.h> // Custom message for publishing grasps
 #include <aurobot_utils/SceneObjects.h> // Custom message for publishing a vector of grasps
 
@@ -126,7 +126,7 @@ void cloudCallback(const sensor_msgs::PointCloud2ConstPtr & inputCloudMsg) {
       objectCloud->height = 1;
       objectCloud->is_dense = true;
 
-      GraspPoints graspPoints;
+      GeoGrasp graspPoints;
       graspPoints.setBackgroundCloud(cloudPlane);
       graspPoints.setObjectCloud(objectCloud);
       graspPoints.setGripTipSize(ALLEGRO_GRIP_TIP);
