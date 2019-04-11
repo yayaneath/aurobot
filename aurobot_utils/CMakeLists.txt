@@ -60,6 +60,8 @@ add_executable(move_right_pa10 src/move_right_pa10.cpp)
 add_executable(move_left_allegro src/move_left_allegro.cpp)
 add_executable(move_right_shadow src/move_right_shadow.cpp)
 
+add_executable(shadow_plan_grasp src/shadow_plan_grasp.cpp)
+
 target_link_libraries(realsense_to_world ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(pointcloud_listener ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 
@@ -71,3 +73,5 @@ target_link_libraries(move_right_pa10 ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${ca
 
 target_link_libraries(move_left_allegro ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(move_right_shadow ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
+
+target_link_libraries(shadow_plan_grasp ${Eigen_LIBRARIES} ${Boost_LIBRARIES} ${catkin_LIBRARIES})
