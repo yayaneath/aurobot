@@ -62,7 +62,7 @@
   <joint name="table_joint" type="fixed">
     <parent link="world"/>
     <child link="table_link"/>
-    <origin xyz="0.759 0.2385 1.149" rpy="0 0 0"/>
+    <origin xyz="0.759 0.215 1.18" rpy="0 0 0"/>
   </joint>
 
   <!-- Add the base -->
@@ -99,7 +99,7 @@
   <joint name="top_camera_joint" type="fixed">
     <parent link="world"/>
     <child link="top_camera_link"/>
-    <origin xyz="0.62 -0.097 2.456" rpy="0.01 -3.18 -4.73"/>
+    <origin xyz="0.589 -0.117 2.486" rpy="0.03 -3.18 -4.728"/>
   </joint>-->
 
   <!-- Add the right PA10 -->
