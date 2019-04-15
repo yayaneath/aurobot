@@ -89,6 +89,11 @@
         <group name="rh_middle_finger" />
         <group name="rh_first_finger" />
     </group>
+    <group name="r_armpalm">
+        <link name="rh_wrist" />
+        <link name="rh_palm" />
+        <group name="r_arm" />
+    </group>
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
     <group_state name="open" group="right_hand">
         <joint name="rh_FFJ1" value="0" />
