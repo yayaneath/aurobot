@@ -37,8 +37,8 @@ const std::string THUMB_END_EFFECTOR_LINK = "rh_thtip";
 const std::string THUMB_MOVING_JOINT = "rh_THJ5";
 
 const std::string SHADOW_HAND_PLANNING_GROUP = "right_hand";
-const std::string PALM_PLANNING_GROUP = "r_arm";
-const std::string PALM_END_EFFECTOR_LINK = "r_coupling_link";
+const std::string ARM_PLANNING_GROUP = "r_arm";
+const std::string ARM_END_EFFECTOR_LINK = "rh_forearm";
 
 const std::string PREGRASP_NAMED_TARGET = "pregrasp-mf";
 
@@ -183,12 +183,6 @@ void drawReferencePoints(rviz_visual_tools::RvizVisualToolsPtr visualTools){
   Eigen::Vector3d thumbPoint(thumbCurrentPose.pose.position.x, thumbCurrentPose.pose.position.y,
     thumbCurrentPose.pose.position.z);
 
-  // Palm 
-  /*moveit::planning_interface::MoveGroupInterface palmMoveGroup(PALM_PLANNING_GROUP);
-  geometry_msgs::PoseStamped palmCurrentPose = palmMoveGroup.getCurrentPose(PALM_END_EFFECTOR_LINK);
-  Eigen::Vector3d palmPoint(palmCurrentPose.pose.position.x, palmCurrentPose.pose.position.y,
-    palmCurrentPose.pose.position.z);*/
-
   // Midpoint between thumb and middle finger
   Eigen::Vector3d graspMid((middlePoint[0] + thumbPoint[0]) / 2.0,
     (middlePoint[1] + thumbPoint[1]) / 2.0, (middlePoint[2] + thumbPoint[2]) / 2.0);  
@@ -196,7 +190,6 @@ void drawReferencePoints(rviz_visual_tools::RvizVisualToolsPtr visualTools){
   visualTools->publishSphere(middlePoint, rviz_visual_tools::BLUE, rviz_visual_tools::LARGE);
   visualTools->publishSphere(thumbPoint, rviz_visual_tools::RED, rviz_visual_tools::LARGE);
   visualTools->publishSphere(graspMid, rviz_visual_tools::YELLOW, rviz_visual_tools::LARGE);
-  //visualTools->publishSphere(palmPoint, rviz_visual_tools::BROWN, rviz_visual_tools::LARGE);
   visualTools->trigger();
 }
 
@@ -209,15 +202,15 @@ void drawReferencePoints(rviz_visual_tools::RvizVisualToolsPtr visualTools){
 //  The process is the following:
 //  - Transform the contact points to the /world frame
 //  - Preprosition the robotic fingers to a pre grasping position
-//  - Calculate the palm pose regarding the object orientation and the contact points
-//  - Move the arm and the palm to such pose and close the fingers
+//  - Calculate the arm pose regarding the object orientation and the contact points
+//  - Move the arm to such pose and close the fingers
 //
 
 void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::string & collisionId) {
   rviz_visual_tools::RvizVisualToolsPtr visualTools;
   visualTools.reset(new rviz_visual_tools::RvizVisualTools("/world", "/rviz_visual_markers"));
   visualTools->trigger();
-  moveit::planning_interface::MoveGroupInterface shadowPalmMoveGroup(PALM_PLANNING_GROUP);
+  moveit::planning_interface::MoveGroupInterface armMoveGroup(ARM_PLANNING_GROUP);
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   // Transform the coordinates from the camera frame to the world
@@ -288,7 +281,7 @@ void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::s
   ROS_INFO("[AUROBOT] FINGERS POSITIONED IN PRE GRASPING POSE");
    
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
-  // Calculate grasper palm position and orientation
+  // Calculate grasper position and orientation
 
   Eigen::Vector3d midPoint((firstPoint[0] + secondPoint[0]) / 2.0,
     (firstPoint[1] + secondPoint[1]) / 2.0, (firstPoint[2] + secondPoint[2]) / 2.0);
@@ -303,7 +296,9 @@ void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::s
   axeX = axeZ.cross(objAxisVector);
   axeY = axeZ.cross(axeX);
 
-  // CHANGE ALL OF THESE BECAUSE OF THE NEW PLANNING GROUP
+  axeAux = axeY;
+  axeY = axeX;
+  axeX = -axeAux;
   
   axeX.normalize();
   axeY.normalize();
@@ -327,9 +322,9 @@ void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::s
   shadowMidPointIn.setZ(shadowMidPoint[2]);
   shadowMidPointIn.frame_id_ = "/world";
 
-  shadowMidPoint = transformPoint(shadowMidPointIn, "/world", PALM_END_EFFECTOR_LINK);
+  shadowMidPoint = transformPoint(shadowMidPointIn, "/world", ARM_END_EFFECTOR_LINK);
 
-  // Moving the pose backwards to set the palm's grasp position 
+  // Moving the pose backwards to set the grasp position 
   Eigen::Vector3d midPointCentered(-shadowMidPoint[0], -shadowMidPoint[1], -shadowMidPoint[2]);
   tf::Transform midPointTransform;
   tf::Vector3 midPointTF, midPointTFed;
@@ -341,11 +336,11 @@ void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::s
 
   tf::vectorTFToEigen(midPointTFed, midPointCentered);
 
-  Eigen::Affine3d allegroMidPointPose = midPointPose;
-  allegroMidPointPose.translation() = midPointCentered;
+  Eigen::Affine3d shadowGraspPose = midPointPose;
+  shadowGraspPose.translation() = midPointCentered;
 
   visualTools->publishSphere(midPointCentered, rviz_visual_tools::PINK, rviz_visual_tools::LARGE);
-  visualTools->publishAxis(allegroMidPointPose, rviz_visual_tools::MEDIUM);
+  visualTools->publishAxis(shadowGraspPose, rviz_visual_tools::MEDIUM);
   visualTools->trigger();
 
   // Pregrasp pose, a litle bit further
@@ -375,50 +370,48 @@ void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::s
   moveShadowPregrasp();
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
-  // Moving arm + palm and close grasp
+  // Moving arm and close grasp
 
   moveit::planning_interface::PlanningSceneInterface planningSceneInterface;
-  moveit::planning_interface::MoveGroupInterface::Plan shadowPalmPlan;
-  bool successShadowPalmPlan = false;
+  moveit::planning_interface::MoveGroupInterface::Plan armPlan;
+  bool successArmPlan = false;
 
-  geometry_msgs::Pose foo = shadowPalmMoveGroup.getRandomPose().pose;
-  std::cout << foo << "\n";
+  std::cout << armMoveGroup.getEndEffectorLink() << "\n";
 
-  shadowPalmMoveGroup.setPoseTarget(foo);
-
+  armMoveGroup.setPoseTarget(shadowPregraspPose);
   //TRRTkConfigDefault //RRTConnectkConfigDefault // Lento! PRMstarkConfigDefault
-  shadowPalmMoveGroup.setPlannerId("RRTConnectkConfigDefault");
-  shadowPalmMoveGroup.setPlanningTime(5.0);
-  shadowPalmMoveGroup.setNumPlanningAttempts(20);
-  shadowPalmMoveGroup.setMaxVelocityScalingFactor(0.50);
-  shadowPalmMoveGroup.setMaxAccelerationScalingFactor(0.50);
+  armMoveGroup.setPlannerId("RRTConnectkConfigDefault");
+  armMoveGroup.setPlanningTime(5.0);
+  armMoveGroup.setNumPlanningAttempts(20);
+  armMoveGroup.setMaxVelocityScalingFactor(0.50);
+  armMoveGroup.setMaxAccelerationScalingFactor(0.50);
 
-  successShadowPalmPlan = shadowPalmMoveGroup.plan(shadowPalmPlan);
+  successArmPlan = armMoveGroup.plan(armPlan);
 
-  ROS_INFO("Palm pregrasp plan %s", successShadowPalmPlan ? "SUCCEED" : "FAILED");
+  ROS_INFO("Arm pregrasp plan %s", successArmPlan ? "SUCCEED" : "FAILED");
 
-  if (successShadowPalmPlan) { // Successful plan for the pre grasping arm position
-    std::cout << "PRESS ENTER TO MOVE PA10 TO PREGRASPING POSE\n";
+  if (successArmPlan) { // Successful plan for the pre grasping arm position
+    std::cout << "PRESS ENTER TO MOVE TO PREGRASPING POSE\n";
     std::getchar();
 
-    shadowPalmMoveGroup.execute(shadowPalmPlan);
-    ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN PREGRASPING POSE");
+    armMoveGroup.execute(armPlan);
+    ROS_INFO("[AUROBOT] ARM POSITIONED IN PREGRASPING POSE");
   
     std::vector<std::string> objectId;
     objectId.push_back(collisionId);
     planningSceneInterface.removeCollisionObjects(objectId);
 
-    shadowPalmMoveGroup.setPoseTarget(allegroMidPointPose, PALM_END_EFFECTOR_LINK);
-    successShadowPalmPlan = shadowPalmMoveGroup.plan(shadowPalmPlan);
+    armMoveGroup.setPoseTarget(shadowGraspPose);
+    successArmPlan = armMoveGroup.plan(armPlan);
 
-    ROS_INFO("Palm grasp plan %s", successShadowPalmPlan ? "SUCCEED" : "FAILED");
+    ROS_INFO("Arm grasp plan %s", successArmPlan ? "SUCCEED" : "FAILED");
 
-    if (successShadowPalmPlan) { // Successful plan for the grasping arm position
-      std::cout << "PRESS ENTER TO MOVE PA10 TO GRASPING POSE\n";
+    if (successArmPlan) { // Successful plan for the grasping arm position
+      std::cout << "PRESS ENTER TO MOVE TO GRASPING POSE\n";
       std::getchar();
 
-      shadowPalmMoveGroup.execute(shadowPalmPlan);
-      ROS_INFO("[AUROBOT] ARM PALM POSITIONED IN GRASPING POSE");
+      armMoveGroup.execute(armPlan);
+      ROS_INFO("[AUROBOT] ARM POSITIONED IN GRASPING POSE");
       
       std::cout << "PRESS ENTER TO GRASP\n";
       std::getchar();
@@ -428,16 +421,16 @@ void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::s
 
       ROS_INFO("[AUROBOT] GRASP COMPLETED");
 
-      shadowPalmMoveGroup.setPoseTarget(shadowPostgraspPose, PALM_END_EFFECTOR_LINK);
-      successShadowPalmPlan = shadowPalmMoveGroup.plan(shadowPalmPlan);
+      armMoveGroup.setPoseTarget(shadowPostgraspPose);
+      successArmPlan = armMoveGroup.plan(armPlan);
 
-      ROS_INFO("Palm grasp plan %s", successShadowPalmPlan ? "SUCCEED" : "FAILED");
+      ROS_INFO("Arm grasp plan %s", successArmPlan ? "SUCCEED" : "FAILED");
 
-      if (successShadowPalmPlan) { // Successful plan for the post grasping arm position
-        std::cout << "PRESS ENTER TO MOVE PA10 TO POSTGRASPING POSE\n";
+      if (successArmPlan) { // Successful plan for the post grasping arm position
+        std::cout << "PRESS ENTER TO MOVE TO POSTGRASPING POSE\n";
         std::getchar();
 
-        shadowPalmMoveGroup.execute(shadowPalmPlan);
+        armMoveGroup.execute(armPlan);
       }
     }
   }
