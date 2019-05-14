@@ -433,6 +433,15 @@ void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::s
         armMoveGroup.execute(armPlan);
       }
     }
+    else { // Manually move it and then press enter to grasp
+      std::cout << "PRESS ENTER TO GRASP\n";
+      std::getchar();
+
+      if (!moveShadowGrasp(pointsDistance * 0.75))
+        std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";
+
+      ROS_INFO("[AUROBOT] GRASP COMPLETED");
+    }
   }
 
   ros::shutdown();

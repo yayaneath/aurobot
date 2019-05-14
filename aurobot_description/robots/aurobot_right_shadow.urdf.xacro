@@ -99,7 +99,8 @@
   <joint name="top_camera_joint" type="fixed">
     <parent link="world"/>
     <child link="top_camera_link"/>
-    <origin xyz="0.589 -0.117 2.486" rpy="0.03 -3.18 -4.728"/>
+    <!--<origin xyz="0.589 -0.117 2.486" rpy="0.03 -3.18 -4.728"/>-->
+    <origin xyz="0.589 -0.097 2.49" rpy="0.03 -3.16 -4.728"/>
   </joint>-->
 
   <!-- Add the right PA10 -->
