@@ -87,13 +87,13 @@ Eigen::Vector3d transformVector(const tf::Stamped<tf::Vector3> & tfVectorIn,
 //  the joints of the Shadow.
 //
 
-double getMiddleJointPosition(double width) {
-  double a = 0.0487254446, b = -0.0628793987, c = -0.124767184, d = 0.1423194601;
+double getThumbJointPosition(double width) {
+  double a = -93.4217162843, b = 22.721646641, c = -7.6878665291, d = 0.7746088563;
   return a * std::pow(width, 3) + b  * std::pow(width, 2) + c * width + d;
 }
 
-double getThumbJointPosition(double width) {
-  double a = 0.0694423878, b = -0.0524932202, c = -0.1576193457, d = 0.122830732;
+double getMiddleJointPosition(double width) {
+  double a = -105.1326116902, b = 25.5699225863, c = -8.6515803678, d = 1.0183100834;
   return a * std::pow(width, 3) + b  * std::pow(width, 2) + c * width + d;
 }
 
