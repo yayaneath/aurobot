@@ -46,6 +46,8 @@ const std::string COLLISION_OBJECT_ID = "grasping_object";
 
 const std::string GRASP_CONFIG_TOPIC = "/geograsp/grasp_config";
 
+const char REPEAT_PLAN = 'r';
+
 
 //
 //  AUXILIAR POINTS TRANSFORMER FUNCTION
@@ -375,18 +377,24 @@ void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::s
   moveit::planning_interface::PlanningSceneInterface planningSceneInterface;
   moveit::planning_interface::MoveGroupInterface::Plan armPlan;
   bool successArmPlan = false;
+  char inputChar = REPEAT_PLAN;
 
   std::cout << armMoveGroup.getEndEffectorLink() << "\n";
 
   armMoveGroup.setPoseTarget(shadowPregraspPose);
   //TRRTkConfigDefault //RRTConnectkConfigDefault // Lento! PRMstarkConfigDefault
-  armMoveGroup.setPlannerId("RRTConnectkConfigDefault");
+  armMoveGroup.setPlannerId("TRRTkConfigDefault");
   armMoveGroup.setPlanningTime(5.0);
   armMoveGroup.setNumPlanningAttempts(20);
   armMoveGroup.setMaxVelocityScalingFactor(0.50);
   armMoveGroup.setMaxAccelerationScalingFactor(0.50);
 
-  successArmPlan = armMoveGroup.plan(armPlan);
+  do {
+    ROS_INFO("[AUROBOT] PLANNING PREGRASP POSITION");
+
+    successArmPlan = armMoveGroup.plan(armPlan);
+    std::cin >> inputChar;
+  } while(inputChar == REPEAT_PLAN);
 
   ROS_INFO("Arm pregrasp plan %s", successArmPlan ? "SUCCEED" : "FAILED");
 
@@ -402,7 +410,13 @@ void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::s
     planningSceneInterface.removeCollisionObjects(objectId);
 
     armMoveGroup.setPoseTarget(shadowGraspPose);
-    successArmPlan = armMoveGroup.plan(armPlan);
+
+    do {
+      ROS_INFO("[AUROBOT] PLANNING GRASP POSITION");
+
+      successArmPlan = armMoveGroup.plan(armPlan);
+      std::cin >> inputChar;
+    } while(inputChar == REPEAT_PLAN);
 
     ROS_INFO("Arm grasp plan %s", successArmPlan ? "SUCCEED" : "FAILED");
 
@@ -416,13 +430,19 @@ void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::s
       std::cout << "PRESS ENTER TO GRASP\n";
       std::getchar();
 
-      if (!moveShadowGrasp(pointsDistance * 0.75))
+      if (!moveShadowGrasp(pointsDistance * 0.75) && !moveShadowGrasp(pointsDistance))
         std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";
 
       ROS_INFO("[AUROBOT] GRASP COMPLETED");
 
       armMoveGroup.setPoseTarget(shadowPostgraspPose);
-      successArmPlan = armMoveGroup.plan(armPlan);
+
+      do {
+        ROS_INFO("[AUROBOT] PLANNING POSTGRASP POSITION");
+
+        successArmPlan = armMoveGroup.plan(armPlan);
+        std::cin >> inputChar;
+      } while(inputChar == REPEAT_PLAN);
 
       ROS_INFO("Arm grasp plan %s", successArmPlan ? "SUCCEED" : "FAILED");
 
@@ -432,15 +452,6 @@ void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::s
 
         armMoveGroup.execute(armPlan);
       }
-    }
-    else { // Manually move it and then press enter to grasp
-      std::cout << "PRESS ENTER TO GRASP\n";
-      std::getchar();
-
-      if (!moveShadowGrasp(pointsDistance * 0.75))
-        std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";
-
-      ROS_INFO("[AUROBOT] GRASP COMPLETED");
     }
   }
 
