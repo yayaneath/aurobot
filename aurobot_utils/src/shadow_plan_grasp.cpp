@@ -81,7 +81,6 @@ Eigen::Vector3d transformVector(const tf::Stamped<tf::Vector3> & tfVectorIn,
   return outputVector;
 }
 
-
 //
 //  AUXILIAR JOINTS POSITION FINDING FUNCTION
 //
@@ -169,6 +168,55 @@ Eigen::Vector3d computeMidPoint() {
     (middlePoint[1] + thumbPoint[1]) / 2.0, (middlePoint[2] + thumbPoint[2]) / 2.0);
 
   return graspMid;
+}
+
+Eigen::Affine3d computeMidPointPose(rviz_visual_tools::RvizVisualToolsPtr visualTools) {
+  // Middle finger
+  moveit::planning_interface::MoveGroupInterface middleMoveGroup(MIDDLE_PLANNING_GROUP);
+  geometry_msgs::PoseStamped middleCurrentPose = middleMoveGroup.getCurrentPose(MIDDLE_END_EFFECTOR_LINK);
+  Eigen::Vector3d middlePoint(middleCurrentPose.pose.position.x, middleCurrentPose.pose.position.y,
+    middleCurrentPose.pose.position.z);
+
+  // Thumb finger
+  moveit::planning_interface::MoveGroupInterface thumbMoveGroup(THUMB_PLANNING_GROUP);
+  geometry_msgs::PoseStamped thumbCurrentPose = thumbMoveGroup.getCurrentPose(THUMB_END_EFFECTOR_LINK);
+  Eigen::Vector3d thumbPoint(thumbCurrentPose.pose.position.x, thumbCurrentPose.pose.position.y,
+    thumbCurrentPose.pose.position.z);
+
+  // Grasp Mid Point
+  Eigen::Vector3d graspMid((middlePoint[0] + thumbPoint[0]) / 2.0,
+    (middlePoint[1] + thumbPoint[1]) / 2.0, (middlePoint[2] + thumbPoint[2]) / 2.0);
+
+  // Arrenged for the shadow pose
+  tf::Stamped<tf::Vector3> handYIn;
+  handYIn.setX(0);
+  handYIn.setY(-1);
+  handYIn.setZ(0);
+  handYIn.frame_id_ = ARM_END_EFFECTOR_LINK;
+  Eigen::Vector3d handY = transformVector(handYIn, ARM_END_EFFECTOR_LINK, "/world");
+
+  Eigen::Vector3d axeX, axeY, axeZ, axeAux;
+
+  axeZ = middlePoint - thumbPoint;
+  axeX = axeZ.cross(handY);
+  axeY = axeZ.cross(axeX);
+  
+  axeX.normalize();
+  axeY.normalize();
+  axeZ.normalize();    
+
+  Eigen::Affine3d midPointPose;
+  Eigen::Matrix3d midPointRotation;
+  midPointRotation << axeX[0], axeY[0], axeZ[0], 
+                      axeX[1], axeY[1], axeZ[1],
+                      axeX[2], axeY[2], axeZ[2];
+  midPointPose.translation() = graspMid;
+  midPointPose.linear() = midPointRotation;
+
+  visualTools->publishAxis(midPointPose, rviz_visual_tools::MEDIUM);
+  visualTools->trigger();
+
+  return midPointPose;
 }
 
 
@@ -317,6 +365,114 @@ void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::s
   visualTools->publishAxis(midPointPose, rviz_visual_tools::MEDIUM);
   visualTools->trigger();
 
+  // Compute pose of the midpoint in EE reference frame
+  Eigen::Affine3d shadowMidPointPose = computeMidPointPose(visualTools); //computeMidPoint();
+
+  std::cout<< "MidPoint WORLD " << shadowMidPointPose.translation() << "\n";
+
+  tf::Stamped<tf::Vector3> poseMidIn;
+  poseMidIn.setX(shadowMidPointPose.translation()[0]);
+  poseMidIn.setY(shadowMidPointPose.translation()[1]);
+  poseMidIn.setZ(shadowMidPointPose.translation()[2]);
+  poseMidIn.frame_id_ = "/world";
+  Eigen::Vector3d poseMidEE = transformVector(poseMidIn, "/world", ARM_END_EFFECTOR_LINK);
+
+  tf::Stamped<tf::Vector3> poseAxeXIn;
+  poseAxeXIn.setX(shadowMidPointPose.linear()(0, 0));
+  poseAxeXIn.setY(shadowMidPointPose.linear()(1, 0));
+  poseAxeXIn.setZ(shadowMidPointPose.linear()(2, 0));
+  poseAxeXIn.frame_id_ = "/world";
+  Eigen::Vector3d poseAxeXEE = transformVector(poseAxeXIn, "/world", ARM_END_EFFECTOR_LINK);
+
+  tf::Stamped<tf::Vector3> poseAxeYIn;
+  poseAxeYIn.setX(shadowMidPointPose.linear()(0, 1));
+  poseAxeYIn.setY(shadowMidPointPose.linear()(1, 1));
+  poseAxeYIn.setZ(shadowMidPointPose.linear()(2, 1));
+  poseAxeYIn.frame_id_ = "/world";
+  Eigen::Vector3d poseAxeYEE = transformVector(poseAxeYIn, "/world", ARM_END_EFFECTOR_LINK);
+
+  tf::Stamped<tf::Vector3> poseAxeZIn;
+  poseAxeZIn.setX(shadowMidPointPose.linear()(0, 2));
+  poseAxeZIn.setY(shadowMidPointPose.linear()(1, 2));
+  poseAxeZIn.setZ(shadowMidPointPose.linear()(2, 2));
+  poseAxeZIn.frame_id_ = "/world";
+  Eigen::Vector3d poseAxeZEE = transformVector(poseAxeZIn, "/world", ARM_END_EFFECTOR_LINK);
+
+  Eigen::Affine3d midPointPoseEE;
+  Eigen::Matrix3d midPointRotationEE;
+  midPointRotationEE << poseAxeXEE[0], poseAxeYEE[0], poseAxeZEE[0], 
+                        poseAxeXEE[1], poseAxeYEE[1], poseAxeZEE[1],
+                        poseAxeXEE[2], poseAxeYEE[2], poseAxeZEE[2];
+  midPointPoseEE.translation() = poseMidEE;
+  midPointPoseEE.linear() = midPointRotationEE;
+  
+  /* Check point tfed!
+  Eigen::Vector3d fooPoint(0, -0.05, 0);
+  tf::Transform midPointTransformEE;
+  tf::Vector3 fooPointTF, fooPointTFed;
+
+  tf::transformEigenToTF(midPointPoseEE, midPointTransformEE);
+  tf::vectorEigenToTF(fooPoint, fooPointTF);
+
+  fooPointTFed = midPointTransformEE(fooPointTF);
+
+  tf::vectorTFToEigen(fooPointTFed, fooPoint);
+
+  tf::Stamped<tf::Vector3> fooPointIn;
+  fooPointIn.setX(fooPoint[0]);
+  fooPointIn.setY(fooPoint[1]);
+  fooPointIn.setZ(fooPoint[2]);
+  fooPointIn.frame_id_ = ARM_END_EFFECTOR_LINK;
+  fooPoint = transformVector(fooPointIn, ARM_END_EFFECTOR_LINK, "/world");
+
+  visualTools->publishSphere(fooPoint, rviz_visual_tools::PINK, rviz_visual_tools::LARGE);
+  visualTools->trigger();
+  */
+
+  // Get its inverse so we can use it to find the pose of the EE 
+  Eigen::Affine3d midPointPoseEEInv = midPointPoseEE.inverse();
+
+  // TODO: Orientation seems right but translation is not
+  // Change translation for the negative of the midpoint in EE and then transform to world
+  // just like we do down at line 475 "translate pose"
+  poseMidIn.setX(midPointPoseEEInv.translation()[0]);
+  poseMidIn.setY(midPointPoseEEInv.translation()[1]);
+  poseMidIn.setZ(midPointPoseEEInv.translation()[2]);
+  poseMidIn.frame_id_ = ARM_END_EFFECTOR_LINK;
+  poseMidEE = transformVector(poseMidIn, ARM_END_EFFECTOR_LINK, "/world");
+  
+  std::cout<< "MidPoint INV WORLD " << poseMidEE << "\n";
+
+  poseAxeXIn.setX(midPointPoseEEInv.linear()(0, 0));
+  poseAxeXIn.setY(midPointPoseEEInv.linear()(1, 0));
+  poseAxeXIn.setZ(midPointPoseEEInv.linear()(2, 0));
+  poseAxeXIn.frame_id_ = ARM_END_EFFECTOR_LINK;
+  poseAxeXEE = transformVector(poseAxeXIn, ARM_END_EFFECTOR_LINK, "/world");
+
+  poseAxeYIn.setX(midPointPoseEEInv.linear()(0, 1));
+  poseAxeYIn.setY(midPointPoseEEInv.linear()(1, 1));
+  poseAxeYIn.setZ(midPointPoseEEInv.linear()(2, 1));
+  poseAxeYIn.frame_id_ = ARM_END_EFFECTOR_LINK;
+  poseAxeYEE = transformVector(poseAxeYIn, ARM_END_EFFECTOR_LINK, "/world");
+
+  poseAxeZIn.setX(midPointPoseEEInv.linear()(0, 2));
+  poseAxeZIn.setY(midPointPoseEEInv.linear()(1, 2));
+  poseAxeZIn.setZ(midPointPoseEEInv.linear()(2, 2));
+  poseAxeZIn.frame_id_ = ARM_END_EFFECTOR_LINK;
+  poseAxeZEE = transformVector(poseAxeZIn, ARM_END_EFFECTOR_LINK, "/world");
+
+  midPointRotationEE << poseAxeXEE[0], poseAxeYEE[0], poseAxeZEE[0], 
+                        poseAxeXEE[1], poseAxeYEE[1], poseAxeZEE[1],
+                        poseAxeXEE[2], poseAxeYEE[2], poseAxeZEE[2];
+  midPointPoseEE.translation() = poseMidEE;
+  midPointPoseEE.linear() = midPointRotationEE;
+
+  visualTools->publishAxis(midPointPoseEE, rviz_visual_tools::MEDIUM);
+  visualTools->trigger();
+
+
+
+  // Translate pose
   Eigen::Vector3d shadowMidPoint = computeMidPoint();
   tf::Stamped<tf::Point> shadowMidPointIn;
   shadowMidPointIn.setX(shadowMidPoint[0]);
@@ -386,8 +542,8 @@ void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::s
   armMoveGroup.setPlannerId("TRRTkConfigDefault");
   armMoveGroup.setPlanningTime(5.0);
   armMoveGroup.setNumPlanningAttempts(20);
-  armMoveGroup.setMaxVelocityScalingFactor(0.50);
-  armMoveGroup.setMaxAccelerationScalingFactor(0.50);
+  //armMoveGroup.setMaxVelocityScalingFactor(0.50);
+  //armMoveGroup.setMaxAccelerationScalingFactor(0.50);
 
   do {
     ROS_INFO("[AUROBOT] PLANNING PREGRASP POSITION");
@@ -430,7 +586,7 @@ void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::s
       std::cout << "PRESS ENTER TO GRASP\n";
       std::getchar();
 
-      if (!moveShadowGrasp(pointsDistance * 0.75) && !moveShadowGrasp(pointsDistance))
+      if (!moveShadowGrasp(pointsDistance * 1.0) && !moveShadowGrasp(pointsDistance))
         std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";
 
       ROS_INFO("[AUROBOT] GRASP COMPLETED");
