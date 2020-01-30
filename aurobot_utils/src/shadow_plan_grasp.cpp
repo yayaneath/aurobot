@@ -48,6 +48,7 @@ const std::string GRASP_CONFIG_TOPIC = "/geograsp/grasp_config";
 
 const char REPEAT_PLAN = 'r';
 
+const float CLOSE_FACTOR = 0.9;
 
 //
 //  AUXILIAR POINTS TRANSFORMER FUNCTION
@@ -441,8 +442,17 @@ void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::s
   visualTools->publishAxis(pregraspPose, rviz_visual_tools::MEDIUM);
   visualTools->trigger();
 
+  // Pregrasp pose with wolrd Z
+  Eigen::Vector3d preworldTrans = graspTransEE + Eigen::Vector3d(0, 0, 0.10);
+  Eigen::Affine3d preworldPose = graspPose;
+  preworldPose.translation() = preworldTrans;
+
+  visualTools->publishSphere(preworldTrans, rviz_visual_tools::WHITE, rviz_visual_tools::LARGE);
+  visualTools->publishAxis(preworldPose, rviz_visual_tools::MEDIUM);
+  visualTools->trigger();
+
   // Postgrasp pose is the grasp pose but a litle bit upwards, following the world's Z
-  Eigen::Vector3d postgraspTrans = graspTransEE + Eigen::Vector3d(0, 0, 0.15);
+  Eigen::Vector3d postgraspTrans = graspTransEE + Eigen::Vector3d(0, 0, 0.20);
   Eigen::Affine3d postgraspPose = graspPose;
   postgraspPose.translation() = postgraspTrans;
 
@@ -463,7 +473,7 @@ void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::s
 
   std::cout << armMoveGroup.getEndEffectorLink() << "\n";
 
-  armMoveGroup.setPoseTarget(pregraspPose);
+  armMoveGroup.setPoseTarget(preworldPose); //(pregraspPose);
   //TRRTkConfigDefault //RRTConnectkConfigDefault // Lento! PRMstarkConfigDefault
   armMoveGroup.setPlannerId("TRRTkConfigDefault");
   armMoveGroup.setPlanningTime(5.0);
@@ -513,7 +523,7 @@ void planGrasp(const geograsp::GraspConfigMsgConstPtr & inputGrasp, const std::s
       std::cout << "PRESS ENTER TO GRASP\n";
       std::getchar();
 
-      if (!moveShadowGrasp(pointsDistance * 1.0) && !moveShadowGrasp(pointsDistance))
+      if (!moveShadowGrasp(pointsDistance * CLOSE_FACTOR) && !moveShadowGrasp(pointsDistance))
         std::cout << "[ERROR] Fingers movement for closing grasp failed!\n";
 
       ROS_INFO("[AUROBOT] GRASP COMPLETED");
